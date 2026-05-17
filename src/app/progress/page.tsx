@@ -1,18 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import Link from "next/link";
 import { courses } from "@/data/courses";
+import { getChapterWeaknessReport } from "@/lib/analytics";
 import { getCourseProgress, getQuizStats, resetProgress } from "@/lib/progress";
 
 export default function ProgressPage() {
-  const [progressData, setProgressData] = useState<
-    { courseId: string; completedChapters: number; totalChapters: number; stats: { total: number; correct: number; accuracy: number } }[]
-  >([]);
-  const [loaded, setLoaded] = useState(false);
-
-  useEffect(() => {
-    const data = courses.map((course) => {
+  const progressData = courses.map((course) => {
       const progress = getCourseProgress(course.id);
       const stats = getQuizStats(course.id);
       return {
@@ -22,9 +16,6 @@ export default function ProgressPage() {
         stats,
       };
     });
-    setProgressData(data);
-    setLoaded(true);
-  }, []);
 
   const handleReset = () => {
     if (confirm("確定要重置所有學習進度嗎？此操作無法復原。")) {
@@ -33,19 +24,20 @@ export default function ProgressPage() {
     }
   };
 
-  if (!loaded) {
-    return (
-      <div className="max-w-4xl mx-auto px-4 py-12">
-        <p className="text-slate-500">載入中...</p>
-      </div>
-    );
-  }
-
   const totalChapters = progressData.reduce((sum, d) => sum + d.totalChapters, 0);
   const completedChapters = progressData.reduce((sum, d) => sum + d.completedChapters, 0);
   const totalQuestions = progressData.reduce((sum, d) => sum + d.stats.total, 0);
   const totalCorrect = progressData.reduce((sum, d) => sum + d.stats.correct, 0);
   const overallAccuracy = totalQuestions > 0 ? Math.round((totalCorrect / totalQuestions) * 100) : 0;
+  const weaknessReport = getChapterWeaknessReport();
+  const weakChapters = weaknessReport.filter((item) => item.mastery === "weak");
+
+  const masteryClass = {
+    strong: "bg-emerald-500",
+    ok: "bg-amber-400",
+    weak: "bg-rose-500",
+    untested: "bg-slate-300",
+  };
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -75,6 +67,77 @@ export default function ProgressPage() {
           <p className="text-sm text-slate-500 mt-1">正確率</p>
         </div>
       </div>
+
+      <section className="mb-10">
+        <div className="flex items-center justify-between gap-4 mb-4">
+          <div>
+            <p className="text-sm font-semibold text-emerald-600 mb-1">Weakness Map</p>
+            <h2 className="text-xl font-semibold text-slate-900">章節弱點熱圖</h2>
+          </div>
+          <Link
+            href="/study-plan"
+            className="text-sm font-medium text-emerald-700 hover:text-emerald-800"
+          >
+            產生衝刺計畫 →
+          </Link>
+        </div>
+        <div className="bg-white rounded-xl border border-slate-200 p-5">
+          <div className="flex flex-wrap gap-3 mb-5 text-xs text-slate-600">
+            <span className="flex items-center gap-1"><i className="h-3 w-3 rounded-sm bg-emerald-500" />穩定</span>
+            <span className="flex items-center gap-1"><i className="h-3 w-3 rounded-sm bg-amber-400" />待複習</span>
+            <span className="flex items-center gap-1"><i className="h-3 w-3 rounded-sm bg-rose-500" />弱點</span>
+            <span className="flex items-center gap-1"><i className="h-3 w-3 rounded-sm bg-slate-300" />未測</span>
+          </div>
+          <div className="space-y-4">
+            {courses.map((course) => {
+              const courseReport = weaknessReport.filter((item) => item.courseId === course.id);
+              return (
+                <div key={course.id}>
+                  <div className="flex items-center justify-between mb-2">
+                    <Link href={`/courses/${course.id}`} className="font-medium text-slate-900 hover:text-emerald-700">
+                      {course.name}
+                    </Link>
+                    <span className="text-xs text-slate-500">{courseReport.length} 章</span>
+                  </div>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-2">
+                    {courseReport.map((item) => (
+                      <Link
+                        key={item.chapterId}
+                        href={`/courses/${item.courseId}/${item.chapterId}`}
+                        className="rounded-lg border border-slate-100 bg-slate-50 p-3 hover:border-emerald-200"
+                      >
+                        <div className={`h-2 rounded-full mb-2 ${masteryClass[item.mastery]}`} />
+                        <p className="truncate text-sm font-medium text-slate-800">{item.chapterTitle}</p>
+                        <p className="mt-1 text-xs text-slate-500">
+                          {item.total ? `${item.accuracy}% / ${item.total} 題` : item.completed ? "已讀未測" : "未讀未測"}
+                        </p>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {weakChapters.length > 0 && (
+        <section className="mb-10 rounded-xl border border-rose-200 bg-rose-50 p-5">
+          <h2 className="text-lg font-semibold text-rose-900 mb-3">優先補強清單</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            {weakChapters.slice(0, 6).map((item) => (
+              <Link
+                key={`${item.courseId}-${item.chapterId}`}
+                href={`/courses/${item.courseId}/${item.chapterId}`}
+                className="rounded-lg bg-white border border-rose-100 p-4 hover:border-rose-300"
+              >
+                <p className="font-medium text-slate-900">{item.chapterTitle}</p>
+                <p className="text-sm text-rose-700 mt-1">{item.courseName} 正確率 {item.accuracy}%</p>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
 
       <h2 className="text-xl font-semibold text-slate-900 mb-4">各課程進度</h2>
       <div className="space-y-4">

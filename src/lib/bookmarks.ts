@@ -29,7 +29,11 @@ export interface WrongAnswer {
   questionId: string;
   selectedAnswer: number;
   timestamp: number;
+  reason?: WrongReason;
+  attempts?: number;
 }
+
+export type WrongReason = "concept" | "formula" | "careless" | "law" | "unknown";
 
 export function getWrongAnswers(): WrongAnswer[] {
   if (typeof window === "undefined") return [];
@@ -41,9 +45,21 @@ export function addWrongAnswer(questionId: string, selectedAnswer: number) {
   const wrongs = getWrongAnswers();
   const existing = wrongs.find((w) => w.questionId === questionId);
   if (!existing) {
-    wrongs.push({ questionId, selectedAnswer, timestamp: Date.now() });
-    localStorage.setItem(WRONG_KEY, JSON.stringify(wrongs));
+    wrongs.push({ questionId, selectedAnswer, timestamp: Date.now(), attempts: 1 });
+  } else {
+    existing.selectedAnswer = selectedAnswer;
+    existing.timestamp = Date.now();
+    existing.attempts = (existing.attempts || 1) + 1;
   }
+  localStorage.setItem(WRONG_KEY, JSON.stringify(wrongs));
+}
+
+export function updateWrongReason(questionId: string, reason: WrongReason) {
+  const wrongs = getWrongAnswers();
+  const wrong = wrongs.find((item) => item.questionId === questionId);
+  if (!wrong) return;
+  wrong.reason = reason;
+  localStorage.setItem(WRONG_KEY, JSON.stringify(wrongs));
 }
 
 export function removeWrongAnswer(questionId: string) {

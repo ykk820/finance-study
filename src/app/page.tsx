@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { courses } from "@/data/courses";
 import { examFocusCourses } from "@/data/examFocus";
+import DashboardSummary from "@/components/DashboardSummary";
 
 const categoryLabels: Record<string, string> = {
   cfa: "CFA",
@@ -48,6 +49,8 @@ export default function HomePage() {
           </Link>
         </div>
       </section>
+
+      <DashboardSummary />
 
       <section className="mb-16">
         <div className="flex items-end justify-between gap-4 mb-6">

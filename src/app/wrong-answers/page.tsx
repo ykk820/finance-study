@@ -1,24 +1,40 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { questions } from "@/data/questions";
 import { courses } from "@/data/courses";
-import { getWrongAnswers, removeWrongAnswer, clearWrongAnswers, WrongAnswer } from "@/lib/bookmarks";
+import {
+  getWrongAnswers,
+  removeWrongAnswer,
+  clearWrongAnswers,
+  updateWrongReason,
+  WrongAnswer,
+  WrongReason,
+} from "@/lib/bookmarks";
+
+const reasonLabels: Record<WrongReason, string> = {
+  concept: "觀念錯",
+  formula: "公式錯",
+  careless: "粗心",
+  law: "法規記錯",
+  unknown: "未分類",
+};
 
 export default function WrongAnswersPage() {
-  const [wrongs, setWrongs] = useState<WrongAnswer[]>([]);
+  const [wrongs, setWrongs] = useState<WrongAnswer[]>(() => getWrongAnswers());
   const [expandedId, setExpandedId] = useState<string | null>(null);
-  const [loaded, setLoaded] = useState(false);
-
-  useEffect(() => {
-    setWrongs(getWrongAnswers());
-    setLoaded(true);
-  }, []);
 
   const handleRemove = (questionId: string) => {
     removeWrongAnswer(questionId);
     setWrongs((prev) => prev.filter((w) => w.questionId !== questionId));
+  };
+
+  const handleReason = (questionId: string, reason: WrongReason) => {
+    updateWrongReason(questionId, reason);
+    setWrongs((prev) =>
+      prev.map((wrong) => wrong.questionId === questionId ? { ...wrong, reason } : wrong)
+    );
   };
 
   const handleClear = () => {
@@ -27,10 +43,6 @@ export default function WrongAnswersPage() {
       setWrongs([]);
     }
   };
-
-  if (!loaded) {
-    return <div className="max-w-4xl mx-auto px-4 py-12 text-slate-500">載入中...</div>;
-  }
 
   const wrongQuestions = wrongs
     .map((w) => {
@@ -47,7 +59,7 @@ export default function WrongAnswersPage() {
           {wrongQuestions.length > 0 && (
             <>
               <Link
-                href="/quiz?mode=bookmarks"
+                href="/quiz?mode=wrongs"
                 className="text-sm text-emerald-600 border border-emerald-200 px-3 py-1.5 rounded-md hover:bg-emerald-50"
               >
                 重新練習錯題
@@ -77,9 +89,20 @@ export default function WrongAnswersPage() {
         </div>
       ) : (
         <div className="space-y-4">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+            {(Object.keys(reasonLabels) as WrongReason[]).map((reason) => (
+              <div key={reason} className="rounded-lg bg-white border border-slate-200 p-3 text-center">
+                <p className="text-2xl font-bold text-slate-900">
+                  {wrongs.filter((wrong) => (wrong.reason || "unknown") === reason).length}
+                </p>
+                <p className="text-xs text-slate-500 mt-1">{reasonLabels[reason]}</p>
+              </div>
+            ))}
+          </div>
           <p className="text-sm text-slate-500">共 {wrongQuestions.length} 題錯題</p>
           {wrongQuestions.map((q) => {
             const course = courses.find((c) => c.id === q.courseId);
+            const wrong = wrongs.find((item) => item.questionId === q.id);
             const isExpanded = expandedId === q.id;
 
             return (
@@ -94,6 +117,16 @@ export default function WrongAnswersPage() {
                         {course?.name}
                       </span>
                       <p className="font-medium text-slate-900">{q.question}</p>
+                      <div className="mt-2 flex flex-wrap gap-2">
+                        <span className="rounded-full bg-rose-50 px-2 py-1 text-xs text-rose-700">
+                          {reasonLabels[wrong?.reason || "unknown"]}
+                        </span>
+                        {(wrong?.attempts || 1) >= 2 && (
+                          <span className="rounded-full bg-slate-900 px-2 py-1 text-xs text-white">
+                            連錯高風險
+                          </span>
+                        )}
+                      </div>
                     </div>
                     <span className="text-slate-400 flex-shrink-0">
                       {isExpanded ? "▲" : "▼"}
@@ -128,6 +161,26 @@ export default function WrongAnswersPage() {
                     <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-md">
                       <p className="text-sm font-medium text-blue-900 mb-1">解析</p>
                       <p className="text-sm text-blue-800">{q.explanation}</p>
+                    </div>
+
+                    <div className="mt-4 rounded-md border border-slate-200 bg-slate-50 p-3">
+                      <p className="text-sm font-medium text-slate-800 mb-2">這題錯在哪裡？</p>
+                      <div className="flex flex-wrap gap-2">
+                        {(Object.keys(reasonLabels).filter((reason) => reason !== "unknown") as WrongReason[]).map((reason) => (
+                          <button
+                            key={reason}
+                            type="button"
+                            onClick={() => handleReason(q.id, reason)}
+                            className={`rounded-md border px-3 py-1.5 text-sm ${
+                              wrong?.reason === reason
+                                ? "border-emerald-500 bg-emerald-50 text-emerald-700"
+                                : "border-slate-200 bg-white text-slate-600 hover:bg-slate-100"
+                            }`}
+                          >
+                            {reasonLabels[reason]}
+                          </button>
+                        ))}
+                      </div>
                     </div>
 
                     <button

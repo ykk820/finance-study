@@ -4,9 +4,16 @@ import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { courses } from "@/data/courses";
+import { examFocusCourses } from "@/data/examFocus";
 import { questions } from "@/data/questions";
 import { saveQuizResult } from "@/lib/progress";
-import { toggleBookmark, isBookmarked, addWrongAnswer } from "@/lib/bookmarks";
+import {
+  toggleBookmark,
+  isBookmarked,
+  addWrongAnswer,
+  getBookmarks,
+  getWrongAnswers,
+} from "@/lib/bookmarks";
 import { Question } from "@/types";
 
 export default function QuizPage() {
@@ -31,46 +38,92 @@ function QuizContent() {
   const [quizStarted, setQuizStarted] = useState(false);
   const [quizFinished, setQuizFinished] = useState(false);
   const [bookmarked, setBookmarked] = useState(false);
+  const [timedMode, setTimedMode] = useState(false);
+  const [secondsLeft, setSecondsLeft] = useState(15 * 60);
 
-  useEffect(() => {
-    if (courseFilter) setSelectedCourse(courseFilter);
-  }, [courseFilter]);
-
-  useEffect(() => {
-    if (mode === "bookmarks") {
-      startBookmarkQuiz();
-    }
-  }, [mode]);
-
-  const startBookmarkQuiz = () => {
-    const { getBookmarks } = require("@/lib/bookmarks");
-    const ids = getBookmarks();
-    const pool = questions.filter((q) => ids.includes(q.id));
-    if (pool.length === 0) return;
-    const shuffled = pool.sort(() => Math.random() - 0.5);
+  const resetQuiz = (pool: Question[]) => {
+    const shuffled = [...pool].sort(() => Math.random() - 0.5).slice(0, 10);
     setQuizQuestions(shuffled);
     setCurrentIndex(0);
     setSelectedAnswer(null);
     setShowExplanation(false);
     setScore({ correct: 0, total: 0 });
-    setQuizStarted(true);
+    setQuizStarted(shuffled.length > 0);
     setQuizFinished(false);
+    setBookmarked(false);
+    setSecondsLeft(15 * 60);
+  };
+
+  const startBookmarkQuiz = () => {
+    setTimedMode(false);
+    const ids = getBookmarks();
+    resetQuiz(questions.filter((q) => ids.includes(q.id)));
+  };
+
+  const startWrongQuiz = () => {
+    setTimedMode(false);
+    const ids = getWrongAnswers().map((item) => item.questionId);
+    resetQuiz(questions.filter((q) => ids.includes(q.id)));
+  };
+
+  const startFocusQuiz = () => {
+    setTimedMode(false);
+    const highChapterIds = new Set(
+      examFocusCourses.flatMap((course) =>
+        course.topics
+          .filter((topic) => topic.priority === "high")
+          .flatMap((topic) => topic.chapterIds)
+      )
+    );
+    resetQuiz(questions.filter((q) => q.chapterId && highChapterIds.has(q.chapterId)));
+  };
+
+  const startTimedQuiz = () => {
+    const highChapterIds = new Set(
+      examFocusCourses.flatMap((course) =>
+        course.topics
+          .filter((topic) => topic.priority === "high")
+          .flatMap((topic) => topic.chapterIds)
+      )
+    );
+    setTimedMode(true);
+    resetQuiz(questions.filter((q) => q.chapterId && highChapterIds.has(q.chapterId)));
   };
 
   const startQuiz = () => {
-    let pool = selectedCourse
+    setTimedMode(false);
+    const pool = selectedCourse
       ? questions.filter((q) => q.courseId === selectedCourse)
       : [...questions];
 
-    const shuffled = pool.sort(() => Math.random() - 0.5).slice(0, 10);
-    setQuizQuestions(shuffled);
-    setCurrentIndex(0);
-    setSelectedAnswer(null);
-    setShowExplanation(false);
-    setScore({ correct: 0, total: 0 });
-    setQuizStarted(true);
-    setQuizFinished(false);
+    resetQuiz(pool);
   };
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      if (mode === "bookmarks") startBookmarkQuiz();
+      if (mode === "wrongs") startWrongQuiz();
+      if (mode === "focus") startFocusQuiz();
+      if (mode === "timed") startTimedQuiz();
+    }, 0);
+    return () => window.clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mode]);
+
+  useEffect(() => {
+    if (!timedMode || !quizStarted || quizFinished) return;
+    const timer = window.setInterval(() => {
+      setSecondsLeft((current) => {
+        if (current <= 1) {
+          window.clearInterval(timer);
+          setQuizFinished(true);
+          return 0;
+        }
+        return current - 1;
+      });
+    }, 1000);
+    return () => window.clearInterval(timer);
+  }, [timedMode, quizStarted, quizFinished]);
 
   const handleAnswer = (index: number) => {
     if (showExplanation) return;
@@ -93,6 +146,7 @@ function QuizContent() {
       questionId: question.id,
       selectedAnswer: index,
       isCorrect,
+      // eslint-disable-next-line react-hooks/purity
       timestamp: Date.now(),
     });
 
@@ -151,6 +205,14 @@ function QuizContent() {
         </div>
 
         <div className="grid grid-cols-2 gap-4">
+          <button
+            type="button"
+            onClick={startFocusQuiz}
+            className="bg-white rounded-lg border p-4 text-center hover:border-blue-400 transition-colors"
+          >
+            <p className="text-2xl mb-1">高</p>
+            <p className="text-sm font-medium text-slate-700">高頻考點練習</p>
+          </button>
           <Link
             href="/quiz?mode=bookmarks"
             className="bg-white rounded-lg border p-4 text-center hover:border-yellow-400 transition-colors"
@@ -158,11 +220,26 @@ function QuizContent() {
             <p className="text-2xl mb-1">&#9733;</p>
             <p className="text-sm font-medium text-slate-700">收藏題目練習</p>
           </Link>
+          <button
+            type="button"
+            onClick={startWrongQuiz}
+            className="bg-white rounded-lg border p-4 text-center hover:border-red-400 transition-colors"
+          >
+            <p className="text-2xl mb-1">錯</p>
+            <p className="text-sm font-medium text-slate-700">錯題重新挑戰</p>
+          </button>
+          <Link
+            href="/quiz?mode=timed"
+            className="bg-white rounded-lg border p-4 text-center hover:border-slate-700 transition-colors"
+          >
+            <p className="text-2xl mb-1">時</p>
+            <p className="text-sm font-medium text-slate-700">15 分鐘計時</p>
+          </Link>
           <Link
             href="/wrong-answers"
             className="bg-white rounded-lg border p-4 text-center hover:border-red-400 transition-colors"
           >
-            <p className="text-2xl mb-1">&#10060;</p>
+            <p className="text-2xl mb-1">本</p>
             <p className="text-sm font-medium text-slate-700">錯題本</p>
           </Link>
         </div>
@@ -218,6 +295,11 @@ function QuizContent() {
         <span className="text-sm text-emerald-600 font-medium">
           答對: {score.correct}
         </span>
+        {timedMode && (
+          <span className="text-sm text-rose-600 font-medium">
+            {Math.floor(secondsLeft / 60)}:{String(secondsLeft % 60).padStart(2, "0")}
+          </span>
+        )}
       </div>
 
       <div className="w-full bg-slate-200 rounded-full h-2 mb-8">

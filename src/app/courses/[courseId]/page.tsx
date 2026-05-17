@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { courses } from "@/data/courses";
 import { getExamFocusByCourse } from "@/data/examFocus";
 import { questions } from "@/data/questions";
+import CourseRoadmap from "@/components/CourseRoadmap";
 
 export function generateStaticParams() {
   return courses.map((course) => ({ courseId: course.id }));
@@ -80,22 +81,7 @@ export default async function CourseDetailPage({
         </section>
       )}
 
-      <h2 className="text-xl font-semibold text-slate-900 mb-4">章節列表</h2>
-      <div className="space-y-3">
-        {course.chapters.map((chapter, index) => (
-          <Link
-            key={chapter.id}
-            href={`/courses/${courseId}/${chapter.id}`}
-            className="flex items-center gap-4 bg-white rounded-lg border border-slate-200 p-4 hover:border-emerald-300 hover:shadow-sm transition-all"
-          >
-            <span className="flex-shrink-0 w-8 h-8 bg-slate-100 rounded-full flex items-center justify-center text-sm font-medium text-slate-600">
-              {index + 1}
-            </span>
-            <span className="font-medium text-slate-900">{chapter.title}</span>
-            <span className="ml-auto text-emerald-600 text-sm">閱讀 →</span>
-          </Link>
-        ))}
-      </div>
+      <CourseRoadmap course={course} />
     </div>
   );
 }
