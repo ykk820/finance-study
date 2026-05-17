@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { courses } from "@/data/courses";
+import { examFocusCourses } from "@/data/examFocus";
 
 const categoryLabels: Record<string, string> = {
   cfa: "CFA",
@@ -39,6 +40,47 @@ export default function HomePage() {
           >
             練習題目
           </Link>
+          <Link
+            href="/exam-focus"
+            className="px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
+          >
+            看考試重點
+          </Link>
+        </div>
+      </section>
+
+      <section className="mb-16">
+        <div className="flex items-end justify-between gap-4 mb-6">
+          <div>
+            <p className="text-sm font-semibold text-emerald-600 mb-1">Data-driven prep</p>
+            <h2 className="text-2xl font-bold text-slate-900">考情優先順序</h2>
+          </div>
+          <Link href="/exam-focus" className="text-sm font-medium text-emerald-700 hover:text-emerald-800">
+            查看完整分析 →
+          </Link>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          {examFocusCourses.map((focus) => {
+            const course = courses.find((item) => item.id === focus.courseId);
+            const highPriorityCount = focus.topics.filter((topic) => topic.priority === "high").length;
+            if (!course) return null;
+
+            return (
+              <Link
+                key={focus.courseId}
+                href="/exam-focus"
+                className="bg-white border border-slate-200 rounded-lg p-4 hover:border-emerald-300 hover:shadow-sm transition-all"
+              >
+                <p className="font-semibold text-slate-900">{course.name}</p>
+                <p className="mt-2 text-sm text-slate-600 line-clamp-2">
+                  {focus.overallStrategy}
+                </p>
+                <p className="mt-3 text-xs text-rose-600 font-medium">
+                  {highPriorityCount} 個高優先考點
+                </p>
+              </Link>
+            );
+          })}
         </div>
       </section>
 
