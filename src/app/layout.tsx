@@ -37,7 +37,10 @@ export default function RootLayout({
               <p className="font-semibold text-white">FinanceStudy</p>
               <p>金融證照備考儀表板｜CFA、高業、初業、FRM</p>
             </div>
-            <p>© 2026 FinanceStudy. Built for focused preparation.</p>
+            <div className="flex flex-wrap items-center gap-3">
+              <a href="/security" className="hover:text-white">安全說明</a>
+              <p>© 2026 FinanceStudy. Built for focused preparation.</p>
+            </div>
           </div>
         </footer>
       </body>

@@ -66,7 +66,7 @@ export default function Navbar() {
               : "text-gray-300 hover:bg-slate-700 hover:text-white"
           }`}
         >
-          登入
+          學習者
         </Link>
       )}
     </>

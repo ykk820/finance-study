@@ -5,30 +5,15 @@ import { useMemo, useSyncExternalStore } from "react";
 export type StoredUser = {
   name: string;
   email: string;
-  password: string;
   createdAt: number;
 };
 
-const USERS_KEY = "finance-users";
 const CURRENT_USER_KEY = "finance-current-user";
+const LEGACY_USERS_KEY = "finance-users";
 const AUTH_CHANGE_EVENT = "finance-auth-change";
 
 function emitAuthChange() {
   window.dispatchEvent(new Event(AUTH_CHANGE_EVENT));
-}
-
-export function getUsers(): StoredUser[] {
-  if (typeof window === "undefined") return [];
-
-  try {
-    return JSON.parse(localStorage.getItem(USERS_KEY) || "[]");
-  } catch {
-    return [];
-  }
-}
-
-export function saveUsers(users: StoredUser[]) {
-  localStorage.setItem(USERS_KEY, JSON.stringify(users));
 }
 
 export function getCurrentUser(): StoredUser | null {
@@ -48,7 +33,13 @@ function getCurrentUserSnapshot() {
 }
 
 export function setCurrentUser(user: StoredUser) {
-  localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user));
+  const safeUser: StoredUser = {
+    name: user.name,
+    email: user.email,
+    createdAt: user.createdAt,
+  };
+  localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(safeUser));
+  localStorage.removeItem(LEGACY_USERS_KEY);
   emitAuthChange();
 }
 

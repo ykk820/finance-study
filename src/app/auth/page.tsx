@@ -3,17 +3,13 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import {
-  getUsers,
   logout,
-  saveUsers,
   setCurrentUser,
   useCurrentUser,
 } from "@/lib/auth";
 
 export default function AuthPage() {
-  const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
   const currentUser = useCurrentUser();
@@ -22,38 +18,17 @@ export default function AuthPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (isLogin) {
-      const users = getUsers();
-      const user = users.find(
-        (u) => u.email === email.trim() && u.password === password
-      );
-      if (user) {
-        setCurrentUser(user);
-        router.push("/");
-      } else {
-        setMessage("帳號或密碼錯誤");
-      }
-    } else {
-      if (!name || !email || !password) {
-        setMessage("請填寫所有欄位");
-        return;
-      }
-      const users = getUsers();
-      if (users.find((u) => u.email === email.trim())) {
-        setMessage("此 Email 已被註冊");
-        return;
-      }
-      const newUser = {
-        name: name.trim(),
-        email: email.trim(),
-        password,
-        createdAt: Date.now(),
-      };
-      users.push(newUser);
-      saveUsers(users);
-      setCurrentUser(newUser);
-      router.push("/");
+    if (!name.trim() || !email.trim()) {
+      setMessage("請填寫姓名和 Email");
+      return;
     }
+
+    setCurrentUser({
+      name: name.trim(),
+      email: email.trim(),
+      createdAt: Date.now(),
+    });
+    router.push("/");
   };
 
   if (currentUser) {
@@ -92,24 +67,25 @@ export default function AuthPage() {
     <div className="max-w-md mx-auto px-4 py-16">
       <div className="bg-white rounded-xl border shadow-sm p-8">
         <h1 className="text-2xl font-bold text-slate-900 text-center mb-6">
-          {isLogin ? "登入" : "註冊"}
+          本機學習者設定
         </h1>
+        <div className="mb-6 rounded-lg border border-blue-200 bg-blue-50 p-4 text-sm leading-6 text-blue-800">
+          這不是雲端帳號系統，不會儲存密碼。姓名與 Email 只保存在你的瀏覽器，用來顯示學習者名稱。
+        </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          {!isLogin && (
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
-                姓名
-              </label>
-              <input
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="w-full px-4 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                placeholder="你的姓名"
-              />
-            </div>
-          )}
+          <div>
+            <label className="block text-sm font-medium text-slate-700 mb-1">
+              姓名
+            </label>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="w-full px-4 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              placeholder="你的姓名"
+            />
+          </div>
 
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-1">
@@ -124,19 +100,6 @@ export default function AuthPage() {
             />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">
-              密碼
-            </label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500"
-              placeholder="••••••••"
-            />
-          </div>
-
           {message && (
             <p className="text-sm text-red-600">{message}</p>
           )}
@@ -145,22 +108,9 @@ export default function AuthPage() {
             type="submit"
             className="w-full py-3 bg-emerald-600 text-white rounded-md font-medium hover:bg-emerald-700 transition-colors"
           >
-            {isLogin ? "登入" : "註冊"}
+            儲存本機設定
           </button>
         </form>
-
-        <p className="mt-6 text-center text-sm text-slate-600">
-          {isLogin ? "還沒有帳號？" : "已經有帳號了？"}
-          <button
-            onClick={() => {
-              setIsLogin(!isLogin);
-              setMessage("");
-            }}
-            className="ml-1 text-emerald-600 font-medium hover:text-emerald-700"
-          >
-            {isLogin ? "立即註冊" : "登入"}
-          </button>
-        </p>
       </div>
     </div>
   );
