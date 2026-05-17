@@ -6,7 +6,7 @@ import { courses } from "@/data/courses";
 import { keypoints } from "@/data/keypoints";
 import { markChapterComplete } from "@/lib/progress";
 import { getHighlights, addHighlight, removeHighlight, Highlight } from "@/lib/highlights";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 
 const highlightColors = {
   yellow: { bg: "bg-yellow-200", border: "border-yellow-300", label: "黃色" },
@@ -22,8 +22,7 @@ export default function ChapterPage() {
 
   const course = courses.find((c) => c.id === courseId);
   const chapter = course?.chapters.find((ch) => ch.id === chapterId);
-  const [marked, setMarked] = useState(false);
-  const [highlights, setHighlights] = useState<Highlight[]>([]);
+  const [highlights, setHighlights] = useState<Highlight[]>(() => getHighlights(chapterId));
   const [selectedText, setSelectedText] = useState("");
   const [showToolbar, setShowToolbar] = useState(false);
   const [toolbarPos, setToolbarPos] = useState({ x: 0, y: 0 });
@@ -37,12 +36,10 @@ export default function ChapterPage() {
   useEffect(() => {
     if (courseId && chapterId) {
       markChapterComplete(courseId, chapterId);
-      setMarked(true);
-      setHighlights(getHighlights(chapterId));
     }
   }, [courseId, chapterId]);
 
-  const handleMouseUp = useCallback(() => {
+  const handleMouseUp = () => {
     const selection = window.getSelection();
     if (selection && selection.toString().trim().length > 1) {
       const text = selection.toString().trim();
@@ -58,7 +55,7 @@ export default function ChapterPage() {
       setShowToolbar(false);
       setSelectedText("");
     }
-  }, []);
+  };
 
   const handleHighlight = (color: Highlight["color"]) => {
     if (!selectedText) return;
@@ -94,11 +91,9 @@ export default function ChapterPage() {
         <span className="text-slate-900">{chapter.title}</span>
       </nav>
 
-      {marked && (
-        <div className="mb-4 px-3 py-2 bg-emerald-50 border border-emerald-200 rounded-md text-sm text-emerald-700">
-          已標記為已讀
-        </div>
-      )}
+      <div className="mb-4 px-3 py-2 bg-emerald-50 border border-emerald-200 rounded-md text-sm text-emerald-700">
+        已標記為已讀
+      </div>
 
       {/* Highlight toolbar */}
       {showToolbar && (

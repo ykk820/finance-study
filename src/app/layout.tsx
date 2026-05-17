@@ -31,8 +31,14 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col bg-slate-50">
         <Navbar />
         <main className="flex-1">{children}</main>
-        <footer className="bg-slate-900 text-gray-400 py-6 text-center text-sm">
-          FinanceStudy &copy; 2026 - 金融證照學習平台
+        <footer className="border-t border-slate-800 bg-slate-950 text-slate-400">
+          <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-8 text-sm sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
+            <div>
+              <p className="font-semibold text-white">FinanceStudy</p>
+              <p>金融證照備考儀表板｜CFA、高業、初業、FRM</p>
+            </div>
+            <p>© 2026 FinanceStudy. Built for focused preparation.</p>
+          </div>
         </footer>
       </body>
     </html>

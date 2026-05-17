@@ -19,38 +19,63 @@ const categoryColors: Record<string, string> = {
 
 export default function HomePage() {
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <section className="text-center mb-16">
-        <h1 className="text-4xl font-bold text-slate-900 mb-4">
-          金融證照學習平台
-        </h1>
-        <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-          涵蓋 CFA、高級業務員、初級業務員、FRM 等金融證照的講義與題庫，
-          系統化學習，高效備考。
-        </p>
-        <div className="mt-8 flex justify-center gap-4">
-          <Link
-            href="/courses"
-            className="px-6 py-3 bg-emerald-600 text-white rounded-lg font-medium hover:bg-emerald-700 transition-colors"
-          >
-            開始學習
-          </Link>
-          <Link
-            href="/quiz"
-            className="px-6 py-3 bg-slate-200 text-slate-800 rounded-lg font-medium hover:bg-slate-300 transition-colors"
-          >
-            練習題目
-          </Link>
-          <Link
-            href="/exam-focus"
-            className="px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
-          >
-            看考試重點
-          </Link>
+    <div>
+      <section className="surface-grid border-b border-slate-200 bg-white">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-4 py-16 sm:px-6 lg:grid-cols-[1.1fr_0.9fr] lg:px-8 lg:py-20">
+          <div>
+            <p className="mb-4 inline-flex rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-sm font-semibold text-emerald-700">
+              CFA / 高業 / 初業 / FRM 一站式備考
+            </p>
+            <h1 className="max-w-3xl text-4xl font-bold leading-tight text-slate-950 sm:text-5xl">
+              把講義、題庫、錯題與考點整理成每天能執行的讀書節奏
+            </h1>
+            <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-600">
+              FinanceStudy 會依章節進度、答題紀錄和高頻考點，推薦下一步該讀什麼、該練什麼。
+              不只是資料庫，而是金融證照備考儀表板。
+            </p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link
+                href="/study-plan"
+                className="rounded-md bg-emerald-600 px-5 py-3 font-medium text-white shadow-sm transition-colors hover:bg-emerald-700"
+              >
+                建立考前計畫
+              </Link>
+              <Link
+                href="/quiz?mode=focus"
+                className="rounded-md bg-slate-900 px-5 py-3 font-medium text-white shadow-sm transition-colors hover:bg-slate-700"
+              >
+                高頻考點練習
+              </Link>
+              <Link
+                href="/exam-focus"
+                className="rounded-md border border-slate-300 bg-white px-5 py-3 font-medium text-slate-800 transition-colors hover:bg-slate-50"
+              >
+                查看考情分析
+              </Link>
+            </div>
+          </div>
+
+          <div className="rounded-2xl border border-slate-200 bg-slate-950 p-6 text-white shadow-xl">
+            <p className="text-sm font-semibold text-emerald-300">Live Prep Dashboard</p>
+            <div className="mt-6 grid grid-cols-2 gap-3">
+              <HeroStat label="證照課程" value="4" />
+              <HeroStat label="講義章節" value="22" />
+              <HeroStat label="練習題庫" value="50+" />
+              <HeroStat label="學習模式" value="8" />
+            </div>
+            <div className="mt-6 rounded-xl border border-white/10 bg-white/5 p-4">
+              <p className="text-sm text-slate-300">今日建議</p>
+              <p className="mt-2 text-xl font-semibold">先補弱點，再做高頻題</p>
+              <p className="mt-2 text-sm leading-6 text-slate-300">
+                進度熱圖、錯題本、公式卡和考前 14 天計畫會一起更新你的備考路線。
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
-      <DashboardSummary />
+      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+        <DashboardSummary />
 
       <section className="mb-16">
         <div className="flex items-end justify-between gap-4 mb-6">
@@ -114,6 +139,16 @@ export default function HomePage() {
           ))}
         </div>
       </section>
+      </div>
+    </div>
+  );
+}
+
+function HeroStat({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="rounded-xl border border-white/10 bg-white/5 p-4">
+      <p className="text-3xl font-bold">{value}</p>
+      <p className="mt-1 text-sm text-slate-300">{label}</p>
     </div>
   );
 }
