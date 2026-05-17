@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { logout, useCurrentUser } from "@/lib/auth";
 
 const navItems = [
   { href: "/", label: "首頁" },
@@ -10,11 +11,15 @@ const navItems = [
   { href: "/wrong-answers", label: "錯題本" },
   { href: "/search", label: "搜尋" },
   { href: "/progress", label: "進度" },
-  { href: "/auth", label: "登入" },
 ];
 
 export default function Navbar() {
   const pathname = usePathname();
+  const user = useCurrentUser();
+
+  const handleLogout = () => {
+    logout();
+  };
 
   return (
     <nav className="bg-slate-900 text-white shadow-lg">
@@ -37,6 +42,31 @@ export default function Navbar() {
                 {item.label}
               </Link>
             ))}
+            {user ? (
+              <>
+                <span className="px-4 py-2 text-sm font-medium text-emerald-300">
+                  {user.name}
+                </span>
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className="px-4 py-2 rounded-md text-sm font-medium text-gray-300 transition-colors hover:bg-slate-700 hover:text-white"
+                >
+                  登出
+                </button>
+              </>
+            ) : (
+              <Link
+                href="/auth"
+                className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                  pathname === "/auth"
+                    ? "bg-emerald-600 text-white"
+                    : "text-gray-300 hover:bg-slate-700 hover:text-white"
+                }`}
+              >
+                登入
+              </Link>
+            )}
           </div>
         </div>
       </div>

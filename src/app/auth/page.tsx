@@ -2,6 +2,13 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import {
+  getUsers,
+  logout,
+  saveUsers,
+  setCurrentUser,
+  useCurrentUser,
+} from "@/lib/auth";
 
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
@@ -9,19 +16,19 @@ export default function AuthPage() {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
+  const currentUser = useCurrentUser();
   const router = useRouter();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
     if (isLogin) {
-      const users = JSON.parse(localStorage.getItem("finance-users") || "[]");
+      const users = getUsers();
       const user = users.find(
-        (u: { email: string; password: string }) =>
-          u.email === email && u.password === password
+        (u) => u.email === email.trim() && u.password === password
       );
       if (user) {
-        localStorage.setItem("finance-current-user", JSON.stringify(user));
+        setCurrentUser(user);
         router.push("/");
       } else {
         setMessage("帳號或密碼錯誤");
@@ -31,18 +38,55 @@ export default function AuthPage() {
         setMessage("請填寫所有欄位");
         return;
       }
-      const users = JSON.parse(localStorage.getItem("finance-users") || "[]");
-      if (users.find((u: { email: string }) => u.email === email)) {
+      const users = getUsers();
+      if (users.find((u) => u.email === email.trim())) {
         setMessage("此 Email 已被註冊");
         return;
       }
-      const newUser = { name, email, password, createdAt: Date.now() };
+      const newUser = {
+        name: name.trim(),
+        email: email.trim(),
+        password,
+        createdAt: Date.now(),
+      };
       users.push(newUser);
-      localStorage.setItem("finance-users", JSON.stringify(users));
-      localStorage.setItem("finance-current-user", JSON.stringify(newUser));
+      saveUsers(users);
+      setCurrentUser(newUser);
       router.push("/");
     }
   };
+
+  if (currentUser) {
+    return (
+      <div className="max-w-md mx-auto px-4 py-16">
+        <div className="bg-white rounded-xl border shadow-sm p-8 text-center">
+          <p className="text-sm font-medium text-emerald-600 mb-2">已登入</p>
+          <h1 className="text-2xl font-bold text-slate-900 mb-2">
+            {currentUser.name}
+          </h1>
+          <p className="text-slate-600 mb-6">{currentUser.email}</p>
+          <div className="grid grid-cols-2 gap-3">
+            <button
+              type="button"
+              onClick={() => router.push("/progress")}
+              className="py-3 rounded-md bg-emerald-600 text-white font-medium transition-colors hover:bg-emerald-700"
+            >
+              查看進度
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                logout();
+              }}
+              className="py-3 rounded-md border border-slate-300 text-slate-700 font-medium transition-colors hover:bg-slate-50"
+            >
+              登出
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-md mx-auto px-4 py-16">
