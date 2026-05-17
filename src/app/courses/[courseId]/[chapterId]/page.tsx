@@ -3,8 +3,17 @@
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { courses } from "@/data/courses";
+import { keypoints } from "@/data/keypoints";
 import { markChapterComplete } from "@/lib/progress";
-import { useEffect, useState } from "react";
+import { getHighlights, addHighlight, removeHighlight, Highlight } from "@/lib/highlights";
+import { useEffect, useState, useCallback } from "react";
+
+const highlightColors = {
+  yellow: { bg: "bg-yellow-200", border: "border-yellow-300", label: "黃色" },
+  green: { bg: "bg-green-200", border: "border-green-300", label: "綠色" },
+  blue: { bg: "bg-blue-200", border: "border-blue-300", label: "藍色" },
+  pink: { bg: "bg-pink-200", border: "border-pink-300", label: "粉紅" },
+};
 
 export default function ChapterPage() {
   const params = useParams();
@@ -14,17 +23,56 @@ export default function ChapterPage() {
   const course = courses.find((c) => c.id === courseId);
   const chapter = course?.chapters.find((ch) => ch.id === chapterId);
   const [marked, setMarked] = useState(false);
+  const [highlights, setHighlights] = useState<Highlight[]>([]);
+  const [selectedText, setSelectedText] = useState("");
+  const [showToolbar, setShowToolbar] = useState(false);
+  const [toolbarPos, setToolbarPos] = useState({ x: 0, y: 0 });
+  const [showHighlights, setShowHighlights] = useState(true);
 
   const chapterIndex = course?.chapters.findIndex((ch) => ch.id === chapterId) ?? -1;
   const prevChapter = course?.chapters[chapterIndex - 1];
   const nextChapter = course?.chapters[chapterIndex + 1];
+  const chapterKeypoints = keypoints[chapterId] || [];
 
   useEffect(() => {
     if (courseId && chapterId) {
       markChapterComplete(courseId, chapterId);
       setMarked(true);
+      setHighlights(getHighlights(chapterId));
     }
   }, [courseId, chapterId]);
+
+  const handleMouseUp = useCallback(() => {
+    const selection = window.getSelection();
+    if (selection && selection.toString().trim().length > 1) {
+      const text = selection.toString().trim();
+      const range = selection.getRangeAt(0);
+      const rect = range.getBoundingClientRect();
+      setSelectedText(text);
+      setToolbarPos({
+        x: rect.left + rect.width / 2,
+        y: rect.top - 10 + window.scrollY,
+      });
+      setShowToolbar(true);
+    } else {
+      setShowToolbar(false);
+      setSelectedText("");
+    }
+  }, []);
+
+  const handleHighlight = (color: Highlight["color"]) => {
+    if (!selectedText) return;
+    const newHL = addHighlight(chapterId, selectedText, color);
+    setHighlights((prev) => [...prev, newHL]);
+    setShowToolbar(false);
+    setSelectedText("");
+    window.getSelection()?.removeAllRanges();
+  };
+
+  const handleRemoveHighlight = (id: string) => {
+    removeHighlight(id);
+    setHighlights((prev) => prev.filter((h) => h.id !== id));
+  };
 
   if (!course || !chapter) {
     return (
@@ -52,10 +100,117 @@ export default function ChapterPage() {
         </div>
       )}
 
-      <article className="prose prose-slate max-w-none">
-        <MarkdownContent content={chapter.content} />
+      {/* Highlight toolbar */}
+      {showToolbar && (
+        <div
+          className="fixed z-50 flex items-center gap-1 px-2 py-1.5 bg-slate-800 rounded-lg shadow-xl"
+          style={{
+            left: `${toolbarPos.x}px`,
+            top: `${toolbarPos.y}px`,
+            transform: "translate(-50%, -100%)",
+            position: "absolute",
+          }}
+        >
+          <span className="text-xs text-slate-300 mr-1">畫重點：</span>
+          {(Object.keys(highlightColors) as Highlight["color"][]).map((color) => (
+            <button
+              key={color}
+              onClick={() => handleHighlight(color)}
+              className={`w-6 h-6 rounded-full ${highlightColors[color].bg} border-2 ${highlightColors[color].border} hover:scale-110 transition-transform`}
+              title={highlightColors[color].label}
+            />
+          ))}
+          <button
+            onClick={() => { setShowToolbar(false); window.getSelection()?.removeAllRanges(); }}
+            className="ml-1 text-slate-400 hover:text-white text-xs px-1"
+          >
+            ✕
+          </button>
+        </div>
+      )}
+
+      {/* Article content */}
+      <article className="prose prose-slate max-w-none" onMouseUp={handleMouseUp}>
+        <MarkdownContent content={chapter.content} highlights={showHighlights ? highlights : []} />
       </article>
 
+      {/* Key Points section */}
+      {chapterKeypoints.length > 0 && (
+        <section className="mt-12 border-t pt-8">
+          <h2 className="text-xl font-bold text-slate-900 mb-4 flex items-center gap-2">
+            <span className="text-2xl">&#128218;</span> 本章重點摘要
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            {chapterKeypoints.map((kp, i) => (
+              <div
+                key={i}
+                className={`rounded-lg border p-4 ${
+                  kp.type === "formula"
+                    ? "bg-blue-50 border-blue-200"
+                    : kp.type === "tip"
+                      ? "bg-amber-50 border-amber-200"
+                      : "bg-slate-50 border-slate-200"
+                }`}
+              >
+                <div className="flex items-center gap-2 mb-1.5">
+                  <span className={`text-xs px-1.5 py-0.5 rounded font-medium ${
+                    kp.type === "formula"
+                      ? "bg-blue-200 text-blue-800"
+                      : kp.type === "tip"
+                        ? "bg-amber-200 text-amber-800"
+                        : "bg-slate-200 text-slate-700"
+                  }`}>
+                    {kp.type === "formula" ? "公式" : kp.type === "tip" ? "考試重點" : "概念"}
+                  </span>
+                  <span className="font-semibold text-sm text-slate-900">{kp.title}</span>
+                </div>
+                <p className={`text-sm font-mono ${
+                  kp.type === "formula" ? "text-blue-900" : "text-slate-700 font-sans"
+                }`}>
+                  {kp.content}
+                </p>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* My highlights section */}
+      {highlights.length > 0 && (
+        <section className="mt-8 border-t pt-6">
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="text-lg font-semibold text-slate-900 flex items-center gap-2">
+              <span>&#128396;</span> 我的重點 ({highlights.length})
+            </h3>
+            <button
+              onClick={() => setShowHighlights(!showHighlights)}
+              className="text-sm text-slate-500 hover:text-slate-700"
+            >
+              {showHighlights ? "隱藏標記" : "顯示標記"}
+            </button>
+          </div>
+          <div className="space-y-2">
+            {highlights.map((hl) => (
+              <div
+                key={hl.id}
+                className={`flex items-start gap-3 p-3 rounded-md ${highlightColors[hl.color].bg} bg-opacity-50`}
+              >
+                <p className="flex-1 text-sm text-slate-800 leading-relaxed">
+                  &ldquo;{hl.text}&rdquo;
+                </p>
+                <button
+                  onClick={() => handleRemoveHighlight(hl.id)}
+                  className="flex-shrink-0 text-xs text-slate-500 hover:text-red-600 mt-0.5"
+                >
+                  ✕
+                </button>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Navigation */}
       <div className="mt-12 flex items-center justify-between border-t pt-6">
         {prevChapter ? (
           <Link
@@ -87,10 +242,9 @@ export default function ChapterPage() {
   );
 }
 
-function MarkdownContent({ content }: { content: string }) {
+function MarkdownContent({ content, highlights }: { content: string; highlights: Highlight[] }) {
   const lines = content.split("\n");
   const elements: React.ReactNode[] = [];
-  let inList = false;
   let listItems: string[] = [];
 
   const flushList = () => {
@@ -99,13 +253,12 @@ function MarkdownContent({ content }: { content: string }) {
         <ul key={`list-${elements.length}`} className="list-disc pl-6 my-2 space-y-1">
           {listItems.map((item, i) => (
             <li key={i} className="text-slate-700">
-              <InlineMarkdown text={item} />
+              <HighlightedText text={item} highlights={highlights} />
             </li>
           ))}
         </ul>
       );
       listItems = [];
-      inList = false;
     }
   };
 
@@ -122,12 +275,10 @@ function MarkdownContent({ content }: { content: string }) {
       flushList();
       elements.push(<h3 key={i} className="text-xl font-medium text-slate-800 mt-4 mb-2">{line.slice(4)}</h3>);
     } else if (line.startsWith("- ") || line.startsWith("  - ")) {
-      inList = true;
       listItems.push(line.replace(/^\s*- /, ""));
     } else if (/^\d+\.\s/.test(line)) {
       flushList();
       listItems.push(line.replace(/^\d+\.\s/, ""));
-      inList = true;
     } else if (line.startsWith("`") && !line.startsWith("``")) {
       flushList();
       const code = line.replace(/^`|`$/g, "");
@@ -142,7 +293,7 @@ function MarkdownContent({ content }: { content: string }) {
       flushList();
       elements.push(
         <p key={i} className="text-slate-700 my-2 leading-relaxed">
-          <InlineMarkdown text={line} />
+          <HighlightedText text={line} highlights={highlights} />
         </p>
       );
     }
@@ -152,18 +303,37 @@ function MarkdownContent({ content }: { content: string }) {
   return <>{elements}</>;
 }
 
-function InlineMarkdown({ text }: { text: string }) {
+function HighlightedText({ text, highlights }: { text: string; highlights: Highlight[] }) {
   const parts = text.split(/(\*\*[^*]+\*\*|`[^`]+`)/g);
+
   return (
     <>
       {parts.map((part, i) => {
+        let content: React.ReactNode;
+        let plainText: string;
+
         if (part.startsWith("**") && part.endsWith("**")) {
-          return <strong key={i} className="font-semibold text-slate-900">{part.slice(2, -2)}</strong>;
+          plainText = part.slice(2, -2);
+          content = <strong className="font-semibold text-slate-900">{plainText}</strong>;
+        } else if (part.startsWith("`") && part.endsWith("`")) {
+          plainText = part.slice(1, -1);
+          content = <code className="px-1.5 py-0.5 bg-slate-100 text-slate-800 rounded text-sm font-mono">{plainText}</code>;
+        } else {
+          plainText = part;
+          content = part;
         }
-        if (part.startsWith("`") && part.endsWith("`")) {
-          return <code key={i} className="px-1.5 py-0.5 bg-slate-100 text-slate-800 rounded text-sm font-mono">{part.slice(1, -1)}</code>;
+
+        const matchingHL = highlights.find((h) => plainText.includes(h.text) || h.text.includes(plainText));
+        if (matchingHL && plainText.trim().length > 0) {
+          const colorClass = highlightColors[matchingHL.color].bg;
+          return (
+            <mark key={i} className={`${colorClass} px-0.5 rounded-sm`}>
+              {content}
+            </mark>
+          );
         }
-        return <span key={i}>{part}</span>;
+
+        return <span key={i}>{content}</span>;
       })}
     </>
   );
