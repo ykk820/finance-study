@@ -3,10 +3,11 @@
 import { useState } from "react";
 import Link from "next/link";
 import { courses } from "@/data/courses";
+import { searchGlossaryTerms } from "@/data/glossary";
 import { questions } from "@/data/questions";
 
 interface SearchResult {
-  type: "chapter" | "question";
+  type: "chapter" | "question" | "glossary";
   courseId: string;
   courseName: string;
   title: string;
@@ -75,6 +76,17 @@ export default function SearchPage() {
       }
     }
 
+    for (const item of searchGlossaryTerms(q)) {
+      found.push({
+        type: "glossary",
+        courseId: item.courseIds[0] || "",
+        courseName: "白話詞庫",
+        title: item.term,
+        preview: item.plain,
+        href: "/plain-language",
+      });
+    }
+
     setResults(found);
   };
 
@@ -119,10 +131,12 @@ export default function SearchPage() {
                 className={`text-xs px-2 py-0.5 rounded ${
                   result.type === "chapter"
                     ? "bg-blue-100 text-blue-700"
-                    : "bg-purple-100 text-purple-700"
+                    : result.type === "question"
+                      ? "bg-purple-100 text-purple-700"
+                      : "bg-emerald-100 text-emerald-700"
                 }`}
               >
-                {result.type === "chapter" ? "講義" : "題目"}
+                {result.type === "chapter" ? "講義" : result.type === "question" ? "題目" : "白話"}
               </span>
               <span className="text-xs text-slate-400">{result.courseName}</span>
             </div>

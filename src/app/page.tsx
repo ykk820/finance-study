@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { courses } from "@/data/courses";
 import { examFocusCourses } from "@/data/examFocus";
+import { glossaryTerms } from "@/data/glossary";
 import DashboardSummary from "@/components/DashboardSummary";
 
 const categoryLabels: Record<string, string> = {
@@ -52,6 +53,12 @@ export default function HomePage() {
               >
                 查看考情分析
               </Link>
+              <Link
+                href="/plain-language"
+                className="rounded-md border border-emerald-200 bg-emerald-50 px-5 py-3 font-medium text-emerald-800 transition-colors hover:bg-emerald-100"
+              >
+                白話文詞庫
+              </Link>
             </div>
           </div>
 
@@ -61,7 +68,7 @@ export default function HomePage() {
               <HeroStat label="證照課程" value="4" />
               <HeroStat label="講義章節" value="22" />
               <HeroStat label="練習題庫" value="50+" />
-              <HeroStat label="學習模式" value="8" />
+              <HeroStat label="白話詞條" value={`${glossaryTerms.length}`} />
             </div>
             <div className="mt-6 rounded-xl border border-white/10 bg-white/5 p-4">
               <p className="text-sm text-slate-300">今日建議</p>
@@ -76,6 +83,36 @@ export default function HomePage() {
 
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <DashboardSummary />
+
+      <section className="mb-16 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+          <div>
+            <p className="text-sm font-semibold text-emerald-600 mb-1">Plain language learning</p>
+            <h2 className="text-2xl font-bold text-slate-900">難懂名詞，先用人話搞懂</h2>
+            <p className="mt-2 max-w-2xl text-slate-600">
+              每個名詞都有正式定義、白話翻譯、生活比喻、考試陷阱和小例子。先懂意思，再背公式。
+            </p>
+          </div>
+          <Link
+            href="/plain-language"
+            className="rounded-md bg-slate-900 px-4 py-3 text-center text-sm font-medium text-white hover:bg-slate-700"
+          >
+            打開白話詞庫
+          </Link>
+        </div>
+        <div className="mt-5 grid grid-cols-1 gap-3 md:grid-cols-3">
+          {glossaryTerms.slice(0, 3).map((term) => (
+            <Link
+              key={term.id}
+              href={`/plain-language?term=${term.id}`}
+              className="rounded-xl border border-slate-100 bg-slate-50 p-4 hover:border-emerald-200 hover:bg-emerald-50/50"
+            >
+              <p className="font-semibold text-slate-950">{term.term}</p>
+              <p className="mt-2 line-clamp-2 text-sm leading-6 text-slate-600">{term.plain}</p>
+            </Link>
+          ))}
+        </div>
+      </section>
 
       <section className="mb-16">
         <div className="flex items-end justify-between gap-4 mb-6">

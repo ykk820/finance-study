@@ -3,9 +3,11 @@
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { courses } from "@/data/courses";
+import { getGlossaryTermsByChapter } from "@/data/glossary";
 import { keypoints } from "@/data/keypoints";
 import { markChapterComplete } from "@/lib/progress";
 import { getHighlights, addHighlight, removeHighlight, Highlight } from "@/lib/highlights";
+import PlainLanguageTerms from "@/components/PlainLanguageTerms";
 import { useEffect, useState } from "react";
 
 const highlightColors = {
@@ -32,6 +34,7 @@ export default function ChapterPage() {
   const prevChapter = course?.chapters[chapterIndex - 1];
   const nextChapter = course?.chapters[chapterIndex + 1];
   const chapterKeypoints = keypoints[chapterId] || [];
+  const chapterGlossaryTerms = getGlossaryTermsByChapter(chapterId);
 
   useEffect(() => {
     if (courseId && chapterId) {
@@ -169,6 +172,8 @@ export default function ChapterPage() {
           </div>
         </section>
       )}
+
+      <PlainLanguageTerms terms={chapterGlossaryTerms} />
 
       {/* My highlights section */}
       {highlights.length > 0 && (

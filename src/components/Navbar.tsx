@@ -9,6 +9,7 @@ const navItems = [
   { href: "/", label: "首頁" },
   { href: "/courses", label: "課程" },
   { href: "/exam-focus", label: "考點" },
+  { href: "/plain-language", label: "白話" },
   { href: "/quiz", label: "題庫" },
   { href: "/wrong-answers", label: "錯題本" },
   { href: "/flashcards", label: "卡片" },
