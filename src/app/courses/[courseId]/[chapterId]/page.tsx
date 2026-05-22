@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { courses } from "@/data/courses";
-import { getGlossaryTermsByChapter } from "@/data/glossary";
+import { GlossaryTerm, getGlossaryTermsByChapter } from "@/data/glossary";
 import { keypoints } from "@/data/keypoints";
 import { markChapterComplete } from "@/lib/progress";
 import { getHighlights, addHighlight, removeHighlight, Highlight } from "@/lib/highlights";
@@ -15,6 +15,11 @@ const highlightColors = {
   green: { bg: "bg-green-200", border: "border-green-300", label: "綠色" },
   blue: { bg: "bg-blue-200", border: "border-blue-300", label: "藍色" },
   pink: { bg: "bg-pink-200", border: "border-pink-300", label: "粉紅" },
+};
+
+type GlossaryNote = {
+  term: GlossaryTerm;
+  number: number;
 };
 
 export default function ChapterPage() {
@@ -35,6 +40,10 @@ export default function ChapterPage() {
   const nextChapter = course?.chapters[chapterIndex + 1];
   const chapterKeypoints = keypoints[chapterId] || [];
   const chapterGlossaryTerms = getGlossaryTermsByChapter(chapterId);
+  const glossaryNotes = chapterGlossaryTerms.map((term, index) => ({
+    term,
+    number: index + 1,
+  }));
 
   useEffect(() => {
     if (courseId && chapterId) {
@@ -129,7 +138,11 @@ export default function ChapterPage() {
 
       {/* Article content */}
       <article className="prose prose-slate max-w-none" onMouseUp={handleMouseUp}>
-        <MarkdownContent content={chapter.content} highlights={showHighlights ? highlights : []} />
+        <MarkdownContent
+          content={chapter.content}
+          highlights={showHighlights ? highlights : []}
+          glossaryNotes={glossaryNotes}
+        />
       </article>
 
       {/* Key Points section */}
@@ -170,6 +183,44 @@ export default function ChapterPage() {
               </div>
             ))}
           </div>
+        </section>
+      )}
+
+      {glossaryNotes.length > 0 && (
+        <section className="mt-12 border-t pt-8">
+          <div className="mb-4">
+            <p className="text-sm font-semibold text-emerald-600">Inline Notes</p>
+            <h2 className="text-xl font-bold text-slate-900">本章白話註釋</h2>
+            <p className="mt-1 text-sm text-slate-500">
+              文中看到「註1」這種標記，可以對照下面的人話解釋。
+            </p>
+          </div>
+          <ol className="space-y-3">
+            {glossaryNotes.map(({ term, number }) => (
+              <li
+                key={term.id}
+                id={`note-${number}`}
+                className="rounded-lg border border-slate-200 bg-white p-4"
+              >
+                <div className="mb-2 flex flex-wrap items-center gap-2">
+                  <span className="rounded-full bg-emerald-600 px-2 py-1 text-xs font-semibold text-white">
+                    註{number}
+                  </span>
+                  <span className="font-semibold text-slate-950">{term.term}</span>
+                  {term.aliases.slice(0, 2).map((alias) => (
+                    <span key={alias} className="rounded-md bg-slate-100 px-2 py-1 text-xs text-slate-600">
+                      {alias}
+                    </span>
+                  ))}
+                </div>
+                <p className="text-sm leading-6 text-slate-700">{term.plain}</p>
+                <p className="mt-2 text-sm leading-6 text-amber-700">
+                  <span className="font-semibold">考試小心：</span>
+                  {term.commonTrap}
+                </p>
+              </li>
+            ))}
+          </ol>
         </section>
       )}
 
@@ -242,7 +293,15 @@ export default function ChapterPage() {
   );
 }
 
-function MarkdownContent({ content, highlights }: { content: string; highlights: Highlight[] }) {
+function MarkdownContent({
+  content,
+  highlights,
+  glossaryNotes,
+}: {
+  content: string;
+  highlights: Highlight[];
+  glossaryNotes: GlossaryNote[];
+}) {
   const lines = content.split("\n");
   const elements: React.ReactNode[] = [];
   let listItems: string[] = [];
@@ -253,7 +312,7 @@ function MarkdownContent({ content, highlights }: { content: string; highlights:
         <ul key={`list-${elements.length}`} className="list-disc pl-6 my-2 space-y-1">
           {listItems.map((item, i) => (
             <li key={i} className="text-slate-700">
-              <HighlightedText text={item} highlights={highlights} />
+              <HighlightedText text={item} highlights={highlights} glossaryNotes={glossaryNotes} />
             </li>
           ))}
         </ul>
@@ -293,7 +352,7 @@ function MarkdownContent({ content, highlights }: { content: string; highlights:
       flushList();
       elements.push(
         <p key={i} className="text-slate-700 my-2 leading-relaxed">
-          <HighlightedText text={line} highlights={highlights} />
+          <HighlightedText text={line} highlights={highlights} glossaryNotes={glossaryNotes} />
         </p>
       );
     }
@@ -303,7 +362,15 @@ function MarkdownContent({ content, highlights }: { content: string; highlights:
   return <>{elements}</>;
 }
 
-function HighlightedText({ text, highlights }: { text: string; highlights: Highlight[] }) {
+function HighlightedText({
+  text,
+  highlights,
+  glossaryNotes,
+}: {
+  text: string;
+  highlights: Highlight[];
+  glossaryNotes: GlossaryNote[];
+}) {
   const parts = text.split(/(\*\*[^*]+\*\*|`[^`]+`)/g);
 
   return (
@@ -314,13 +381,17 @@ function HighlightedText({ text, highlights }: { text: string; highlights: Highl
 
         if (part.startsWith("**") && part.endsWith("**")) {
           plainText = part.slice(2, -2);
-          content = <strong className="font-semibold text-slate-900">{plainText}</strong>;
+          content = (
+            <strong className="font-semibold text-slate-900">
+              <AnnotatedPlainText text={plainText} glossaryNotes={glossaryNotes} />
+            </strong>
+          );
         } else if (part.startsWith("`") && part.endsWith("`")) {
           plainText = part.slice(1, -1);
           content = <code className="px-1.5 py-0.5 bg-slate-100 text-slate-800 rounded text-sm font-mono">{plainText}</code>;
         } else {
           plainText = part;
-          content = part;
+          content = <AnnotatedPlainText text={part} glossaryNotes={glossaryNotes} />;
         }
 
         const matchingHL = highlights.find((h) => plainText.includes(h.text) || h.text.includes(plainText));
@@ -337,4 +408,78 @@ function HighlightedText({ text, highlights }: { text: string; highlights: Highl
       })}
     </>
   );
+}
+
+function AnnotatedPlainText({
+  text,
+  glossaryNotes,
+}: {
+  text: string;
+  glossaryNotes: GlossaryNote[];
+}) {
+  const matches = findGlossaryMatches(text, glossaryNotes);
+  if (matches.length === 0) return <>{text}</>;
+
+  const nodes: React.ReactNode[] = [];
+  let cursor = 0;
+
+  matches.forEach((match, index) => {
+    if (match.start > cursor) {
+      nodes.push(text.slice(cursor, match.start));
+    }
+    nodes.push(
+      <span key={`${match.note.term.id}-${index}`} className="font-medium text-slate-900">
+        {text.slice(match.start, match.end)}
+        <a
+          href={`#note-${match.note.number}`}
+          className="ml-0.5 align-super text-[10px] font-semibold text-emerald-700 hover:text-emerald-900"
+          title={match.note.term.plain}
+        >
+          註{match.note.number}
+        </a>
+      </span>
+    );
+    cursor = match.end;
+  });
+
+  if (cursor < text.length) {
+    nodes.push(text.slice(cursor));
+  }
+
+  return <>{nodes}</>;
+}
+
+function findGlossaryMatches(text: string, glossaryNotes: GlossaryNote[]) {
+  const lowerText = text.toLowerCase();
+  const candidates = glossaryNotes
+    .flatMap((note) =>
+      [note.term.term, ...note.term.aliases]
+        .filter((label) => label.trim().length >= 2)
+        .map((label) => ({
+          note,
+          label,
+          start: lowerText.indexOf(label.toLowerCase()),
+        }))
+    )
+    .filter((item) => item.start >= 0)
+    .map((item) => ({
+      note: item.note,
+      start: item.start,
+      end: item.start + item.label.length,
+    }))
+    .sort((a, b) => a.start - b.start || b.end - b.start - (a.end - a.start));
+
+  const usedTermIds = new Set<string>();
+  const matches: { note: GlossaryNote; start: number; end: number }[] = [];
+  let lastEnd = -1;
+
+  for (const candidate of candidates) {
+    if (usedTermIds.has(candidate.note.term.id)) continue;
+    if (candidate.start < lastEnd) continue;
+    usedTermIds.add(candidate.note.term.id);
+    matches.push(candidate);
+    lastEnd = candidate.end;
+  }
+
+  return matches;
 }
