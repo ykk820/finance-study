@@ -1,485 +1,77 @@
-"use client";
-
-import Link from "next/link";
-import { useParams } from "next/navigation";
+import { Metadata } from "next";
+import { notFound } from "next/navigation";
+import ChapterReader from "@/components/ChapterReader";
 import { courses } from "@/data/courses";
-import { GlossaryTerm, getGlossaryTermsByChapter } from "@/data/glossary";
+import { getGlossaryTermsByChapter } from "@/data/glossary";
 import { keypoints } from "@/data/keypoints";
-import { markChapterComplete } from "@/lib/progress";
-import { getHighlights, addHighlight, removeHighlight, Highlight } from "@/lib/highlights";
-import PlainLanguageTerms from "@/components/PlainLanguageTerms";
-import { useEffect, useState } from "react";
 
-const highlightColors = {
-  yellow: { bg: "bg-yellow-200", border: "border-yellow-300", label: "黃色" },
-  green: { bg: "bg-green-200", border: "border-green-300", label: "綠色" },
-  blue: { bg: "bg-blue-200", border: "border-blue-300", label: "藍色" },
-  pink: { bg: "bg-pink-200", border: "border-pink-300", label: "粉紅" },
+type ChapterPageProps = {
+  params: Promise<{
+    courseId: string;
+    chapterId: string;
+  }>;
 };
 
-type GlossaryNote = {
-  term: GlossaryTerm;
-  number: number;
-};
+export function generateStaticParams() {
+  return courses.flatMap((course) =>
+    course.chapters.map((chapter) => ({
+      courseId: course.id,
+      chapterId: chapter.id,
+    }))
+  );
+}
 
-export default function ChapterPage() {
-  const params = useParams();
-  const courseId = params.courseId as string;
-  const chapterId = params.chapterId as string;
-
-  const course = courses.find((c) => c.id === courseId);
-  const chapter = course?.chapters.find((ch) => ch.id === chapterId);
-  const [highlights, setHighlights] = useState<Highlight[]>(() => getHighlights(chapterId));
-  const [selectedText, setSelectedText] = useState("");
-  const [showToolbar, setShowToolbar] = useState(false);
-  const [toolbarPos, setToolbarPos] = useState({ x: 0, y: 0 });
-  const [showHighlights, setShowHighlights] = useState(true);
-
-  const chapterIndex = course?.chapters.findIndex((ch) => ch.id === chapterId) ?? -1;
-  const prevChapter = course?.chapters[chapterIndex - 1];
-  const nextChapter = course?.chapters[chapterIndex + 1];
-  const chapterKeypoints = keypoints[chapterId] || [];
-  const chapterGlossaryTerms = getGlossaryTermsByChapter(chapterId);
-  const glossaryNotes = chapterGlossaryTerms.map((term, index) => ({
-    term,
-    number: index + 1,
-  }));
-
-  useEffect(() => {
-    if (courseId && chapterId) {
-      markChapterComplete(courseId, chapterId);
-    }
-  }, [courseId, chapterId]);
-
-  const handleMouseUp = () => {
-    const selection = window.getSelection();
-    if (selection && selection.toString().trim().length > 1) {
-      const text = selection.toString().trim();
-      const range = selection.getRangeAt(0);
-      const rect = range.getBoundingClientRect();
-      setSelectedText(text);
-      setToolbarPos({
-        x: rect.left + rect.width / 2,
-        y: rect.top - 10 + window.scrollY,
-      });
-      setShowToolbar(true);
-    } else {
-      setShowToolbar(false);
-      setSelectedText("");
-    }
-  };
-
-  const handleHighlight = (color: Highlight["color"]) => {
-    if (!selectedText) return;
-    const newHL = addHighlight(chapterId, selectedText, color);
-    setHighlights((prev) => [...prev, newHL]);
-    setShowToolbar(false);
-    setSelectedText("");
-    window.getSelection()?.removeAllRanges();
-  };
-
-  const handleRemoveHighlight = (id: string) => {
-    removeHighlight(id);
-    setHighlights((prev) => prev.filter((h) => h.id !== id));
-  };
+export async function generateMetadata({ params }: ChapterPageProps): Promise<Metadata> {
+  const { courseId, chapterId } = await params;
+  const course = courses.find((item) => item.id === courseId);
+  const chapter = course?.chapters.find((item) => item.id === chapterId);
 
   if (!course || !chapter) {
-    return (
-      <div className="max-w-4xl mx-auto px-4 py-12 text-center">
-        <p className="text-slate-600">找不到此章節</p>
-      </div>
-    );
+    return {
+      title: "找不到章節 | FinanceStudy",
+    };
   }
 
-  return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <nav className="mb-6 text-sm text-slate-500">
-        <Link href="/courses" className="hover:text-emerald-600">課程</Link>
-        <span className="mx-2">/</span>
-        <Link href={`/courses/${courseId}`} className="hover:text-emerald-600">
-          {course.name}
-        </Link>
-        <span className="mx-2">/</span>
-        <span className="text-slate-900">{chapter.title}</span>
-      </nav>
+  const description = chapter.content
+    .replace(/[#`*_]/g, "")
+    .split("\n")
+    .find((line) => line.trim().length > 24)
+    ?.trim()
+    .slice(0, 150);
 
-      <div className="mb-4 px-3 py-2 bg-emerald-50 border border-emerald-200 rounded-md text-sm text-emerald-700">
-        已標記為已讀
-      </div>
-
-      {/* Highlight toolbar */}
-      {showToolbar && (
-        <div
-          className="fixed z-50 flex items-center gap-1 px-2 py-1.5 bg-slate-800 rounded-lg shadow-xl"
-          style={{
-            left: `${toolbarPos.x}px`,
-            top: `${toolbarPos.y}px`,
-            transform: "translate(-50%, -100%)",
-            position: "absolute",
-          }}
-        >
-          <span className="text-xs text-slate-300 mr-1">畫重點：</span>
-          {(Object.keys(highlightColors) as Highlight["color"][]).map((color) => (
-            <button
-              key={color}
-              onClick={() => handleHighlight(color)}
-              className={`w-6 h-6 rounded-full ${highlightColors[color].bg} border-2 ${highlightColors[color].border} hover:scale-110 transition-transform`}
-              title={highlightColors[color].label}
-            />
-          ))}
-          <button
-            onClick={() => { setShowToolbar(false); window.getSelection()?.removeAllRanges(); }}
-            className="ml-1 text-slate-400 hover:text-white text-xs px-1"
-          >
-            ✕
-          </button>
-        </div>
-      )}
-
-      {/* Article content */}
-      <article className="prose prose-slate max-w-none" onMouseUp={handleMouseUp}>
-        <MarkdownContent
-          content={chapter.content}
-          highlights={showHighlights ? highlights : []}
-          glossaryNotes={glossaryNotes}
-        />
-      </article>
-
-      {/* Key Points section */}
-      {chapterKeypoints.length > 0 && (
-        <section className="mt-12 border-t pt-8">
-          <h2 className="text-xl font-bold text-slate-900 mb-4 flex items-center gap-2">
-            <span className="text-2xl">&#128218;</span> 本章重點摘要
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            {chapterKeypoints.map((kp, i) => (
-              <div
-                key={i}
-                className={`rounded-lg border p-4 ${
-                  kp.type === "formula"
-                    ? "bg-blue-50 border-blue-200"
-                    : kp.type === "tip"
-                      ? "bg-amber-50 border-amber-200"
-                      : "bg-slate-50 border-slate-200"
-                }`}
-              >
-                <div className="flex items-center gap-2 mb-1.5">
-                  <span className={`text-xs px-1.5 py-0.5 rounded font-medium ${
-                    kp.type === "formula"
-                      ? "bg-blue-200 text-blue-800"
-                      : kp.type === "tip"
-                        ? "bg-amber-200 text-amber-800"
-                        : "bg-slate-200 text-slate-700"
-                  }`}>
-                    {kp.type === "formula" ? "公式" : kp.type === "tip" ? "考試重點" : "概念"}
-                  </span>
-                  <span className="font-semibold text-sm text-slate-900">{kp.title}</span>
-                </div>
-                <p className={`text-sm font-mono ${
-                  kp.type === "formula" ? "text-blue-900" : "text-slate-700 font-sans"
-                }`}>
-                  {kp.content}
-                </p>
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {glossaryNotes.length > 0 && (
-        <section className="mt-12 border-t pt-8">
-          <div className="mb-4">
-            <p className="text-sm font-semibold text-emerald-600">Inline Notes</p>
-            <h2 className="text-xl font-bold text-slate-900">本章白話註釋</h2>
-            <p className="mt-1 text-sm text-slate-500">
-              文中看到「註1」這種標記，可以對照下面的人話解釋。
-            </p>
-          </div>
-          <ol className="space-y-3">
-            {glossaryNotes.map(({ term, number }) => (
-              <li
-                key={term.id}
-                id={`note-${number}`}
-                className="rounded-lg border border-slate-200 bg-white p-4"
-              >
-                <div className="mb-2 flex flex-wrap items-center gap-2">
-                  <span className="rounded-full bg-emerald-600 px-2 py-1 text-xs font-semibold text-white">
-                    註{number}
-                  </span>
-                  <span className="font-semibold text-slate-950">{term.term}</span>
-                  {term.aliases.slice(0, 2).map((alias) => (
-                    <span key={alias} className="rounded-md bg-slate-100 px-2 py-1 text-xs text-slate-600">
-                      {alias}
-                    </span>
-                  ))}
-                </div>
-                <p className="text-sm leading-6 text-slate-700">{term.plain}</p>
-                <p className="mt-2 text-sm leading-6 text-amber-700">
-                  <span className="font-semibold">考試小心：</span>
-                  {term.commonTrap}
-                </p>
-              </li>
-            ))}
-          </ol>
-        </section>
-      )}
-
-      <PlainLanguageTerms terms={chapterGlossaryTerms} />
-
-      {/* My highlights section */}
-      {highlights.length > 0 && (
-        <section className="mt-8 border-t pt-6">
-          <div className="flex items-center justify-between mb-3">
-            <h3 className="text-lg font-semibold text-slate-900 flex items-center gap-2">
-              <span>&#128396;</span> 我的重點 ({highlights.length})
-            </h3>
-            <button
-              onClick={() => setShowHighlights(!showHighlights)}
-              className="text-sm text-slate-500 hover:text-slate-700"
-            >
-              {showHighlights ? "隱藏標記" : "顯示標記"}
-            </button>
-          </div>
-          <div className="space-y-2">
-            {highlights.map((hl) => (
-              <div
-                key={hl.id}
-                className={`flex items-start gap-3 p-3 rounded-md ${highlightColors[hl.color].bg} bg-opacity-50`}
-              >
-                <p className="flex-1 text-sm text-slate-800 leading-relaxed">
-                  &ldquo;{hl.text}&rdquo;
-                </p>
-                <button
-                  onClick={() => handleRemoveHighlight(hl.id)}
-                  className="flex-shrink-0 text-xs text-slate-500 hover:text-red-600 mt-0.5"
-                >
-                  ✕
-                </button>
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {/* Navigation */}
-      <div className="mt-12 flex items-center justify-between border-t pt-6">
-        {prevChapter ? (
-          <Link
-            href={`/courses/${courseId}/${prevChapter.id}`}
-            className="text-sm text-slate-600 hover:text-emerald-600"
-          >
-            ← {prevChapter.title}
-          </Link>
-        ) : (
-          <div />
-        )}
-        {nextChapter ? (
-          <Link
-            href={`/courses/${courseId}/${nextChapter.id}`}
-            className="text-sm text-emerald-600 font-medium hover:text-emerald-700"
-          >
-            {nextChapter.title} →
-          </Link>
-        ) : (
-          <Link
-            href={`/quiz?course=${courseId}`}
-            className="px-4 py-2 bg-emerald-600 text-white rounded-md text-sm hover:bg-emerald-700"
-          >
-            前往測驗
-          </Link>
-        )}
-      </div>
-    </div>
-  );
-}
-
-function MarkdownContent({
-  content,
-  highlights,
-  glossaryNotes,
-}: {
-  content: string;
-  highlights: Highlight[];
-  glossaryNotes: GlossaryNote[];
-}) {
-  const lines = content.split("\n");
-  const elements: React.ReactNode[] = [];
-  let listItems: string[] = [];
-
-  const flushList = () => {
-    if (listItems.length > 0) {
-      elements.push(
-        <ul key={`list-${elements.length}`} className="list-disc pl-6 my-2 space-y-1">
-          {listItems.map((item, i) => (
-            <li key={i} className="text-slate-700">
-              <HighlightedText text={item} highlights={highlights} glossaryNotes={glossaryNotes} />
-            </li>
-          ))}
-        </ul>
-      );
-      listItems = [];
-    }
+  return {
+    title: `${chapter.title} | ${course.name} | FinanceStudy`,
+    description: description || `${course.name} 的 ${chapter.title} 講義、考試重點與白話註釋。`,
   };
-
-  for (let i = 0; i < lines.length; i++) {
-    const line = lines[i];
-
-    if (line.startsWith("# ")) {
-      flushList();
-      elements.push(<h1 key={i} className="text-3xl font-bold text-slate-900 mt-8 mb-4">{line.slice(2)}</h1>);
-    } else if (line.startsWith("## ")) {
-      flushList();
-      elements.push(<h2 key={i} className="text-2xl font-semibold text-slate-800 mt-6 mb-3">{line.slice(3)}</h2>);
-    } else if (line.startsWith("### ")) {
-      flushList();
-      elements.push(<h3 key={i} className="text-xl font-medium text-slate-800 mt-4 mb-2">{line.slice(4)}</h3>);
-    } else if (line.startsWith("- ") || line.startsWith("  - ")) {
-      listItems.push(line.replace(/^\s*- /, ""));
-    } else if (/^\d+\.\s/.test(line)) {
-      flushList();
-      listItems.push(line.replace(/^\d+\.\s/, ""));
-    } else if (line.startsWith("`") && !line.startsWith("``")) {
-      flushList();
-      const code = line.replace(/^`|`$/g, "");
-      elements.push(
-        <div key={i} className="my-3 px-4 py-3 bg-slate-800 text-emerald-300 rounded-md font-mono text-sm overflow-x-auto">
-          {code}
-        </div>
-      );
-    } else if (line.trim() === "") {
-      flushList();
-    } else {
-      flushList();
-      elements.push(
-        <p key={i} className="text-slate-700 my-2 leading-relaxed">
-          <HighlightedText text={line} highlights={highlights} glossaryNotes={glossaryNotes} />
-        </p>
-      );
-    }
-  }
-  flushList();
-
-  return <>{elements}</>;
 }
 
-function HighlightedText({
-  text,
-  highlights,
-  glossaryNotes,
-}: {
-  text: string;
-  highlights: Highlight[];
-  glossaryNotes: GlossaryNote[];
-}) {
-  const parts = text.split(/(\*\*[^*]+\*\*|`[^`]+`)/g);
+export default async function ChapterPage({ params }: ChapterPageProps) {
+  const { courseId, chapterId } = await params;
+  const course = courses.find((item) => item.id === courseId);
+  const chapterIndex = course?.chapters.findIndex((item) => item.id === chapterId) ?? -1;
+  const chapter = chapterIndex >= 0 ? course?.chapters[chapterIndex] : undefined;
+
+  if (!course || !chapter) {
+    notFound();
+  }
 
   return (
-    <>
-      {parts.map((part, i) => {
-        let content: React.ReactNode;
-        let plainText: string;
-
-        if (part.startsWith("**") && part.endsWith("**")) {
-          plainText = part.slice(2, -2);
-          content = (
-            <strong className="font-semibold text-slate-900">
-              <AnnotatedPlainText text={plainText} glossaryNotes={glossaryNotes} />
-            </strong>
-          );
-        } else if (part.startsWith("`") && part.endsWith("`")) {
-          plainText = part.slice(1, -1);
-          content = <code className="px-1.5 py-0.5 bg-slate-100 text-slate-800 rounded text-sm font-mono">{plainText}</code>;
-        } else {
-          plainText = part;
-          content = <AnnotatedPlainText text={part} glossaryNotes={glossaryNotes} />;
-        }
-
-        const matchingHL = highlights.find((h) => plainText.includes(h.text) || h.text.includes(plainText));
-        if (matchingHL && plainText.trim().length > 0) {
-          const colorClass = highlightColors[matchingHL.color].bg;
-          return (
-            <mark key={i} className={`${colorClass} px-0.5 rounded-sm`}>
-              {content}
-            </mark>
-          );
-        }
-
-        return <span key={i}>{content}</span>;
-      })}
-    </>
+    <ChapterReader
+      courseId={course.id}
+      courseName={course.name}
+      chapter={chapter}
+      prevChapter={getChapterLink(course.chapters[chapterIndex - 1])}
+      nextChapter={getChapterLink(course.chapters[chapterIndex + 1])}
+      chapterKeypoints={keypoints[chapter.id] || []}
+      chapterGlossaryTerms={getGlossaryTermsByChapter(chapter.id)}
+    />
   );
 }
 
-function AnnotatedPlainText({
-  text,
-  glossaryNotes,
-}: {
-  text: string;
-  glossaryNotes: GlossaryNote[];
-}) {
-  const matches = findGlossaryMatches(text, glossaryNotes);
-  if (matches.length === 0) return <>{text}</>;
-
-  const nodes: React.ReactNode[] = [];
-  let cursor = 0;
-
-  matches.forEach((match, index) => {
-    if (match.start > cursor) {
-      nodes.push(text.slice(cursor, match.start));
-    }
-    nodes.push(
-      <span key={`${match.note.term.id}-${index}`} className="font-medium text-slate-900">
-        {text.slice(match.start, match.end)}
-        <a
-          href={`#note-${match.note.number}`}
-          className="ml-0.5 align-super text-[10px] font-semibold text-emerald-700 hover:text-emerald-900"
-          title={match.note.term.plain}
-        >
-          註{match.note.number}
-        </a>
-      </span>
-    );
-    cursor = match.end;
-  });
-
-  if (cursor < text.length) {
-    nodes.push(text.slice(cursor));
-  }
-
-  return <>{nodes}</>;
-}
-
-function findGlossaryMatches(text: string, glossaryNotes: GlossaryNote[]) {
-  const lowerText = text.toLowerCase();
-  const candidates = glossaryNotes
-    .flatMap((note) =>
-      [note.term.term, ...note.term.aliases]
-        .filter((label) => label.trim().length >= 2)
-        .map((label) => ({
-          note,
-          label,
-          start: lowerText.indexOf(label.toLowerCase()),
-        }))
-    )
-    .filter((item) => item.start >= 0)
-    .map((item) => ({
-      note: item.note,
-      start: item.start,
-      end: item.start + item.label.length,
-    }))
-    .sort((a, b) => a.start - b.start || b.end - b.start - (a.end - a.start));
-
-  const usedTermIds = new Set<string>();
-  const matches: { note: GlossaryNote; start: number; end: number }[] = [];
-  let lastEnd = -1;
-
-  for (const candidate of candidates) {
-    if (usedTermIds.has(candidate.note.term.id)) continue;
-    if (candidate.start < lastEnd) continue;
-    usedTermIds.add(candidate.note.term.id);
-    matches.push(candidate);
-    lastEnd = candidate.end;
-  }
-
-  return matches;
+function getChapterLink(chapter: { id: string; title: string } | undefined) {
+  if (!chapter) return undefined;
+  return {
+    id: chapter.id,
+    title: chapter.title,
+  };
 }

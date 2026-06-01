@@ -14,8 +14,16 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://finance-study.yukuan820.workers.dev"),
   title: "FinanceStudy - 金融證照學習平台",
   description: "CFA、高業、初業、FRM 金融證照講義與題庫練習",
+  openGraph: {
+    title: "FinanceStudy - 金融證照學習平台",
+    description: "CFA、高業、初業、FRM 金融證照講義、題庫、考點與白話註釋。",
+    locale: "zh_TW",
+    siteName: "FinanceStudy",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
