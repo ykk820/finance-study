@@ -3881,4 +3881,1280 @@ export const questions: Question[] = [
     explanation:
       "北岩 75% 資金來自短期批發市場（非零售存款）。次貸危機爆發後短期市場凍結，立刻陷入流動性危機。雖然資產品質尚可，但流動性問題仍導致擠兌與國有化。",
   },
+
+  // =============================================================
+  // 第二輪擴充 - CFA Level I 進階題
+  // =============================================================
+  {
+    id: "cfa1-eth-v2-1",
+    courseId: "cfa-level1",
+    chapterId: "cfa1-ethics",
+    question: "分析師 A 為某避險基金工作，同時為某券商提供獨立研究。下列何種揭露最為適當？",
+    options: [
+      "只向避險基金揭露券商關係",
+      "只向券商揭露避險基金關係",
+      "向所有相關方（雇主與客戶）完整揭露雙重身分",
+      "不需要揭露，因為兩者業務不衝突",
+    ],
+    answer: 2,
+    explanation:
+      "Standard VI(A) 利益衝突揭露：所有可能影響判斷的關係都必須向相關方完整揭露。雙重身分本身就是潛在衝突，須讓所有利害關係人知悉以做出明智判斷。",
+  },
+  {
+    id: "cfa1-eth-v2-2",
+    courseId: "cfa-level1",
+    chapterId: "cfa1-ethics",
+    question: "下列何者「不屬於」Standard III(C) 投資適當性的要求？",
+    options: [
+      "了解客戶的風險承受度",
+      "確保投資建議符合客戶 IPS",
+      "保證客戶獲利",
+      "考慮客戶的時間範圍與流動性需求",
+    ],
+    answer: 2,
+    explanation:
+      "投資適當性要求：了解客戶（KYC）、評估風險承受度、確認時間範圍、考量流動性需求。但「保證獲利」是禁止的——任何承諾報酬都違反 CFA 準則並可能涉及詐欺。",
+  },
+  {
+    id: "cfa1-eth-v2-3",
+    courseId: "cfa-level1",
+    chapterId: "cfa1-ethics",
+    question: "Standard VI(B) 交易優先順序的正確排列為？",
+    options: [
+      "個人 > 公司自營 > 客戶",
+      "客戶 > 公司自營 > 個人",
+      "公司自營 > 客戶 > 個人",
+      "三者同時優先",
+    ],
+    answer: 1,
+    explanation:
+      "客戶利益永遠優先，其次公司自營，最後才是個人交易。Front-running（搶在客戶之前交易）是嚴重違規。實務上會設置 24-48 小時延遲，確保客戶先行成交。",
+  },
+  {
+    id: "cfa1-quant-v2-1",
+    courseId: "cfa-level1",
+    chapterId: "cfa1-quant",
+    question: "投資 $20,000，每月複利 6% 年利率，5 年後本利和約為？",
+    options: [
+      "$26,000",
+      "$26,977",
+      "$27,500",
+      "$28,200",
+    ],
+    answer: 1,
+    explanation:
+      "月利率 = 6%/12 = 0.5%，期數 = 60。FV = 20,000 × (1.005)^60 = 20,000 × 1.3489 ≈ $26,977。注意：(1.005)^60 約 1.3489，比 (1.06)^5 ≈ 1.3382 略大。",
+  },
+  {
+    id: "cfa1-quant-v2-2",
+    courseId: "cfa-level1",
+    chapterId: "cfa1-quant",
+    question: "想 10 年後達 $1,000,000，年利率 7%，每年期末應存多少？",
+    options: [
+      "$67,300",
+      "$72,378",
+      "$80,000",
+      "$93,560",
+    ],
+    answer: 1,
+    explanation:
+      "FV of Annuity = PMT × [(1+r)^n - 1]/r。1,000,000 = PMT × [(1.07)^10 - 1]/0.07 = PMT × 13.816。PMT = 1,000,000 / 13.816 ≈ $72,378。",
+  },
+  {
+    id: "cfa1-quant-v2-3",
+    courseId: "cfa-level1",
+    chapterId: "cfa1-quant",
+    question: "某資料：平均數 = 50、中位數 = 45、眾數 = 40。分配為？",
+    options: [
+      "對稱",
+      "右偏（正偏）",
+      "左偏（負偏）",
+      "雙峰",
+    ],
+    answer: 1,
+    explanation:
+      "Mean > Median > Mode 顯示右尾較長 → 正偏態（右偏）。少數高值將平均數拉高。負偏態相反。金融報酬常呈負偏態（極端虧損可能性較大）。",
+  },
+  {
+    id: "cfa1-quant-v2-4",
+    courseId: "cfa-level1",
+    chapterId: "cfa1-quant",
+    question: "投資組合 95% VaR = $1,000，下列何者解讀正確？",
+    options: [
+      "100% 信心下不會損失超過 $1,000",
+      "平均每天損失 $1,000",
+      "5% 機率下，損失將超過 $1,000",
+      "最大可能損失為 $1,000",
+    ],
+    answer: 2,
+    explanation:
+      "95% VaR = $1,000 表示：(1) 有 95% 信心損失不超過 $1,000 (2) 有 5% 機率損失超過 $1,000。但「超過後損失多少」VaR 無法告知，這就是引入 ES 的原因。",
+  },
+  {
+    id: "cfa1-quant-v2-5",
+    courseId: "cfa-level1",
+    chapterId: "cfa1-quant",
+    question: "兩變數相關係數 = 0.85，下列敘述何者正確？",
+    options: [
+      "X 因果決定 Y",
+      "高度正線性關係，但不代表因果",
+      "兩變數獨立",
+      "Y = 0.85 × X",
+    ],
+    answer: 1,
+    explanation:
+      "相關係數衡量「線性」關係強度，範圍 -1 ~ 1。0.85 表示高度正相關，但「相關不等於因果」。可能由第三變數驅動或是巧合（如冰淇淋銷量與溺水人數）。",
+  },
+  {
+    id: "cfa1-econ-v2-1",
+    courseId: "cfa-level1",
+    chapterId: "cfa1-economics",
+    question: "下列何者「不是」中央銀行的工具？",
+    options: [
+      "公開市場操作",
+      "重貼現率",
+      "存款準備率",
+      "個人所得稅率",
+    ],
+    answer: 3,
+    explanation:
+      "央行貨幣政策工具：公開市場操作、重貼現率、存款準備率、量化寬鬆。所得稅是「財政政策」由政府／立法機關決定，不屬央行職權。",
+  },
+  {
+    id: "cfa1-econ-v2-2",
+    courseId: "cfa-level1",
+    chapterId: "cfa1-economics",
+    question: "需求彈性 = 0.4 的商品最可能是？",
+    options: [
+      "奢侈品",
+      "必需品",
+      "替代性高的商品",
+      "完全彈性商品",
+    ],
+    answer: 1,
+    explanation:
+      "彈性 < 1 為缺乏彈性，典型為必需品（米、鹽、藥品）。彈性 > 1 為富有彈性（奢侈品、有替代品）。0 為完全無彈性（生死攸關藥品），∞ 為完全彈性（完全競爭）。",
+  },
+  {
+    id: "cfa1-econ-v2-3",
+    courseId: "cfa-level1",
+    chapterId: "cfa1-economics",
+    question: "若 A 國通膨 5%、B 國通膨 2%，根據相對購買力平價，預期匯率變動？",
+    options: [
+      "A 國貨幣升值約 3%",
+      "A 國貨幣貶值約 3%",
+      "兩國匯率不變",
+      "B 國貨幣貶值約 5%",
+    ],
+    answer: 1,
+    explanation:
+      "相對 PPP：高通膨國家貨幣將相對貶值。A 通膨高 3 個百分點 → A 貨幣預期貶值約 3%。直覺：A 國物價上漲快，貨幣購買力下降，匯率調整以反映實質購買力。",
+  },
+  {
+    id: "cfa1-econ-v2-4",
+    courseId: "cfa-level1",
+    chapterId: "cfa1-economics",
+    question: "短期菲利浦曲線描述？",
+    options: [
+      "失業率與通膨率正相關",
+      "失業率與通膨率反相關",
+      "失業率與 GDP 無關",
+      "通膨率永遠為正",
+    ],
+    answer: 1,
+    explanation:
+      "短期菲利浦曲線：失業率↓ ↔ 通膨↑（反向）。央行可短期權衡。但長期菲利浦曲線是垂直的（自然失業率），意味長期無法用通膨換取失業降低。",
+  },
+  {
+    id: "cfa1-fra-v2-1",
+    courseId: "cfa-level1",
+    chapterId: "cfa1-fra",
+    question: "下列何項屬於「營業活動」現金流？",
+    options: [
+      "支付股利",
+      "購買廠房設備",
+      "收到客戶貨款",
+      "發行新股",
+    ],
+    answer: 2,
+    explanation:
+      "營業活動 = 本業日常交易：收貨款、付供應商、付薪資、付利息、付稅。投資活動 = 買賣長期資產。籌資活動 = 發行/償還債務、發行/買回股票、發放股利。",
+  },
+  {
+    id: "cfa1-fra-v2-2",
+    courseId: "cfa-level1",
+    chapterId: "cfa1-fra",
+    question: "Dupont 三因子顯示 ROE = 25%，淨利率 5%、權益乘數 5。資產周轉率為？",
+    options: [
+      "0.5",
+      "1.0",
+      "1.5",
+      "2.0",
+    ],
+    answer: 1,
+    explanation:
+      "ROE = 淨利率 × 資產周轉 × 權益乘數。25% = 5% × X × 5 → X = 25% / 25% = 1.0。注意 ROE 由「高槓桿」貢獻很多，這類公司在景氣下行時風險較高。",
+  },
+  {
+    id: "cfa1-fra-v2-3",
+    courseId: "cfa-level1",
+    chapterId: "cfa1-fra",
+    question: "IFRS 下，研發費用的處理為？",
+    options: [
+      "全部費用化",
+      "研究階段費用化、開發階段（符合條件）資本化",
+      "全部資本化",
+      "可由公司自行選擇",
+    ],
+    answer: 1,
+    explanation:
+      "IFRS：研究費用化、開發符合 6 條件（如技術可行、有意圖完成等）才資本化。US GAAP 通常全部費用化（除特定軟體開發）。資本化會使近期 EPS 較高但未來折舊增加。",
+  },
+  {
+    id: "cfa1-fra-v2-4",
+    courseId: "cfa-level1",
+    chapterId: "cfa1-fra",
+    question: "存貨周轉率從 6 降至 3，存貨周轉天數變為？",
+    options: [
+      "由 60 天變 30 天",
+      "由 60 天變 122 天",
+      "由 30 天變 60 天",
+      "由 30 天變 90 天",
+    ],
+    answer: 1,
+    explanation:
+      "存貨周轉天數 = 365 / 周轉率。原本 365/6 ≈ 60 天，變 365/3 ≈ 122 天。周轉率下降代表存貨積壓變嚴重，可能反映需求疲弱或庫存管理不佳。",
+  },
+  {
+    id: "cfa1-corp-v2-1",
+    courseId: "cfa-level1",
+    chapterId: "cfa1-corporate",
+    question: "WACC：股權成本 12%、稅前負債成本 6%、稅率 25%、D/V = 0.4。WACC 為？",
+    options: [
+      "8.0%",
+      "8.4%",
+      "9.0%",
+      "10.0%",
+    ],
+    answer: 1,
+    explanation:
+      "WACC = 0.6 × 12% + 0.4 × 6% × (1-25%) = 7.2% + 1.8% = 9.0%。等等，計算 = 7.2% + 0.4×6%×0.75 = 7.2% + 1.8% = 9.0%。但若採用 0.4 × 6% × 0.75 = 1.8% 與 7.2% 加總得 9.0%。注意稅後負債成本 = 6% × (1-0.25) = 4.5%，加權 = 4.5% × 0.4 = 1.8%，加上股權 7.2%，合計 9.0%。",
+  },
+  {
+    id: "cfa1-corp-v2-2",
+    courseId: "cfa-level1",
+    chapterId: "cfa1-corporate",
+    question: "回收期法（Payback Period）的最大缺點是？",
+    options: [
+      "計算太複雜",
+      "忽略時間價值與回收期後的現金流",
+      "需要折現率",
+      "適用太多專案",
+    ],
+    answer: 1,
+    explanation:
+      "簡單回收期不考慮時間價值、忽略回收期後的現金流。折現回收期改善前者但仍忽略後者。NPV 和 IRR 同時考慮兩者，因此是較佳的工具。",
+  },
+  {
+    id: "cfa1-corp-v2-3",
+    courseId: "cfa-level1",
+    chapterId: "cfa1-corporate",
+    question: "公司宣布股票回購後股價通常上漲，最主要原因是？",
+    options: [
+      "市值減少",
+      "EPS 提高、被視為管理層認為股價低估的信號",
+      "公司負債減少",
+      "稅率降低",
+    ],
+    answer: 1,
+    explanation:
+      "股票回購：流通股數減少 → EPS 提升、ROE 提升。同時被視為管理層的信號（認為股價低估，否則不會買回）。但若公司大量舉債回購，需注意財務體質。",
+  },
+  {
+    id: "cfa1-eq-v2-1",
+    courseId: "cfa-level1",
+    chapterId: "cfa1-equity",
+    question: "兩階段 DDM：未來 5 年股利成長 15%，之後永續成長 4%。要求報酬率 10%。D₀ = $2。第 5 年末永續價值（Terminal Value）為？",
+    options: [
+      "$48",
+      "$67",
+      "$70",
+      "$80",
+    ],
+    answer: 2,
+    explanation:
+      "D₅ = 2 × (1.15)^5 = 2 × 2.0114 ≈ $4.02。D₆ = D₅ × 1.04 = $4.18。TV₅ = D₆/(r-g) = 4.18/(0.10-0.04) = 4.18/0.06 ≈ $70。再折現至 t=0 得到 PV。",
+  },
+  {
+    id: "cfa1-eq-v2-2",
+    courseId: "cfa-level1",
+    chapterId: "cfa1-equity",
+    question: "P/E = 20、EPS = $3，理論股價為？",
+    options: [
+      "$20",
+      "$60",
+      "$15",
+      "$23",
+    ],
+    answer: 1,
+    explanation:
+      "Price = P/E × EPS = 20 × $3 = $60。注意：高 P/E 不一定昂貴，可能反映高成長預期。應與同產業比較或用 PEG 看是否合理。",
+  },
+  {
+    id: "cfa1-eq-v2-3",
+    courseId: "cfa-level1",
+    chapterId: "cfa1-equity",
+    question: "EV/EBITDA 中的 EV 計算為？",
+    options: [
+      "市值 + 總負債",
+      "市值 + 淨負債（總負債 - 現金）",
+      "市值 + 股東權益",
+      "總資產 - 現金",
+    ],
+    answer: 1,
+    explanation:
+      "Enterprise Value = 市值 + 淨負債 = 市值 + 總負債 - 現金。代表「買下整間公司並還清淨負債」的成本。EV/EBITDA 不受資本結構影響，適合跨公司比較。",
+  },
+  {
+    id: "cfa1-fi-v2-1",
+    courseId: "cfa-level1",
+    chapterId: "cfa1-fi",
+    question: "零息債券（Zero Coupon Bond）的 Macaulay Duration 為？",
+    options: [
+      "永遠等於 1",
+      "等於到期年數",
+      "等於 YTM",
+      "等於 0",
+    ],
+    answer: 1,
+    explanation:
+      "零息債券到期才有單一現金流，Macaulay Duration = 到期年數。10 年零息債券 Duration = 10，是相同期限債券中 Duration 最大者（票面利率最低）。",
+  },
+  {
+    id: "cfa1-fi-v2-2",
+    courseId: "cfa-level1",
+    chapterId: "cfa1-fi",
+    question: "可轉換公司債（Convertible Bond）的價格通常？",
+    options: [
+      "等於普通公司債",
+      "高於同條件普通公司債（因含轉換權利）",
+      "低於同條件普通公司債",
+      "等於股票價格",
+    ],
+    answer: 1,
+    explanation:
+      "可轉債 = 普通公司債 + 嵌入 Call 選擇權（轉股權）。投資人多獲得選擇權價值，因此價格較高、票面利率較低。發行人取得較低融資成本。",
+  },
+  {
+    id: "cfa1-fi-v2-3",
+    courseId: "cfa-level1",
+    chapterId: "cfa1-fi",
+    question: "信用利差擴大（Credit Spread Widening）對公司債持有人的影響？",
+    options: [
+      "持有債券價格上漲",
+      "持有債券價格下跌（市場要求更高殖利率）",
+      "無影響",
+      "票面利率自動調整",
+    ],
+    answer: 1,
+    explanation:
+      "信用利差 = 公司債殖利率 - 國債殖利率。擴大表示市場認為信用風險增加，要求更高補償 → 既有債券殖利率上升、價格下跌。2008 危機時各類債券利差暴增。",
+  },
+  {
+    id: "cfa1-der-v2-1",
+    courseId: "cfa-level1",
+    chapterId: "cfa1-derivatives",
+    question: "Put-Call Parity：C = $5、X = $50、Rf = 5%、T = 1 年、S = $48。理論 P 為？",
+    options: [
+      "$2.62",
+      "$4.62",
+      "$5.50",
+      "$7.62",
+    ],
+    answer: 1,
+    explanation:
+      "C + PV(X) = P + S → P = C + X/(1+r)^T - S = 5 + 50/1.05 - 48 = 5 + 47.62 - 48 = $4.62。若市場 P 偏離此值，存在套利機會。",
+  },
+  {
+    id: "cfa1-der-v2-2",
+    courseId: "cfa-level1",
+    chapterId: "cfa1-derivatives",
+    question: "歐式選擇權 vs 美式選擇權，下列敘述正確？",
+    options: [
+      "歐式價值 ≥ 美式",
+      "美式價值 ≥ 歐式（多提前行使選擇權）",
+      "兩者價值永遠相同",
+      "歐式可在到期日前任何時間行使",
+    ],
+    answer: 1,
+    explanation:
+      "美式選擇權多了「提前行使」的彈性，因此美式 ≥ 歐式。但對不付股利股票的買權，提前行使無利可圖，所以美式 = 歐式 Call。歐式 Put 則可能因利率因素值得提前行使。",
+  },
+  {
+    id: "cfa1-der-v2-3",
+    courseId: "cfa-level1",
+    chapterId: "cfa1-derivatives",
+    question: "Theta（時間衰減）對買方而言通常為？",
+    options: [
+      "正值（時間流逝有利）",
+      "負值（時間流逝不利）",
+      "零",
+      "不定",
+    ],
+    answer: 1,
+    explanation:
+      "選擇權買方的 Theta 通常為負：每日時間流逝，剩餘時間價值減少。賣方則賺取時間價值（Theta 為正）。短天期、價平選擇權 Theta 絕對值最大。",
+  },
+  {
+    id: "cfa1-port-v2-1",
+    courseId: "cfa-level1",
+    chapterId: "cfa1-portfolio",
+    question: "Information Ratio = 0.5 表示？",
+    options: [
+      "每承擔 1 單位追蹤誤差獲得 0.5 單位主動報酬",
+      "投資組合報酬率 50%",
+      "與基準完全一致",
+      "風險為基準的一半",
+    ],
+    answer: 0,
+    explanation:
+      "IR = (Rp - Rb) / 追蹤誤差。0.5 表示每單位主動風險換到 0.5 單位主動報酬。IR > 0.5 算優秀，> 1 罕見且優異。是評估主動管理基金經理人效率的指標。",
+  },
+  {
+    id: "cfa1-port-v2-2",
+    courseId: "cfa-level1",
+    chapterId: "cfa1-portfolio",
+    question: "投資人風險承受度「意願」高但「能力」低，IPS 應採？",
+    options: [
+      "高風險高報酬策略",
+      "依較低者，採保守策略",
+      "依較高者，採積極策略",
+      "完全持有現金",
+    ],
+    answer: 1,
+    explanation:
+      "風險承受度 = min(意願, 能力)。當衝突時依較低者。即使投資人想冒險，若財務狀況無法承受損失，仍應採保守配置。教育投資人是顧問的責任。",
+  },
+  {
+    id: "cfa1-port-v2-3",
+    courseId: "cfa-level1",
+    chapterId: "cfa1-portfolio",
+    question: "策略性資產配置（SAA）的時間範圍通常為？",
+    options: [
+      "1 天",
+      "1 週",
+      "1 個月",
+      "5-10 年",
+    ],
+    answer: 3,
+    explanation:
+      "SAA 反映投資人長期風險偏好和目標，時間範圍 5-10 年。TAA（戰術配置）短期偏離 SAA（數月）以利用市場機會。再平衡將組合拉回 SAA 目標權重。",
+  },
+  {
+    id: "cfa1-port-v2-4",
+    courseId: "cfa-level1",
+    chapterId: "cfa1-portfolio",
+    question: "標準差 = 25%、β = 1.2、市場標準差 = 20%。相關係數約為？",
+    options: [
+      "0.60",
+      "0.80",
+      "0.96",
+      "1.20",
+    ],
+    answer: 2,
+    explanation:
+      "β = ρ × (σi/σm) → ρ = β × (σm/σi) = 1.2 × (20%/25%) = 1.2 × 0.8 = 0.96。表示該資產與市場走勢高度同步。完全相關（ρ=1）時 β = σi/σm。",
+  },
+
+  // =============================================================
+  // 第二輪擴充 - 高業進階題
+  // =============================================================
+  {
+    id: "senior-inv-v2-1",
+    courseId: "securities-senior",
+    chapterId: "senior-investment",
+    question: "下列哪種圖形屬於反轉型態？",
+    options: [
+      "三角收斂",
+      "頭肩頂",
+      "矩形整理",
+      "旗形",
+    ],
+    answer: 1,
+    explanation:
+      "反轉型態：頭肩頂/底、雙重頂/底、三重頂/底，預告趨勢將反轉。整理型態：三角、矩形、旗形、楔形，代表暫時休息後續勢。頭肩頂破頸線常被視為強烈賣訊。",
+  },
+  {
+    id: "senior-inv-v2-2",
+    courseId: "securities-senior",
+    chapterId: "senior-investment",
+    question: "MACD 由上往下穿越訊號線稱為？",
+    options: [
+      "黃金交叉（買進）",
+      "死亡交叉（賣出）",
+      "雙重底（買進）",
+      "突破壓力（買進）",
+    ],
+    answer: 1,
+    explanation:
+      "MACD < 訊號線 = 死亡交叉，多單應減碼。MACD > 訊號線 = 黃金交叉，可考慮做多。MACD 紅綠柱由正轉負亦為賣訊號。長期下跌中的反彈訊號可信度低。",
+  },
+  {
+    id: "senior-inv-v2-3",
+    courseId: "securities-senior",
+    chapterId: "senior-investment",
+    question: "若市場效率為「半強式」，下列何種分析「無效」？",
+    options: [
+      "技術分析",
+      "基本面分析（用已公開資訊）",
+      "技術分析與基本面分析",
+      "內線交易",
+    ],
+    answer: 2,
+    explanation:
+      "半強式效率：股價反映所有公開資訊，技術分析（用歷史價量）和基本分析（用財報、新聞）都無法持續獲取超額報酬。只有內線（未公開資訊）仍能獲利，但違法。",
+  },
+  {
+    id: "senior-inv-v2-4",
+    courseId: "securities-senior",
+    chapterId: "senior-investment",
+    question: "選擇權「履約價 < 標的物現價」的買權處於？",
+    options: [
+      "價內（In the Money）",
+      "價平（At the Money）",
+      "價外（Out of the Money）",
+      "無履約價值",
+    ],
+    answer: 0,
+    explanation:
+      "Call：S > X 為價內、S = X 為價平、S < X 為價外。Put 則相反。價內選擇權含內含價值（max(S-X, 0)），到期前仍含時間價值。深度價內買權 Delta 接近 1。",
+  },
+  {
+    id: "senior-inv-v2-5",
+    courseId: "securities-senior",
+    chapterId: "senior-investment",
+    question: "下列哪種策略屬於「中性策略」（不看漲也不看跌）？",
+    options: [
+      "買進買權",
+      "賣出買權",
+      "蝶式價差（Butterfly Spread）",
+      "保護性賣權",
+    ],
+    answer: 2,
+    explanation:
+      "蝶式價差：買低/高履約價、賣 2 個中履約價（同 Call 或同 Put）。預期標的物窄幅整理。獲利於小波動，損失有限。屬中性策略。Straddle 看大波動但中性方向。",
+  },
+  {
+    id: "senior-fa-v2-1",
+    courseId: "securities-senior",
+    chapterId: "senior-financial-analysis",
+    question: "EBITDA 的計算為？",
+    options: [
+      "淨利 + 利息 + 稅",
+      "淨利 + 利息 + 稅 + 折舊 + 攤銷",
+      "營收 - 銷貨成本",
+      "營業利益 + 利息",
+    ],
+    answer: 1,
+    explanation:
+      "EBITDA = Earnings Before Interest, Taxes, Depreciation, Amortization。剔除融資、稅務、會計選擇影響，較能反映本業營運能力。但忽略資本支出需求是缺點。",
+  },
+  {
+    id: "senior-fa-v2-2",
+    courseId: "securities-senior",
+    chapterId: "senior-financial-analysis",
+    question: "公司淨利 100、折舊 30、應收增加 20、存貨減少 10。CFO 為？",
+    options: [
+      "$110",
+      "$120",
+      "$130",
+      "$140",
+    ],
+    answer: 1,
+    explanation:
+      "間接法 CFO = 淨利 + 非現金費用 - 資產增加 + 負債增加。CFO = 100 + 30 - 20 + 10 = $120。應收增加（資產↑）扣減，存貨減少（資產↓）加回。",
+  },
+  {
+    id: "senior-fa-v2-3",
+    courseId: "securities-senior",
+    chapterId: "senior-financial-analysis",
+    question: "ROIC（投入資本報酬率）與 WACC 比較，正常的健康公司應該？",
+    options: [
+      "ROIC < WACC",
+      "ROIC > WACC（創造價值）",
+      "ROIC = WACC",
+      "無關",
+    ],
+    answer: 1,
+    explanation:
+      "ROIC > WACC 表示公司運用資金的報酬率高於資金成本 → 創造股東價值。長期 ROIC < WACC 等於毀損價值。ROIC 是價值投資者的核心指標，反映競爭優勢。",
+  },
+  {
+    id: "senior-fa-v2-4",
+    courseId: "securities-senior",
+    chapterId: "senior-financial-analysis",
+    question: "下列何者為「品質可疑」的盈餘成長來源？",
+    options: [
+      "本業營收成長",
+      "成本控制改善",
+      "出售資產的一次性收益",
+      "研發創新帶來新產品",
+    ],
+    answer: 2,
+    explanation:
+      "一次性收益（出售資產、訴訟和解、稅務退回）不能持續。應該關注「持續性盈餘」的成長。讀財報時要區分經常性 vs 非經常性項目，後者不應給予高評價。",
+  },
+  {
+    id: "senior-reg-v2-1",
+    courseId: "securities-senior",
+    chapterId: "senior-regulation",
+    question: "下列何者「不屬於」有價證券？",
+    options: [
+      "公司股票",
+      "公司債券",
+      "受益憑證",
+      "保險單",
+    ],
+    answer: 3,
+    explanation:
+      "保險單不屬於證券交易法定義的有價證券。有價證券包含：政府/公司債券、股票、新股認購證、認購（售）權證、受益憑證、TDR、ABS 等可流通的金融商品。",
+  },
+  {
+    id: "senior-reg-v2-2",
+    courseId: "securities-senior",
+    chapterId: "senior-regulation",
+    question: "證券承銷商「包銷」與「代銷」的差異？",
+    options: [
+      "兩者完全相同",
+      "包銷承擔全部銷售風險，代銷僅代為銷售",
+      "代銷風險較高",
+      "代銷利潤較高",
+    ],
+    answer: 1,
+    explanation:
+      "包銷（Firm Commitment）：承銷商買下全部證券再轉售，未售出由其自行承擔。代銷（Best Efforts）：盡力銷售，未售出退回發行公司。包銷風險高，但利潤也較高。",
+  },
+  {
+    id: "senior-reg-v2-3",
+    courseId: "securities-senior",
+    chapterId: "senior-regulation",
+    question: "金融消費評議中心處理金融消費爭議的時間原則為？",
+    options: [
+      "立即處理",
+      "申訴 30 天內未獲滿意答覆方可申請評議",
+      "需先訴訟才能評議",
+      "限定 1 年內",
+    ],
+    answer: 1,
+    explanation:
+      "金融消費者保護法規定：投資人應先向金融業者申訴，業者 30 天內未答覆或答覆不滿，可向評議中心申請評議。評議結果在 1 百萬內對業者有拘束力。",
+  },
+  {
+    id: "senior-der-v2-1",
+    courseId: "securities-senior",
+    chapterId: "senior-derivatives",
+    question: "台指期貨保證金繳交方式為？",
+    options: [
+      "全額繳交契約價值",
+      "繳交契約價值的一定比例（通常 5-15%）",
+      "不需保證金",
+      "由券商代為墊付",
+    ],
+    answer: 1,
+    explanation:
+      "期貨槓桿來自保證金制度。台指期保證金約契約價值 13.5%，相當於 7-8 倍槓桿。原始保證金 vs 維持保證金；維持 < 75% 觸發追繳。槓桿放大獲利也放大損失。",
+  },
+  {
+    id: "senior-der-v2-2",
+    courseId: "securities-senior",
+    chapterId: "senior-derivatives",
+    question: "選擇權賣方（Short）的最大損失？",
+    options: [
+      "權利金",
+      "無限大（賣 Call）或履約價×乘數（賣 Put）",
+      "保證金",
+      "與買方相同",
+    ],
+    answer: 1,
+    explanation:
+      "賣 Call：股價可漲到無限大 → 損失無限大。賣 Put：股價跌到 0 是最差情境，損失 = (X-0) × 乘數 - 收到的權利金。買方損失僅限權利金。賣方需繳保證金。",
+  },
+  {
+    id: "senior-der-v2-3",
+    courseId: "securities-senior",
+    chapterId: "senior-derivatives",
+    question: "「Covered Call」（掩護性買權）策略適合預期？",
+    options: [
+      "股價大漲",
+      "股價大跌",
+      "股價盤整或小漲（賺取權利金）",
+      "波動度大增",
+    ],
+    answer: 2,
+    explanation:
+      "Covered Call = 持有股票 + 賣 Call。盤整或小漲時：股票穩定 + 收取權利金 = 增益收益。大漲時：股票被買走（履約），錯失上檔。大跌時：股票虧損 - 權利金少賺一點。",
+  },
+  {
+    id: "senior-der-v2-4",
+    courseId: "securities-senior",
+    chapterId: "senior-derivatives",
+    question: "Black-Scholes 模型「不適用」於下列何種情境？",
+    options: [
+      "歐式選擇權",
+      "標的物有連續股利",
+      "美式 Call 選擇權（不付股利股票）",
+      "高度價內、深度價外選擇權",
+    ],
+    answer: 3,
+    explanation:
+      "BS 模型假設：歐式、波動度恆定、報酬常態、連續交易、無交易成本。深度價內/價外時波動度微笑（Volatility Smile）顯示假設偏差。BS 結果對極端價格較不準。",
+  },
+
+  // =============================================================
+  // 第二輪擴充 - 初業進階題
+  // =============================================================
+  {
+    id: "junior-reg-v2-1",
+    courseId: "securities-junior",
+    chapterId: "junior-regulation",
+    question: "下列何者「不需要」向公開資訊觀測站公告？",
+    options: [
+      "重大訴訟",
+      "董事長變動",
+      "員工每日上下班時間",
+      "重要合約簽訂",
+    ],
+    answer: 2,
+    explanation:
+      "上市櫃公司重大訊息揭露範圍：併購、財務預測變動、訴訟、人事異動、重要合約、災害、增減資等可能影響投資判斷的資訊。日常營運細節不需要公告。",
+  },
+  {
+    id: "junior-reg-v2-2",
+    courseId: "securities-junior",
+    chapterId: "junior-regulation",
+    question: "上市公司年報應於何時前公布？",
+    options: [
+      "每年 1 月底前",
+      "每年 3 月底前",
+      "每年 6 月底前",
+      "每年 12 月底前",
+    ],
+    answer: 1,
+    explanation:
+      "上市櫃公司年報於每年 3 月 31 日前公告。Q1 季報 5/15、Q2 季報 8/14、Q3 季報 11/14、年報 3/31。注意季報已縮短公告期限。",
+  },
+  {
+    id: "junior-reg-v2-3",
+    courseId: "securities-junior",
+    chapterId: "junior-regulation",
+    question: "下列哪種交易制度「不適用」於台灣集中市場？",
+    options: [
+      "逐筆交易",
+      "盤中零股交易（11/2 起放寬）",
+      "信用交易",
+      "T+0 當日交割",
+    ],
+    answer: 3,
+    explanation:
+      "台灣為 T+2 交割制度，無 T+0 當日交割。盤中零股交易自 2020/10/26 開始，2024 年放寬規定。逐筆交易自 2020/3/23 上路。信用交易長期施行。",
+  },
+  {
+    id: "junior-prac-v2-1",
+    courseId: "securities-junior",
+    chapterId: "junior-practice",
+    question: "「填息」是指？",
+    options: [
+      "公司宣布配息",
+      "除息後股價回到除息前的水準",
+      "投資人領到現金股利",
+      "股價跌破除息參考價",
+    ],
+    answer: 1,
+    explanation:
+      "除息日股價會扣除股利金額（稱「除息」）。若之後股價漲回除息前水準稱「填息」，代表投資人真正賺到股利。若一直未填息，僅是左口袋換右口袋。",
+  },
+  {
+    id: "junior-prac-v2-2",
+    courseId: "securities-junior",
+    chapterId: "junior-practice",
+    question: "債券殖利率與價格的關係為？",
+    options: [
+      "正向關係",
+      "反向關係（利率上漲，價格下跌）",
+      "無關",
+      "由發行公司決定",
+    ],
+    answer: 1,
+    explanation:
+      "債券價格與利率呈反向關係。利率上升 → 新債券利率高 → 舊低利率債券吸引力下降 → 價格下跌。修正存續期間（Duration）量化此敏感度。",
+  },
+  {
+    id: "junior-prac-v2-3",
+    courseId: "securities-junior",
+    chapterId: "junior-practice",
+    question: "下列何者「不屬於」共同基金的優點？",
+    options: [
+      "專業經理人管理",
+      "分散風險",
+      "保證最低報酬率",
+      "小額即可投資多元資產",
+    ],
+    answer: 2,
+    explanation:
+      "基金無保證最低報酬，過去績效不代表未來。優點：專業管理、分散風險、小額投資（如 1,000 元即可定期定額）、流動性好。缺點：管理費侵蝕報酬、長期績效不一定打敗大盤。",
+  },
+  {
+    id: "junior-prac-v2-4",
+    courseId: "securities-junior",
+    chapterId: "junior-practice",
+    question: "定期定額投資的優勢是？",
+    options: [
+      "保證獲利",
+      "平均成本法降低買入時點風險",
+      "可以借錢投資",
+      "不需付手續費",
+    ],
+    answer: 1,
+    explanation:
+      "定期定額固定時間投入相同金額，高價買少、低價買多，達到平均成本效果，降低時點選擇風險。適合長期、無暇盯盤的投資人。但長期投資成果仍依市場走勢決定。",
+  },
+  {
+    id: "junior-acc-v2-1",
+    courseId: "securities-junior",
+    chapterId: "junior-account",
+    question: "投資人開立證券戶須年滿幾歲？",
+    options: [
+      "7 歲",
+      "16 歲",
+      "18 歲（成年）才能自行開戶",
+      "20 歲",
+    ],
+    answer: 2,
+    explanation:
+      "依民法成年規定（2023 起 18 歲成年），18 歲可自行開戶。7-18 歲未成年需法定代理人陪同開戶，並由法定代理人共同管理。受破產宣告者不得開戶。",
+  },
+  {
+    id: "junior-acc-v2-2",
+    courseId: "securities-junior",
+    chapterId: "junior-account",
+    question: "電子下單手續費通常為？",
+    options: [
+      "公定費率 0.1425%",
+      "公定費率打折（如 2.8 折）",
+      "免手續費",
+      "由投資人決定",
+    ],
+    answer: 1,
+    explanation:
+      "公定費率 0.1425%，但券商為吸引電子下單客戶常打折，網路下單約 2.8-6 折。注意：手續費低於最低收費（如 20 元）以最低收費為準。",
+  },
+  {
+    id: "junior-acc-v2-3",
+    courseId: "securities-junior",
+    chapterId: "junior-account",
+    question: "盤中「集合競價」目前剩餘哪些時段？",
+    options: [
+      "全部時段都是集合競價",
+      "開盤前（8:30-9:00）與收盤前（13:25-13:30）",
+      "僅開盤",
+      "已全面取消",
+    ],
+    answer: 1,
+    explanation:
+      "2020/3/23 起盤中改為逐筆交易（即時撮合）。但開盤前（8:30-9:00）和收盤前（13:25-13:30）仍維持集合競價，分別決定開盤價和收盤價。零股交易為 1 分鐘一次集合競價。",
+  },
+  {
+    id: "junior-acc-v2-4",
+    courseId: "securities-junior",
+    chapterId: "junior-account",
+    question: "投資人融券賣出時須繳交多少保證金？",
+    options: [
+      "成交金額 50%",
+      "成交金額 70%",
+      "成交金額 90%",
+      "成交金額 100%",
+    ],
+    answer: 2,
+    explanation:
+      "融券賣出保證金為成交金額 90%（投資人需備 90% 現金或證券抵繳）。融券同樣有維持率規定（130%）。融券有放空鎖券、回補日期限制，操作風險高。",
+  },
+  {
+    id: "junior-tax-v2-1",
+    courseId: "securities-junior",
+    chapterId: "junior-tax",
+    question: "下列何種有價證券交易「免」證券交易稅？",
+    options: [
+      "上市股票",
+      "ETF（一般型）",
+      "債券型 ETF（停徵中）",
+      "認購權證",
+    ],
+    answer: 2,
+    explanation:
+      "債券 ETF 為發展債市於 2017 年起停徵證交稅，原稅率 0.1%。其他：股票 0.3%、ETF 0.1%、權證 0.1%、公司債 0.1%。期貨課期貨交易稅。",
+  },
+  {
+    id: "junior-tax-v2-2",
+    courseId: "securities-junior",
+    chapterId: "junior-tax",
+    question: "境內個人股利所得「合併計稅」抵減上限為？",
+    options: [
+      "$40,000",
+      "$60,000",
+      "$80,000",
+      "無上限",
+    ],
+    answer: 2,
+    explanation:
+      "股利合併計稅：股利所得 × 8.5% 可抵減綜所稅應納稅額，「每年上限 8 萬元」。即股利 941,176 元時抵減達 8 萬元上限。超過此金額部分將失去抵減效果。",
+  },
+  {
+    id: "junior-tax-v2-3",
+    courseId: "securities-junior",
+    chapterId: "junior-tax",
+    question: "賣出股票成交金額 $200,000，證交稅 + 公定手續費（買賣各一次）合計約為？",
+    options: [
+      "$880",
+      "$1,170",
+      "$2,000",
+      "$3,000",
+    ],
+    answer: 1,
+    explanation:
+      "證交稅：200,000 × 0.3% = $600。手續費：(200,000+200,000) × 0.1425% = $570。合計 ≈ $1,170。實務上電子下單手續費打折後成本更低。",
+  },
+  {
+    id: "junior-tax-v2-4",
+    courseId: "securities-junior",
+    chapterId: "junior-tax",
+    question: "當你的綜合所得稅率為 30%，股利所得 $500,000，最有利的方式為？",
+    options: [
+      "合併計稅",
+      "分開計稅（28%）",
+      "兩者結果一致",
+      "拒絕領取股利",
+    ],
+    answer: 1,
+    explanation:
+      "合併：500,000 × 30% - min(500,000×8.5%, 80,000) = 150,000 - 42,500 = $107,500。分開：500,000 × 28% = $140,000。但因合併會將股利推入更高稅級，實際合併稅額可能更高，需試算。一般原則：邊際稅率 ≥ 30% 時分開可能較有利。",
+  },
+
+  // =============================================================
+  // 第二輪擴充 - FRM 進階題
+  // =============================================================
+  {
+    id: "frm-found-v2-1",
+    courseId: "frm",
+    chapterId: "frm-foundations",
+    question: "首席風險官（CRO）通常向誰報告？",
+    options: [
+      "業務部門主管",
+      "CEO 與董事會風險委員會（雙重報告）",
+      "稽核長",
+      "外部監理機關",
+    ],
+    answer: 1,
+    explanation:
+      "CRO 雙線報告：向 CEO（行政管理）與董事會風險委員會（獨立性）。後者重要性更高，避免 CEO 干預。CRO 需獨立於業務，有權否決過度風險決策。",
+  },
+  {
+    id: "frm-found-v2-2",
+    courseId: "frm",
+    chapterId: "frm-foundations",
+    question: "下列何者「不是」風險治理的三道防線？",
+    options: [
+      "業務單位（第一道）",
+      "風險管理部門（第二道）",
+      "內部稽核（第三道）",
+      "監理機關（第四道）",
+    ],
+    answer: 3,
+    explanation:
+      "三道防線都在組織「內部」：業務、風險管理、稽核。監理機關屬外部監督，不算組織內部防線。三道防線之間應保持獨立性，避免利益衝突。",
+  },
+  {
+    id: "frm-found-v2-3",
+    courseId: "frm",
+    chapterId: "frm-foundations",
+    question: "2012 年 JP Morgan「London Whale」事件主因？",
+    options: [
+      "外部詐欺",
+      "交易員建立巨額部位、風險限額被操縱、VaR 模型變更掩蓋風險",
+      "系統當機",
+      "信用評等下調",
+    ],
+    answer: 1,
+    explanation:
+      "London Whale (Bruno Iksil) 在 CDS 市場建立巨額部位（最初為避險，後變投機）。VaR 模型被變更使風險看起來較低，內部監督失靈。最終虧損超 $60 億美元。教訓：模型治理、風險限額紀律。",
+  },
+  {
+    id: "frm-mr-v2-1",
+    courseId: "frm",
+    chapterId: "frm-market-risk",
+    question: "在 99% 信心水準下的單尾常態 z 值為？",
+    options: [
+      "1.645",
+      "1.96",
+      "2.326",
+      "2.576",
+    ],
+    answer: 2,
+    explanation:
+      "99% 單尾 z = 2.326，雙尾 z = 2.576。95% 單尾 z = 1.645。常見錯誤是混淆單尾雙尾。VaR 通常用單尾（只關心損失方向）。",
+  },
+  {
+    id: "frm-mr-v2-2",
+    courseId: "frm",
+    chapterId: "frm-market-risk",
+    question: "蒙地卡羅模擬法 vs 歷史模擬法的最大差異？",
+    options: [
+      "蒙地卡羅依模型隨機生成情境；歷史法用實際過去資料",
+      "兩者完全相同",
+      "歷史法計算量較大",
+      "蒙地卡羅僅用於股票",
+    ],
+    answer: 0,
+    explanation:
+      "歷史模擬法：用過去 N 天實際報酬，無分配假設但受歷史限制。蒙地卡羅：依隨機過程模型（如幾何布朗運動）生成數萬條路徑，最靈活但依賴模型。各有優缺。",
+  },
+  {
+    id: "frm-mr-v2-3",
+    courseId: "frm",
+    chapterId: "frm-market-risk",
+    question: "VaR 不具「次可加性」（Sub-additivity）代表？",
+    options: [
+      "兩投資組合合併後的 VaR ≤ 各自 VaR 之和",
+      "兩投資組合合併後的 VaR 可能 > 各自 VaR 之和",
+      "VaR 永遠大於損失",
+      "VaR 計算錯誤",
+    ],
+    answer: 1,
+    explanation:
+      "次可加性：合併 VaR ≤ 個別 VaR 加總（分散效果）。但 VaR 在某些情境下違反此性質（合併後反而更大），這是其受批評的關鍵原因。ES 具有次可加性，是「一致性風險衡量指標」。",
+  },
+  {
+    id: "frm-mr-v2-4",
+    courseId: "frm",
+    chapterId: "frm-market-risk",
+    question: "Backtesting VaR 模型時，「綠燈區」表示？",
+    options: [
+      "VaR 模型完全準確",
+      "違反次數在預期範圍內，模型可接受",
+      "需要立即停用模型",
+      "VaR 值為零",
+    ],
+    answer: 1,
+    explanation:
+      "Basel Traffic Light：綠燈 (≤4 違反次數/250 天) 模型可接受；黃燈 (5-9 次) 需檢視；紅燈 (≥10 次) 模型不可靠須改進。Backtesting 是驗證 VaR 模型有效性的關鍵流程。",
+  },
+  {
+    id: "frm-mr-v2-5",
+    courseId: "frm",
+    chapterId: "frm-market-risk",
+    question: "下列何種風險「無法」用 VaR 衡量？",
+    options: [
+      "市場價格波動損失",
+      "極端尾部損失的嚴重程度",
+      "投資組合每日損益",
+      "1 日 95% 信心水準下的損失上限",
+    ],
+    answer: 1,
+    explanation:
+      "VaR 只告訴你「損失不超過 X 的機率」，但不告訴你「超過 X 後損失多少」。極端尾部損失嚴重程度由 ES（Expected Shortfall）衡量。這是 VaR 的根本限制。",
+  },
+  {
+    id: "frm-cr-v2-1",
+    courseId: "frm",
+    chapterId: "frm-credit-risk",
+    question: "違約損失率（LGD）= 40% 表示？",
+    options: [
+      "違約時可收回 40%",
+      "違約時損失 40%、回收 60%",
+      "違約機率 40%",
+      "與曝險無關",
+    ],
+    answer: 1,
+    explanation:
+      "LGD = 1 - 回收率。LGD 40% → 回收 60%。有擔保品的房貸 LGD 較低（20-30%），無擔保信用卡 LGD 較高（60-80%）。LGD 受擔保品價值、求償順位影響。",
+  },
+  {
+    id: "frm-cr-v2-2",
+    courseId: "frm",
+    chapterId: "frm-credit-risk",
+    question: "信用評等從 A 降至 BBB+，被稱為？",
+    options: [
+      "信用升等",
+      "信用降等（Credit Downgrade）",
+      "違約事件",
+      "信用觀察",
+    ],
+    answer: 1,
+    explanation:
+      "信用評等下調 = Credit Downgrade，反映違約風險上升，債券殖利率將上升、價格下跌。投資等級降至投機等級（Fallen Angel）影響更大，許多機構強制出售。",
+  },
+  {
+    id: "frm-cr-v2-3",
+    courseId: "frm",
+    chapterId: "frm-credit-risk",
+    question: "CDS 買方支付的「保險費」稱為？",
+    options: [
+      "CDS Spread（CDS 利差）",
+      "票面利率",
+      "履約價",
+      "違約金",
+    ],
+    answer: 0,
+    explanation:
+      "CDS Spread 是 CDS 買方定期支付給賣方的費率（年化基點）。如 CDS Spread = 150 bps，代表每 $1,000 萬名目本金每年付 $15 萬保護費。違約時賣方賠付損失。",
+  },
+  {
+    id: "frm-cr-v2-4",
+    courseId: "frm",
+    chapterId: "frm-credit-risk",
+    question: "信用風險的「轉移矩陣」（Transition Matrix）描述？",
+    options: [
+      "一年內信用評等變動的機率",
+      "公司資產移轉",
+      "違約時資產轉讓",
+      "信用利差變動",
+    ],
+    answer: 0,
+    explanation:
+      "轉移矩陣顯示一年內各信用評等之間遷移的歷史機率。例 AAA 一年內維持 AAA 的機率 90%、降至 AA 機率 9%、降至 A 機率 1%。用於計算多年違約機率。",
+  },
+  {
+    id: "frm-cr-v2-5",
+    courseId: "frm",
+    chapterId: "frm-credit-risk",
+    question: "下列何者「不」屬於信用風險緩釋技術？",
+    options: [
+      "要求擔保品",
+      "信用衍生商品（CDS）",
+      "淨額結算協議",
+      "提高股票投資",
+    ],
+    answer: 3,
+    explanation:
+      "信用風險緩釋：擔保品（降低 LGD）、CDS（轉移風險）、淨額結算（減少 EAD）、信用保險、保證。提高股票投資並非緩釋技術，反而可能增加市場風險。",
+  },
+  {
+    id: "frm-or-v2-1",
+    courseId: "frm",
+    chapterId: "frm-operational-risk",
+    question: "操作風險的「損失頻率 × 損失嚴重度」矩陣中，哪類風險最應重點關注？",
+    options: [
+      "低頻低嚴重",
+      "高頻高嚴重（必須立即處理）",
+      "高頻低嚴重",
+      "低頻低嚴重",
+    ],
+    answer: 1,
+    explanation:
+      "風險矩陣：高頻高嚴重 = 紅燈，須立即處置（如核災等不該存在）。高頻低嚴重 = 流程改善。低頻高嚴重 = 保險、BCP。低頻低嚴重 = 接受。RCSA 用此矩陣優先排序。",
+  },
+  {
+    id: "frm-or-v2-2",
+    courseId: "frm",
+    chapterId: "frm-operational-risk",
+    question: "BCP（營運持續計畫）的目的是？",
+    options: [
+      "增加業務收入",
+      "確保災難或重大事件後關鍵業務能持續運作",
+      "降低稅負",
+      "提升股價",
+    ],
+    answer: 1,
+    explanation:
+      "BCP 確保災難（自然、人為、網路攻擊）後關鍵業務可在合理時間內恢復。包含：備援系統、異地辦公、員工通訊計畫、定期演練。COVID-19 期間 BCP 重要性凸顯。",
+  },
+  {
+    id: "frm-or-v2-3",
+    courseId: "frm",
+    chapterId: "frm-operational-risk",
+    question: "下列何者屬於「執行、交割與流程管理」損失事件？",
+    options: [
+      "員工挪用公款",
+      "資料輸入錯誤導致大額損失",
+      "颱風造成分行受損",
+      "客戶詐騙",
+    ],
+    answer: 1,
+    explanation:
+      "執行/交割/流程管理：資料錯誤、報表錯誤、交割失敗、模型錯誤、供應商管理不善。胖手指交易（fat finger）也屬此類。員工挪用屬內部詐欺、颱風屬實體資產、客戶詐騙屬外部詐欺。",
+  },
+  {
+    id: "frm-or-v2-4",
+    courseId: "frm",
+    chapterId: "frm-operational-risk",
+    question: "標準法（SA）與 BIA 的最大差異？",
+    options: [
+      "SA 計算更簡單",
+      "SA 依業務線分別計算 β 係數，比 BIA 細緻",
+      "BIA 必須有內部模型",
+      "兩者完全相同",
+    ],
+    answer: 1,
+    explanation:
+      "BIA：單一 α=15% 用於全部業務毛利。SA：依 8 條業務線分別套用 β（12-18%）。SA 較細緻反映不同業務的操作風險特性。AMA 更進一步用內部模型整合 4 要素。",
+  },
+  {
+    id: "frm-lr-v2-1",
+    courseId: "frm",
+    chapterId: "frm-liquidity-risk",
+    question: "Basel III 流動性指標中，「LCR」針對的壓力情境是？",
+    options: [
+      "1 天",
+      "30 天嚴重壓力情境",
+      "1 年",
+      "5 年",
+    ],
+    answer: 1,
+    explanation:
+      "LCR（Liquidity Coverage Ratio）確保銀行在「30 天嚴重壓力情境」下，仍有足夠 HQLA 應對淨現金流出。NSFR 則是 1 年期穩定資金，兩者搭配解決短中期流動性。",
+  },
+  {
+    id: "frm-lr-v2-2",
+    courseId: "frm",
+    chapterId: "frm-liquidity-risk",
+    question: "下列何種資產「屬於」Level 1 HQLA？",
+    options: [
+      "公司股票",
+      "中央銀行準備金、AAA 級政府公債",
+      "BBB 級公司債",
+      "房地產",
+    ],
+    answer: 1,
+    explanation:
+      "Level 1 HQLA（100% 計入）：現金、央行準備金、高評等政府公債（AA-以上）。Level 2A（85%）：高品質公司債、Covered Bonds。Level 2B（50-75%）：較低評等公司債、股票。",
+  },
+  {
+    id: "frm-lr-v2-3",
+    courseId: "frm",
+    chapterId: "frm-liquidity-risk",
+    question: "市場流動性的衡量指標「不包括」？",
+    options: [
+      "買賣價差（Bid-Ask Spread）",
+      "市場深度",
+      "信用評等",
+      "價格衝擊",
+    ],
+    answer: 2,
+    explanation:
+      "市場流動性衡量：(1) 緊度（Tightness）：買賣價差 (2) 深度（Depth）：不影響價格可交易量 (3) 即時性（Immediacy）：成交速度 (4) 彈性（Resiliency）：價格恢復速度。信用評等屬信用風險，非流動性。",
+  },
+  {
+    id: "frm-lr-v2-4",
+    courseId: "frm",
+    chapterId: "frm-liquidity-risk",
+    question: "下列何種策略「無法」改善流動性風險？",
+    options: [
+      "多元化資金來源",
+      "持有更多 HQLA",
+      "降低期限錯配",
+      "增加長期高收益但低流動性資產",
+    ],
+    answer: 3,
+    explanation:
+      "增加低流動性資產反而惡化流動性風險。改善方法：多元化資金（避免單一來源依賴）、增加 HQLA 緩衝、減少期限錯配（短期資金支持短期資產）、設定流動性限額、定期壓力測試。",
+  },
 ];
