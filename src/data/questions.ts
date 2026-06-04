@@ -5157,4 +5157,1040 @@ export const questions: Question[] = [
     explanation:
       "增加低流動性資產反而惡化流動性風險。改善方法：多元化資金（避免單一來源依賴）、增加 HQLA 緩衝、減少期限錯配（短期資金支持短期資產）、設定流動性限額、定期壓力測試。",
   },
+
+  // =============================================================
+  // 第三輪擴充 - CFA Level I 深度題
+  // =============================================================
+  {
+    id: "cfa1-eth-v3-1",
+    courseId: "cfa-level1",
+    chapterId: "cfa1-ethics",
+    question: "下列何種情況「不」構成違反 Standard II(A) 重大非公開資訊？",
+    options: [
+      "從公司內部會議獲知併購計畫並交易",
+      "透過產業專家網絡聽聞特定公司營運狀況",
+      "綜合多個非重大公開資訊得出投資結論",
+      "未授權取得競爭對手商業機密",
+    ],
+    answer: 2,
+    explanation:
+      "馬賽克理論（Mosaic Theory）允許分析師綜合公開資訊與非重大非公開資訊得出結論，這不違反 II(A)。其他選項均涉及取得或使用重大非公開資訊。",
+  },
+  {
+    id: "cfa1-eth-v3-2",
+    courseId: "cfa-level1",
+    chapterId: "cfa1-ethics",
+    question: "分析師收到客戶禮物 $100 美元水果禮籃，正確處理為？",
+    options: [
+      "拒絕所有禮物",
+      "可接受，小額禮物視為禮貌，但仍應告知主管",
+      "必須事先取得書面同意",
+      "退還禮物並終止關係",
+    ],
+    answer: 1,
+    explanation:
+      "小額禮物（通常 $100 以下）一般可接受，但仍應依公司政策向主管報告。CFA 準則禁止可能影響獨立性的「重大」禮物。$100 通常不算重大。",
+  },
+  {
+    id: "cfa1-eth-v3-3",
+    courseId: "cfa-level1",
+    chapterId: "cfa1-ethics",
+    question: "Standard III(E) 保密原則的例外不包括？",
+    options: [
+      "法律強制要求揭露",
+      "客戶授權揭露",
+      "為保護客戶利益必須揭露",
+      "向同事炫耀客戶名單",
+    ],
+    answer: 3,
+    explanation:
+      "保密例外：(1) 法律強制 (2) 客戶授權 (3) 為保護客戶或他人 (4) 違法行為通報。向他人炫耀屬無正當理由揭露，違反保密原則。",
+  },
+  {
+    id: "cfa1-eth-v3-4",
+    courseId: "cfa-level1",
+    chapterId: "cfa1-ethics",
+    question: "CFA 持證人在社群媒體上推薦某股票，下列何者最重要？",
+    options: [
+      "獲得高關注度",
+      "完整揭露利益衝突、推薦依據、風險",
+      "保持神祕感",
+      "只發給特定追蹤者",
+    ],
+    answer: 1,
+    explanation:
+      "Standard V(B) 規定，與客戶或大眾的溝通須區分事實與意見、揭露限制與風險。社群媒體推薦同樣適用，必須揭露利益關係、推薦依據和風險。",
+  },
+  {
+    id: "cfa1-quant-v3-1",
+    courseId: "cfa-level1",
+    chapterId: "cfa1-quant",
+    question: "投資 $50,000 連續複利 8% 年利率，10 年後本利和為？",
+    options: [
+      "$107,946",
+      "$108,000",
+      "$111,277",
+      "$115,000",
+    ],
+    answer: 2,
+    explanation:
+      "連續複利 FV = PV × e^(rT) = 50,000 × e^(0.08×10) = 50,000 × e^0.8 = 50,000 × 2.2255 ≈ $111,277。比每年複利的 $107,946 略多。連續複利為複利的極限。",
+  },
+  {
+    id: "cfa1-quant-v3-2",
+    courseId: "cfa-level1",
+    chapterId: "cfa1-quant",
+    question: "兩股票相關係數為 0.7，標準差分別 20% 和 15%。共變異數為？",
+    options: [
+      "0.0150",
+      "0.0210",
+      "0.0300",
+      "0.1050",
+    ],
+    answer: 1,
+    explanation:
+      "Cov(X,Y) = ρ × σx × σy = 0.7 × 0.20 × 0.15 = 0.021。共變異數無單位限制，可正可負；相關係數則限於 [-1, 1] 區間。",
+  },
+  {
+    id: "cfa1-quant-v3-3",
+    courseId: "cfa-level1",
+    chapterId: "cfa1-quant",
+    question: "公平硬幣連續投擲 10 次，至少 8 次正面的機率約為？",
+    options: [
+      "5.5%",
+      "10.0%",
+      "15.0%",
+      "20.0%",
+    ],
+    answer: 0,
+    explanation:
+      "二項分配 P(X≥8) = P(8)+P(9)+P(10) = C(10,8)×0.5^10 + C(10,9)×0.5^10 + C(10,10)×0.5^10 = (45+10+1)/1024 = 56/1024 ≈ 5.47%。",
+  },
+  {
+    id: "cfa1-quant-v3-4",
+    courseId: "cfa-level1",
+    chapterId: "cfa1-quant",
+    question: "對單樣本 t 檢定，自由度為？",
+    options: [
+      "n",
+      "n-1",
+      "n-2",
+      "n+1",
+    ],
+    answer: 1,
+    explanation:
+      "單樣本 t 檢定自由度 = n-1。雙樣本 t 檢定（等變異數）自由度 = n1+n2-2。卡方分配與 F 分配自由度規則各不相同，須背熟。",
+  },
+  {
+    id: "cfa1-quant-v3-5",
+    courseId: "cfa-level1",
+    chapterId: "cfa1-quant",
+    question: "下列何種模型「不假設」常態分配？",
+    options: [
+      "Z 檢定",
+      "歷史模擬法 VaR",
+      "變異數-共變異數 VaR",
+      "Black-Scholes 模型",
+    ],
+    answer: 1,
+    explanation:
+      "歷史模擬法直接用過去實際分配，不需假設常態分配。其他三項都明確假設常態分配（或對數常態），這也是它們在尾部風險時可能失準的原因。",
+  },
+  {
+    id: "cfa1-quant-v3-6",
+    courseId: "cfa-level1",
+    chapterId: "cfa1-quant",
+    question: "幾何平均報酬「永遠 ≤ 算術平均報酬」，差距大小取決於？",
+    options: [
+      "投資金額",
+      "報酬波動度（σ）",
+      "投資期間",
+      "通膨率",
+    ],
+    answer: 1,
+    explanation:
+      "近似關係：幾何平均 ≈ 算術平均 - σ²/2。波動度越大，兩者差距越大。當波動度 = 0（穩定報酬），兩者相等。這是「波動性對長期報酬的隱形損耗」。",
+  },
+  {
+    id: "cfa1-econ-v3-1",
+    courseId: "cfa-level1",
+    chapterId: "cfa1-economics",
+    question: "若 A 國通膨 6%、B 國通膨 2%，且名目利率 A 國 8%、B 國 3%。誰的實質利率較高？",
+    options: [
+      "A 國（8% - 6% = 2%）",
+      "B 國（3% - 2% = 1%）",
+      "兩國實質利率相同",
+      "需更多資訊判斷",
+    ],
+    answer: 0,
+    explanation:
+      "費雪方程式：實質利率 ≈ 名目利率 - 預期通膨。A 國實質利率 = 2%，B 國 = 1%。A 國較高。注意實質利率才是衡量真實購買力成長的指標。",
+  },
+  {
+    id: "cfa1-econ-v3-2",
+    courseId: "cfa-level1",
+    chapterId: "cfa1-economics",
+    question: "下列何種貨幣政策工具「最強而有力」但極少使用？",
+    options: [
+      "公開市場操作",
+      "重貼現率調整",
+      "存款準備率調整",
+      "道德勸說",
+    ],
+    answer: 2,
+    explanation:
+      "存款準備率調整效果強大但極少使用，因為對銀行流動性影響太大。央行偏好公開市場操作（每日進行）。重貼現率影響邊際借款，效果較弱。",
+  },
+  {
+    id: "cfa1-econ-v3-3",
+    courseId: "cfa-level1",
+    chapterId: "cfa1-economics",
+    question: "凱因斯學派與貨幣學派的主要差異是？",
+    options: [
+      "兩者完全相同",
+      "凱因斯重視財政政策，貨幣學派強調貨幣政策與貨幣供給穩定",
+      "凱因斯反對政府干預",
+      "貨幣學派支持高通膨",
+    ],
+    answer: 1,
+    explanation:
+      "凱因斯學派：認為衰退時應積極財政擴張（政府支出）。貨幣學派（Milton Friedman）：認為通膨永遠是貨幣現象，央行應穩定貨幣供給成長率。",
+  },
+  {
+    id: "cfa1-econ-v3-4",
+    courseId: "cfa-level1",
+    chapterId: "cfa1-economics",
+    question: "經濟成長率長期主要由什麼決定？",
+    options: [
+      "央行貨幣政策",
+      "勞動力、資本累積、技術進步（TFP）",
+      "政府支出規模",
+      "貿易順差",
+    ],
+    answer: 1,
+    explanation:
+      "Solow 成長模型：長期經濟成長 = 勞動力成長 + 資本累積 + 技術進步（TFP）。其中技術進步是長期成長最關鍵因素。貨幣政策只影響短期波動。",
+  },
+  {
+    id: "cfa1-fra-v3-1",
+    courseId: "cfa-level1",
+    chapterId: "cfa1-fra",
+    question: "公司於財報中將「研究費用」資本化，會導致？",
+    options: [
+      "當期費用增加、淨利下降",
+      "當期費用減少、淨利提高、資產增加",
+      "對財報無影響",
+      "現金流量改善",
+    ],
+    answer: 1,
+    explanation:
+      "資本化研究費用：當期不費用化而列為資產，未來分期攤銷。短期淨利提高、資產增加，但未來折舊壓抑利潤。IFRS 僅允許開發階段資本化（嚴格條件）。",
+  },
+  {
+    id: "cfa1-fra-v3-2",
+    courseId: "cfa-level1",
+    chapterId: "cfa1-fra",
+    question: "下列何項「不影響」CFO（營業現金流）的計算？",
+    options: [
+      "折舊費用",
+      "應收帳款變動",
+      "支付股利",
+      "存貨變動",
+    ],
+    answer: 2,
+    explanation:
+      "支付股利屬於「籌資活動」，不影響 CFO。折舊（非現金費用，加回）、應收/應付/存貨變動（營運資金變動）都影響 CFO。利息支出在 IFRS 下可選擇歸類。",
+  },
+  {
+    id: "cfa1-fra-v3-3",
+    courseId: "cfa-level1",
+    chapterId: "cfa1-fra",
+    question: "公司毛利率 40%、營業利益率 15%、淨利率 10%。下列何者最可能？",
+    options: [
+      "本業競爭力強但行政費用過高",
+      "原料成本低、利息費用顯著",
+      "毛利穩定、營業費用佔比合理、有利息和稅務負擔",
+      "公司虧損",
+    ],
+    answer: 2,
+    explanation:
+      "從 40% 到 15% 之間扣除「營業費用（管銷費用、研發）」25%。從 15% 到 10% 之間扣除「利息與稅」5%。比例合理，公司穩健。",
+  },
+  {
+    id: "cfa1-fra-v3-4",
+    courseId: "cfa-level1",
+    chapterId: "cfa1-fra",
+    question: "現金週期（Cash Conversion Cycle）變短意味著？",
+    options: [
+      "公司營運效率變差",
+      "公司營運效率改善，營運資金需求降低",
+      "毛利率上升",
+      "與營運無關",
+    ],
+    answer: 1,
+    explanation:
+      "現金週期 = DSO + DIO - DPO。週期短表示：存貨快速賣出、應收快速收回、應付帳款延後支付。代表營運資金需求低，現金循環效率高。",
+  },
+  {
+    id: "cfa1-corp-v3-1",
+    courseId: "cfa-level1",
+    chapterId: "cfa1-corporate",
+    question: "公司股權成本 14%、負債成本 6%、稅率 30%、債權比 D/V = 40%。WACC 約為？",
+    options: [
+      "8.4%",
+      "10.08%",
+      "12.0%",
+      "10.0%",
+    ],
+    answer: 1,
+    explanation:
+      "WACC = 0.6 × 14% + 0.4 × 6% × (1-0.3) = 8.4% + 1.68% = 10.08%。負債稅後成本 = 4.2%，再依比例加權。",
+  },
+  {
+    id: "cfa1-corp-v3-2",
+    courseId: "cfa-level1",
+    chapterId: "cfa1-corporate",
+    question: "下列何種專案應「最優先」執行（資金有限時）？",
+    options: [
+      "NPV = $1M、初始投資 $10M",
+      "NPV = $2M、初始投資 $5M",
+      "NPV = $5M、初始投資 $20M",
+      "NPV = $3M、初始投資 $30M",
+    ],
+    answer: 1,
+    explanation:
+      "資金有限時用「獲利指數」PI = (NPV+初始投資) / 初始投資。選項 B：(2+5)/5 = 1.4 最高。或直接看 NPV/投資比：A=10%, B=40%, C=25%, D=10%。B 效率最高。",
+  },
+  {
+    id: "cfa1-corp-v3-3",
+    courseId: "cfa-level1",
+    chapterId: "cfa1-corporate",
+    question: "下列何種特性「不屬於」高股利支付率公司的典型特徵？",
+    options: [
+      "成熟產業、穩定獲利",
+      "投資機會有限",
+      "強勁成長前景、需大量再投資",
+      "穩定現金流",
+    ],
+    answer: 2,
+    explanation:
+      "成長型公司通常保留盈餘再投資（高 ROE 機會），低股利支付率。高股利公司多為成熟、穩定現金流、投資機會有限的公司（如電信、公用事業）。",
+  },
+  {
+    id: "cfa1-eq-v3-1",
+    courseId: "cfa-level1",
+    chapterId: "cfa1-equity",
+    question: "某公司 ROE 18%、配息率 40%。永續成長率為？",
+    options: [
+      "7.2%",
+      "10.8%",
+      "12.0%",
+      "18.0%",
+    ],
+    answer: 1,
+    explanation:
+      "g = ROE × 保留盈餘比率 = 18% × (1-0.4) = 18% × 0.6 = 10.8%。此公式假設未來 ROE 維持不變、保留盈餘以同樣 ROE 再投資。",
+  },
+  {
+    id: "cfa1-eq-v3-2",
+    courseId: "cfa-level1",
+    chapterId: "cfa1-equity",
+    question: "成熟產業公司，EV/EBITDA = 8 倍，比較同業 EV/EBITDA = 12 倍，可能表示？",
+    options: [
+      "公司被高估",
+      "公司可能被低估，或有特殊風險（須進一步分析）",
+      "公司不能比較",
+      "需要轉換為 P/E 比較",
+    ],
+    answer: 1,
+    explanation:
+      "EV/EBITDA 低於同業可能：(1) 低估（買進機會）(2) 有負面因素（如下檔風險）(3) 結構性差異（如不同業務組合）。需深入分析原因再下定論。",
+  },
+  {
+    id: "cfa1-eq-v3-3",
+    courseId: "cfa-level1",
+    chapterId: "cfa1-equity",
+    question: "下列何種偏誤導致投資人過度交易？",
+    options: [
+      "損失厭惡",
+      "過度自信",
+      "錨定效應",
+      "確認偏誤",
+    ],
+    answer: 1,
+    explanation:
+      "過度自信使投資人高估自己預測能力，導致過度交易、投資組合過度集中。研究顯示散戶平均年化報酬遠低於市場，主要因過度交易消耗成本。",
+  },
+  {
+    id: "cfa1-fi-v3-1",
+    courseId: "cfa-level1",
+    chapterId: "cfa1-fi",
+    question: "10 年期公司債票面利率 5%、YTM 6%，下列何者正確？",
+    options: [
+      "債券溢價交易",
+      "債券折價交易",
+      "債券平價交易",
+      "需殖利率曲線資訊判斷",
+    ],
+    answer: 1,
+    explanation:
+      "YTM (6%) > Coupon (5%) → 債券折價（價格 < 面額）。YTM = Coupon 為平價；YTM < Coupon 為溢價。這是債券市場的基本關係。",
+  },
+  {
+    id: "cfa1-fi-v3-2",
+    courseId: "cfa-level1",
+    chapterId: "cfa1-fi",
+    question: "可贖回債券（Callable Bond）的「負凸性」表現為？",
+    options: [
+      "利率下跌時價格上漲少於普通債券",
+      "利率下跌時價格上漲多於普通債券",
+      "兩者相同",
+      "與利率無關",
+    ],
+    answer: 0,
+    explanation:
+      "可贖回債券：利率下跌時發行人可贖回，限制價格上漲（價格趨於贖回價）。形成「負凸性」：利率下跌時上漲幅度受限，但利率上漲時下跌與普通債券相當。",
+  },
+  {
+    id: "cfa1-fi-v3-3",
+    courseId: "cfa-level1",
+    chapterId: "cfa1-fi",
+    question: "倒掛殖利率曲線歷史上預測？",
+    options: [
+      "經濟強勁擴張",
+      "通膨上升",
+      "經濟衰退（領先 6-18 個月）",
+      "股市上漲",
+    ],
+    answer: 2,
+    explanation:
+      "美國經濟史上，2年期/10年期殖利率倒掛是衰退的可靠領先指標，平均領先 6-18 個月。原因：市場預期央行未來降息應對衰退。但時點難以精準預測。",
+  },
+  {
+    id: "cfa1-der-v3-1",
+    courseId: "cfa-level1",
+    chapterId: "cfa1-derivatives",
+    question: "選擇權買方付出權利金後，下列何者「不」是其優勢？",
+    options: [
+      "有限風險（最大損失為權利金）",
+      "槓桿（小成本控制大部位）",
+      "獲得時間衰減收益",
+      "策略彈性",
+    ],
+    answer: 2,
+    explanation:
+      "時間衰減（Theta）對買方「不利」：到期前 Theta 為負，每日選擇權價值減少。賣方才賺取時間衰減。買方需股價快速朝預期方向移動才能獲利。",
+  },
+  {
+    id: "cfa1-der-v3-2",
+    courseId: "cfa-level1",
+    chapterId: "cfa1-derivatives",
+    question: "持有股票投資組合擔心短期下跌，最有效避險方式為？",
+    options: [
+      "賣出股票",
+      "買進指數賣權（Protective Put）",
+      "賣出指數買權",
+      "做多波動度",
+    ],
+    answer: 1,
+    explanation:
+      "保護性賣權：保留股票上檔獲利，限制下檔損失，類似買保險。賣出股票會錯失上漲；賣出買權限制獲利但不防守下檔；做多波動度間接避險效果差。",
+  },
+  {
+    id: "cfa1-port-v3-1",
+    courseId: "cfa-level1",
+    chapterId: "cfa1-portfolio",
+    question: "投資組合 β = 1.2，市場下跌 15%，組合預期報酬約為？",
+    options: [
+      "-12.5%",
+      "-15.0%",
+      "-18.0%",
+      "-20.0%",
+    ],
+    answer: 2,
+    explanation:
+      "β = 1.2 表示波動是市場的 1.2 倍。市場下跌 15%，組合預期下跌 18%（=15% × 1.2）。高 β 投資組合在多頭放大獲利，在空頭也放大損失。",
+  },
+  {
+    id: "cfa1-port-v3-2",
+    courseId: "cfa-level1",
+    chapterId: "cfa1-portfolio",
+    question: "M² 衡量（Modigliani）的目的是？",
+    options: [
+      "計算投資組合 β",
+      "將投資組合風險調整至與市場相同後比較報酬",
+      "計算夏普比率",
+      "衡量分散化效益",
+    ],
+    answer: 1,
+    explanation:
+      "M² = Rf + Sharpe × σ_market，將不同風險水平的投資組合「標準化」到市場風險水平後比較。比夏普比率更直觀（直接看百分點差距）。",
+  },
+  {
+    id: "cfa1-port-v3-3",
+    courseId: "cfa-level1",
+    chapterId: "cfa1-portfolio",
+    question: "捐贈基金（Endowment）的投資特性「不包括」？",
+    options: [
+      "永續投資期",
+      "高另類資產配置（PE、避險基金）",
+      "穩定提撥率（如 5%）",
+      "短期績效導向",
+    ],
+    answer: 3,
+    explanation:
+      "捐贈基金永續經營，注重長期回報。耶魯模式高配置另類資產獲取「流動性溢酬」，可承受短期波動。短期績效導向反而違背其本質。",
+  },
+
+  // =============================================================
+  // 第三輪擴充 - 高業深度題
+  // =============================================================
+  {
+    id: "senior-inv-v3-1",
+    courseId: "securities-senior",
+    chapterId: "senior-investment",
+    question: "技術分析的「量價背離」是指？",
+    options: [
+      "股價上漲、成交量同步擴大",
+      "股價創新高但成交量未跟上，可能反轉訊號",
+      "股價平盤、成交量縮小",
+      "成交量大於漲跌幅",
+    ],
+    answer: 1,
+    explanation:
+      "量價背離：股價創高但成交量沒同步擴大，代表上漲動能不足；股價創低但量縮，代表賣壓減弱。常被視為趨勢反轉前兆，但須配合其他指標確認。",
+  },
+  {
+    id: "senior-inv-v3-2",
+    courseId: "securities-senior",
+    chapterId: "senior-investment",
+    question: "Treynor 比率與 Sharpe 比率的主要差異為？",
+    options: [
+      "Treynor 用 β，Sharpe 用 σ",
+      "Sharpe 用 β，Treynor 用 σ",
+      "兩者完全相同",
+      "Sharpe 適用債券，Treynor 適用股票",
+    ],
+    answer: 0,
+    explanation:
+      "Treynor = (Rp-Rf)/β（系統風險）；Sharpe = (Rp-Rf)/σ（總風險）。當投資組合充分分散時，非系統風險已消除，用 Treynor 較合適；未充分分散則用 Sharpe。",
+  },
+  {
+    id: "senior-inv-v3-3",
+    courseId: "securities-senior",
+    chapterId: "senior-investment",
+    question: "Information Ratio（資訊比率）的分母為？",
+    options: [
+      "標準差",
+      "β",
+      "追蹤誤差（Tracking Error）",
+      "無風險利率",
+    ],
+    answer: 2,
+    explanation:
+      "IR = (Rp - Rb) / 追蹤誤差。衡量每單位主動風險獲取的主動報酬。IR > 0.5 算優秀，> 1 罕見。主要評估主動管理基金經理人。",
+  },
+  {
+    id: "senior-inv-v3-4",
+    courseId: "securities-senior",
+    chapterId: "senior-investment",
+    question: "下列何者「不是」CAPM 模型的假設？",
+    options: [
+      "投資人理性且追求效用最大化",
+      "資訊不對稱、投資人預期不同",
+      "無稅、無交易成本",
+      "可自由借貸無風險利率",
+    ],
+    answer: 1,
+    explanation:
+      "CAPM 假設「同質性預期」（所有投資人擁有相同資訊與預期），其他選項皆是正確假設。實務上這些假設多被違反，因此 CAPM 有實證問題。",
+  },
+  {
+    id: "senior-fa-v3-1",
+    courseId: "securities-senior",
+    chapterId: "senior-financial-analysis",
+    question: "Altman Z-score 用於評估？",
+    options: [
+      "公司股票評等",
+      "公司破產風險",
+      "公司成長性",
+      "公司流動性",
+    ],
+    answer: 1,
+    explanation:
+      "Altman Z-score 是 Edward Altman 1968 年提出的破產預測模型，整合 5 個財務比率。Z > 2.99 安全、1.81-2.99 灰色區、< 1.81 高破產風險。",
+  },
+  {
+    id: "senior-fa-v3-2",
+    courseId: "securities-senior",
+    chapterId: "senior-financial-analysis",
+    question: "EBITDA Margin 高於同業，可能代表？",
+    options: [
+      "公司獲利能力較強",
+      "公司現金流出較多",
+      "公司負債過高",
+      "公司投資不足",
+    ],
+    answer: 0,
+    explanation:
+      "EBITDA Margin = EBITDA / 營收，反映本業現金獲利能力（剔除融資、稅、會計選擇）。高於同業通常代表競爭優勢或營運效率高，但須排除產品組合差異。",
+  },
+  {
+    id: "senior-fa-v3-3",
+    courseId: "securities-senior",
+    chapterId: "senior-financial-analysis",
+    question: "公司「應收帳款週轉率」下降可能反映？",
+    options: [
+      "公司收款效率提升",
+      "可能放寬信用政策或客戶付款延遲",
+      "存貨積壓",
+      "毛利率上升",
+    ],
+    answer: 1,
+    explanation:
+      "週轉率下降表示收款天數變長，可能原因：放寬信用以吸引客戶、客戶財務惡化、產業景氣下行。需配合應收帳款增長率與營收成長對比判斷。",
+  },
+  {
+    id: "senior-reg-v3-1",
+    courseId: "securities-senior",
+    chapterId: "senior-regulation",
+    question: "證券商每年向主管機關申報之「資本適足率」應達？",
+    options: [
+      "100% 以上",
+      "120% 以上",
+      "150% 以上",
+      "200% 以上",
+    ],
+    answer: 2,
+    explanation:
+      "證券商資本適足率 (CAR) 須 ≥ 150%。低於 150% 被限制業務、低於 120% 命令停業。比銀行 (8%) 嚴格因證券商承擔市場價格風險。",
+  },
+  {
+    id: "senior-reg-v3-2",
+    courseId: "securities-senior",
+    chapterId: "senior-regulation",
+    question: "公司治理「審計委員會」應由全體獨立董事組成，最少幾人？",
+    options: [
+      "1 人",
+      "2 人",
+      "3 人",
+      "5 人",
+    ],
+    answer: 2,
+    explanation:
+      "依台灣規定，審計委員會應由全體獨立董事組成，至少 3 人，其中至少 1 人具備會計或財務專長。審計委員會取代傳統監察人制度。",
+  },
+  {
+    id: "senior-der-v3-1",
+    courseId: "securities-senior",
+    chapterId: "senior-derivatives",
+    question: "選擇權「Iron Condor」策略適合預期？",
+    options: [
+      "大幅波動",
+      "盤整或小幅波動",
+      "單方向大漲",
+      "單方向大跌",
+    ],
+    answer: 1,
+    explanation:
+      "Iron Condor = 賣 OTM Put Spread + 賣 OTM Call Spread。預期股價在某區間內整理時最大獲利（收取雙邊權利金）。最大損失有限（保護部位）。",
+  },
+  {
+    id: "senior-der-v3-2",
+    courseId: "securities-senior",
+    chapterId: "senior-derivatives",
+    question: "下列何種衍生品「不」直接交易於交易所？",
+    options: [
+      "期貨",
+      "上市選擇權",
+      "場外交換（OTC Swap）",
+      "ETF 選擇權",
+    ],
+    answer: 2,
+    explanation:
+      "OTC Swap（場外交換）是雙方直接協議，不透過交易所，因此有對手方信用風險。期貨、上市選擇權、ETF 選擇權都在交易所撮合，有結算機構承擔對手方風險。",
+  },
+
+  // =============================================================
+  // 第三輪擴充 - 初業深度題
+  // =============================================================
+  {
+    id: "junior-reg-v3-1",
+    courseId: "securities-junior",
+    chapterId: "junior-regulation",
+    question: "下列哪種行為「不」屬於市場操縱？",
+    options: [
+      "連續交易製造價量假象",
+      "散佈不實消息",
+      "進行正當投資並依規定揭露",
+      "對敲交易（沖洗買賣）",
+    ],
+    answer: 2,
+    explanation:
+      "正當投資並揭露不屬市場操縱。市場操縱包括：連續交易拉抬、對敲、散佈謠言、誘騙交易等違反證交法 §155 行為。違者處 3-10 年徒刑。",
+  },
+  {
+    id: "junior-reg-v3-2",
+    courseId: "securities-junior",
+    chapterId: "junior-regulation",
+    question: "上市公司「公開說明書」應於何時提供？",
+    options: [
+      "IPO 時提供",
+      "每年年報時更新",
+      "員工招募時",
+      "上市後一年內",
+    ],
+    answer: 0,
+    explanation:
+      "公開說明書於 IPO 或發行新股時提供，揭露公司完整資訊（財務、業務、風險、用途）。投資人應仔細閱讀後再做投資決策。",
+  },
+  {
+    id: "junior-reg-v3-3",
+    courseId: "securities-junior",
+    chapterId: "junior-regulation",
+    question: "投資人提出客訴後，業者應於幾日內回應？",
+    options: [
+      "7 日",
+      "14 日",
+      "30 日",
+      "60 日",
+    ],
+    answer: 2,
+    explanation:
+      "依金融消費者保護法，業者應於 30 日內回應客訴，未回應或回應不滿者可向金融消費評議中心申請評議。評議結果 1 百萬內對業者有拘束力。",
+  },
+  {
+    id: "junior-prac-v3-1",
+    courseId: "securities-junior",
+    chapterId: "junior-practice",
+    question: "若股票每股淨值為 $30、市價 $60，下列指標哪項可計算？",
+    options: [
+      "P/E",
+      "P/B = 2",
+      "殖利率",
+      "EPS",
+    ],
+    answer: 1,
+    explanation:
+      "P/B = 市價/每股淨值 = 60/30 = 2。P/E 需 EPS、殖利率需股利、EPS 需淨利資訊。題目資料只夠算 P/B。",
+  },
+  {
+    id: "junior-prac-v3-2",
+    courseId: "securities-junior",
+    chapterId: "junior-practice",
+    question: "ETF 0050 與 0056 的主要差異為？",
+    options: [
+      "兩者完全相同",
+      "0050 追蹤台灣 50 指數（市值加權），0056 追蹤高股息指數",
+      "0056 報酬永遠較高",
+      "0050 只能法人投資",
+    ],
+    answer: 1,
+    explanation:
+      "0050 元大台灣 50：追蹤台灣前 50 大市值公司、核心配置標的。0056 元大高股息：篩選高殖利率股票，適合追求現金股利的投資人。長期報酬 0050 通常較高。",
+  },
+  {
+    id: "junior-prac-v3-3",
+    courseId: "securities-junior",
+    chapterId: "junior-practice",
+    question: "定期定額投資的優勢「不」包括？",
+    options: [
+      "降低時點選擇風險",
+      "強制紀律儲蓄",
+      "平均成本法",
+      "保證打敗一次性投資",
+    ],
+    answer: 3,
+    explanation:
+      "定期定額不保證打敗一次性投資（Lump Sum）。研究顯示長期市場走多時，一次性投資報酬常較高。但定期定額減少時點壓力，適合長期、穩定收入族群。",
+  },
+  {
+    id: "junior-acc-v3-1",
+    courseId: "securities-junior",
+    chapterId: "junior-account",
+    question: "下列何者「不」可作為開戶身分證明文件？",
+    options: [
+      "身分證",
+      "健保卡（第二證件）",
+      "信用卡",
+      "護照",
+    ],
+    answer: 2,
+    explanation:
+      "信用卡不能作為證券開戶身分證明。可用證件：身分證、健保卡、駕照、護照、戶口名簿。開戶須親自臨櫃（部分券商支援線上開戶）。",
+  },
+  {
+    id: "junior-acc-v3-2",
+    courseId: "securities-junior",
+    chapterId: "junior-account",
+    question: "盤中零股交易制度，多少股以下屬零股？",
+    options: [
+      "100 股",
+      "500 股",
+      "1,000 股",
+      "10,000 股",
+    ],
+    answer: 2,
+    explanation:
+      "零股 = 不足 1,000 股。台股一張 = 1,000 股。盤中零股自 2020/10/26 起施行，9:00-13:30 每 1 分鐘集合競價一次，讓小資族也能投資高價股。",
+  },
+  {
+    id: "junior-acc-v3-3",
+    courseId: "securities-junior",
+    chapterId: "junior-account",
+    question: "投資人融券賣出 100 張股票，市價 $50。需繳交保證金？",
+    options: [
+      "$1,800,000",
+      "$3,500,000",
+      "$4,500,000",
+      "$5,000,000",
+    ],
+    answer: 2,
+    explanation:
+      "成交額 = 100 × 1,000 × 50 = $5,000,000。融券保證金 90% = $4,500,000。融券除保證金外還需借券費（每日約 0.08%），成本不低。",
+  },
+  {
+    id: "junior-tax-v3-1",
+    courseId: "securities-junior",
+    chapterId: "junior-tax",
+    question: "下列何者目前「免」課證券交易稅？",
+    options: [
+      "上市股票",
+      "ETF（一般型）",
+      "公司債、債券型 ETF",
+      "認購權證",
+    ],
+    answer: 2,
+    explanation:
+      "公司債、債券型 ETF 自 2017 年起停徵證交稅，促進債券市場發展。其他：股票 0.3%、ETF 0.1%、權證 0.1%。期貨課期貨交易稅。",
+  },
+  {
+    id: "junior-tax-v3-2",
+    courseId: "securities-junior",
+    chapterId: "junior-tax",
+    question: "海外所得需計入基本所得額的門檻為？",
+    options: [
+      "海外所得 > $500,000",
+      "海外所得 > $1,000,000",
+      "海外所得 > $3,000,000",
+      "全額需計入",
+    ],
+    answer: 1,
+    explanation:
+      "海外所得超過 100 萬，「全額」計入基本所得額（非僅超過部分）。基本所得額扣除 750 萬免稅額後計 20% 最低稅負，與一般所得稅取高者。",
+  },
+
+  // =============================================================
+  // 第三輪擴充 - FRM 深度題
+  // =============================================================
+  {
+    id: "frm-found-v3-1",
+    courseId: "frm",
+    chapterId: "frm-foundations",
+    question: "G-SIBs（全球系統重要性銀行）評估五大面向「不」包括？",
+    options: [
+      "規模（Size）",
+      "互聯性（Interconnectedness）",
+      "替代性（Substitutability）",
+      "ESG 評等",
+    ],
+    answer: 3,
+    explanation:
+      "G-SIBs 評估五面向：規模、互聯性、替代性、複雜性、跨境活動。ESG 雖重要但非 G-SIBs 評估指標。被列為 G-SIB 需額外資本緩衝（1-3.5%）。",
+  },
+  {
+    id: "frm-found-v3-2",
+    courseId: "frm",
+    chapterId: "frm-foundations",
+    question: "Basel III 普通股一級資本（CET1）最低要求為？",
+    options: [
+      "2%",
+      "4.5%",
+      "6%",
+      "8%",
+    ],
+    answer: 1,
+    explanation:
+      "Basel III 規定：CET1 ≥ 4.5%、Tier 1 ≥ 6%、總資本 ≥ 8%、加上 2.5% 資本保留緩衝。系統重要性銀行另有額外緩衝。比 Basel II 大幅提高品質與數量要求。",
+  },
+  {
+    id: "frm-mr-v3-1",
+    courseId: "frm",
+    chapterId: "frm-market-risk",
+    question: "投資組合 $2 億美元，日報酬標準差 2%，99% VaR 為？",
+    options: [
+      "$800 萬",
+      "$930 萬",
+      "$1,000 萬",
+      "$1,200 萬",
+    ],
+    answer: 1,
+    explanation:
+      "99% 信心 z = 2.326（單尾）。VaR = 2.326 × 2% × 2 億 = $930 萬。99% 信心意味平均每 100 天有 1 天可能損失超過此數。",
+  },
+  {
+    id: "frm-mr-v3-2",
+    courseId: "frm",
+    chapterId: "frm-market-risk",
+    question: "下列何者「不」是 Basel III 對市場風險資本的要求？",
+    options: [
+      "VaR 模型須通過 backtesting",
+      "用 10 天 99% VaR 計算資本",
+      "增加 ES 計算（FRTB）",
+      "完全廢除內部模型",
+    ],
+    answer: 3,
+    explanation:
+      "Basel III/FRTB 改革強化內部模型驗證但「未廢除」內部模型。改用 ES（97.5%）取代 VaR、增加流動性期限因子、強化 Backtesting。內部模型仍允許但更嚴格。",
+  },
+  {
+    id: "frm-mr-v3-3",
+    courseId: "frm",
+    chapterId: "frm-market-risk",
+    question: "VaR 模型 backtesting，250 天中違反 8 次，屬？",
+    options: [
+      "綠燈：模型可接受",
+      "黃燈：模型需檢視、增加額外資本",
+      "紅燈：模型重建",
+      "違規",
+    ],
+    answer: 1,
+    explanation:
+      "Basel Traffic Light：0-4 次 = 綠燈；5-9 次 = 黃燈（增加 multiplier）；≥10 次 = 紅燈（模型不可靠）。8 次落在黃燈區，需檢視原因並可能增加資本。",
+  },
+  {
+    id: "frm-cr-v3-1",
+    courseId: "frm",
+    chapterId: "frm-credit-risk",
+    question: "高斯 Copula 在 2008 危機中暴露的問題是？",
+    options: [
+      "計算太複雜",
+      "尾部相關性不足，低估了 CDO Senior Tranche 的風險",
+      "資料不足",
+      "與 Merton 模型衝突",
+    ],
+    answer: 1,
+    explanation:
+      "高斯 Copula 的尾部相關性低，假設極端違約是獨立事件。但 2008 危機顯示房貸違約高度相關（系統性風險），原以為安全的 Senior Tranche 大規模違約。",
+  },
+  {
+    id: "frm-cr-v3-2",
+    courseId: "frm",
+    chapterId: "frm-credit-risk",
+    question: "CDS Spread 從 100 bps 擴大至 500 bps，可能反映？",
+    options: [
+      "市場流動性改善",
+      "市場認為違約風險顯著上升",
+      "央行降息",
+      "公司獲利改善",
+    ],
+    answer: 1,
+    explanation:
+      "CDS Spread ≈ PD × LGD。從 100 升至 500 bps 表示市場願意支付 5 倍保護費，反映違約風險預期大幅上升。常出現於信用評等下調、財報惡化、產業危機時。",
+  },
+  {
+    id: "frm-cr-v3-3",
+    courseId: "frm",
+    chapterId: "frm-credit-risk",
+    question: "CDO Senior Tranche 的特性「不」包括？",
+    options: [
+      "AAA 評等（傳統）",
+      "最後吸收損失",
+      "殖利率最低",
+      "違約風險最高",
+    ],
+    answer: 3,
+    explanation:
+      "Senior Tranche 是 CDO 中最安全層級，最後吸收損失、AAA 評等、殖利率最低。違約風險最高的是 Equity Tranche（最先吸收損失）。但 2008 顯示 AAA 並非真安全。",
+  },
+  {
+    id: "frm-or-v3-1",
+    courseId: "frm",
+    chapterId: "frm-operational-risk",
+    question: "霸菱銀行事件的核心問題「不」包括？",
+    options: [
+      "前台與後台未分離",
+      "風險限額執行不嚴",
+      "市場價格下跌（外部因素）",
+      "高層監督不足",
+    ],
+    answer: 2,
+    explanation:
+      "霸菱倒閉根源於「內部控制」失靈：Nick Leeson 同時掌管交易與結算、隱藏帳戶 88888、主管缺乏質疑。市場下跌只是觸發，真正問題是內部管控失敗。",
+  },
+  {
+    id: "frm-or-v3-2",
+    courseId: "frm",
+    chapterId: "frm-operational-risk",
+    question: "Wells Fargo 假帳戶事件的根本原因是？",
+    options: [
+      "技術系統故障",
+      "外部詐欺",
+      "績效獎勵結構鼓勵不當行為，文化失敗",
+      "監理機關失誤",
+    ],
+    answer: 2,
+    explanation:
+      "Wells Fargo 事件源於極端銷售目標壓力，員工為達標開設假帳戶。反映「績效獎勵結構」與「文化問題」。CEO 下台、罰款 30 億美元。教訓：適當的績效指標設計。",
+  },
+  {
+    id: "frm-or-v3-3",
+    courseId: "frm",
+    chapterId: "frm-operational-risk",
+    question: "下列何種網路威脅「最」可能由內部人造成？",
+    options: [
+      "DDoS 攻擊",
+      "釣魚郵件",
+      "員工資料外洩或濫用權限",
+      "外部勒索軟體",
+    ],
+    answer: 2,
+    explanation:
+      "內部人威脅常見：濫用權限存取資料、惡意洩漏、過失外洩。比外部攻擊更難偵測，因為內部人本來就有合法權限。需「零信任」原則、職務分離、權限定期審查。",
+  },
+  {
+    id: "frm-lr-v3-1",
+    courseId: "frm",
+    chapterId: "frm-liquidity-risk",
+    question: "Bagehot 最後貸款人原則「不」包括？",
+    options: [
+      "對 solvent 但流動性不足的機構放款",
+      "以優質擔保品為條件",
+      "收取懲罰性利率",
+      "無條件救助所有機構",
+    ],
+    answer: 3,
+    explanation:
+      "Bagehot 原則（1873）：央行只救助「有清償能力但暫時流動性不足」的機構，收取懲罰性利率，要求優質擔保品。無條件救助會造成道德風險，鼓勵冒險行為。",
+  },
+  {
+    id: "frm-lr-v3-2",
+    courseId: "frm",
+    chapterId: "frm-liquidity-risk",
+    question: "Basel III LCR 中，零售存款（受保險）的壓力流出率為？",
+    options: [
+      "3%",
+      "10%",
+      "25%",
+      "50%",
+    ],
+    answer: 0,
+    explanation:
+      "Basel III 假設受保險的「穩定零售存款」壓力下流失率為 3%（最低）。較不穩定零售存款 10%、中小企業 5-10%、大企業 25%、金融機構 100%。反映不同存款人忠誠度差異。",
+  },
+  {
+    id: "frm-lr-v3-3",
+    courseId: "frm",
+    chapterId: "frm-liquidity-risk",
+    question: "下列何種事件「最不」可能引發銀行擠兌？",
+    options: [
+      "銀行被傳出財務困難",
+      "信用評等被大幅下調",
+      "存款保險制度健全且眾所周知",
+      "重要客戶被傳出大額提款",
+    ],
+    answer: 2,
+    explanation:
+      "存款保險（如台灣 300 萬上限）是預防擠兌的關鍵機制。存款人知道存款受保護，恐慌降低。FDIC 創立後美國擠兌事件大減。但仍有信心要素，所以監管 LCR 也很重要。",
+  },
 ];
