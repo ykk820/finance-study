@@ -1,5 +1,4 @@
 import { Metadata } from "next";
-import { Suspense } from "react";
 import QuizRunner from "@/components/QuizRunner";
 import { courses } from "@/data/courses";
 
@@ -8,15 +7,26 @@ export const metadata: Metadata = {
   description: "依課程、高頻考點、收藏題與錯題紀錄進行金融證照題庫練習。",
 };
 
-export default function QuizPage() {
+type QuizPageProps = {
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
+};
+
+export default async function QuizPage({ searchParams }: QuizPageProps) {
+  const params = await searchParams;
   const courseOptions = courses.map((course) => ({
     id: course.id,
     name: course.name,
   }));
 
   return (
-    <Suspense fallback={<div className="mx-auto max-w-2xl px-4 py-12 text-slate-500">載入中...</div>}>
-      <QuizRunner courses={courseOptions} />
-    </Suspense>
+    <QuizRunner
+      courses={courseOptions}
+      initialCourse={firstParam(params?.course)}
+      initialMode={firstParam(params?.mode)}
+    />
   );
+}
+
+function firstParam(value: string | string[] | undefined) {
+  return Array.isArray(value) ? value[0] || "" : value || "";
 }

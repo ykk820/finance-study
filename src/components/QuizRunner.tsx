@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import {
   addWrongAnswer,
@@ -20,14 +19,12 @@ type CourseOption = {
 
 type QuizRunnerProps = {
   courses: CourseOption[];
+  initialCourse?: string;
+  initialMode?: string;
 };
 
-export default function QuizRunner({ courses }: QuizRunnerProps) {
-  const searchParams = useSearchParams();
-  const courseFilter = searchParams.get("course");
-  const mode = searchParams.get("mode");
-
-  const [selectedCourse, setSelectedCourse] = useState(courseFilter || "");
+export default function QuizRunner({ courses, initialCourse = "", initialMode = "" }: QuizRunnerProps) {
+  const [selectedCourse, setSelectedCourse] = useState(initialCourse);
   const [quizQuestions, setQuizQuestions] = useState<Question[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
@@ -123,14 +120,14 @@ export default function QuizRunner({ courses }: QuizRunnerProps) {
 
   useEffect(() => {
     const timer = window.setTimeout(() => {
-      if (mode === "bookmarks") startBookmarkQuiz();
-      if (mode === "wrongs") startWrongQuiz();
-      if (mode === "focus") startFocusQuiz();
-      if (mode === "timed") startTimedQuiz();
+      if (initialMode === "bookmarks") startBookmarkQuiz();
+      if (initialMode === "wrongs") startWrongQuiz();
+      if (initialMode === "focus") startFocusQuiz();
+      if (initialMode === "timed") startTimedQuiz();
     }, 0);
     return () => window.clearTimeout(timer);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mode]);
+  }, [initialMode]);
 
   useEffect(() => {
     if (!timedMode || !quizStarted || quizFinished) return;
