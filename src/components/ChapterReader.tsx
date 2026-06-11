@@ -48,6 +48,7 @@ export default function ChapterReader({
   const [showToolbar, setShowToolbar] = useState(false);
   const [toolbarPos, setToolbarPos] = useState({ x: 0, y: 0 });
   const [showHighlights, setShowHighlights] = useState(true);
+  const [readProgress, setReadProgress] = useState(0);
 
   const glossaryNotes = chapterGlossaryTerms.map((term, index) => ({
     term,
@@ -57,6 +58,16 @@ export default function ChapterReader({
   useEffect(() => {
     markChapterComplete(courseId, chapterId);
   }, [courseId, chapterId]);
+
+  useEffect(() => {
+    const onScroll = () => {
+      const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+      setReadProgress(scrollable > 0 ? Math.min(100, (window.scrollY / scrollable) * 100) : 0);
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [chapterId]);
 
   const handleMouseUp = () => {
     const selection = window.getSelection();
@@ -92,6 +103,7 @@ export default function ChapterReader({
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
+      <div className="reading-progress" style={{ width: `${readProgress}%` }} />
       <nav className="mb-6 text-sm text-slate-500">
         <Link href="/courses" className="hover:text-emerald-600">
           課程

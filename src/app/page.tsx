@@ -2,6 +2,7 @@ import Link from "next/link";
 import { courses } from "@/data/courses";
 import { examFocusCourses } from "@/data/examFocus";
 import { glossaryTerms } from "@/data/glossary";
+import { questions } from "@/data/questions";
 import DashboardSummary from "@/components/DashboardSummary";
 
 const categoryLabels: Record<string, string> = {
@@ -20,7 +21,7 @@ const categoryColors: Record<string, string> = {
 
 export default function HomePage() {
   return (
-    <div>
+    <div className="animate-fade-up">
       <section className="surface-grid border-b border-slate-200 bg-white">
         <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-4 py-16 sm:px-6 lg:grid-cols-[1.1fr_0.9fr] lg:px-8 lg:py-20">
           <div>
@@ -65,9 +66,12 @@ export default function HomePage() {
           <div className="rounded-2xl border border-slate-200 bg-slate-950 p-6 text-white shadow-xl">
             <p className="text-sm font-semibold text-emerald-300">Live Prep Dashboard</p>
             <div className="mt-6 grid grid-cols-2 gap-3">
-              <HeroStat label="證照課程" value="4" />
-              <HeroStat label="講義章節" value="22" />
-              <HeroStat label="練習題庫" value="50+" />
+              <HeroStat label="證照課程" value={`${courses.length}`} />
+              <HeroStat
+                label="講義章節"
+                value={`${courses.reduce((sum, c) => sum + c.chapters.length, 0)}`}
+              />
+              <HeroStat label="練習題庫" value={`${questions.length}`} />
               <HeroStat label="白話詞條" value={`${glossaryTerms.length}`} />
             </div>
             <div className="mt-6 rounded-xl border border-white/10 bg-white/5 p-4">
@@ -156,7 +160,7 @@ export default function HomePage() {
             <Link
               key={course.id}
               href={`/courses/${course.id}`}
-              className="block bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md hover:border-emerald-300 transition-all"
+              className="card-lift block bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:border-emerald-300"
             >
               <span
                 className={`inline-block px-3 py-1 rounded-full text-xs font-medium border ${categoryColors[course.category]}`}
