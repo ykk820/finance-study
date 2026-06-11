@@ -20,20 +20,19 @@ const categoryColors: Record<string, string> = {
 };
 
 export default function HomePage() {
+  const totalChapters = courses.reduce((sum, course) => sum + course.chapters.length, 0);
+
   return (
     <div className="animate-fade-up">
       <section className="surface-grid border-b border-slate-200 bg-white">
-        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-4 py-16 sm:px-6 lg:grid-cols-[1.1fr_0.9fr] lg:px-8 lg:py-20">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-4 py-14 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:px-8 lg:py-18">
           <div>
-            <p className="mb-4 inline-flex rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-sm font-semibold text-emerald-700">
-              CFA / 高業 / 初業 / FRM 一站式備考
-            </p>
             <h1 className="max-w-3xl text-4xl font-bold leading-tight text-slate-950 sm:text-5xl">
-              把講義、題庫、錯題與考點整理成每天能執行的讀書節奏
+              金融證照備考，從今天該做什麼開始
             </h1>
             <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-600">
-              FinanceStudy 會依章節進度、答題紀錄和高頻考點，推薦下一步該讀什麼、該練什麼。
-              不只是資料庫，而是金融證照備考儀表板。
+              把 CFA、高業、初業、FRM 的講義、題庫、錯題、白話註釋和高頻考點放在同一個工作台。
+              先抓重點，再做題驗證，最後回錯題補洞。
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
@@ -61,25 +60,52 @@ export default function HomePage() {
                 白話文詞庫
               </Link>
             </div>
+            <div className="mt-8 grid max-w-2xl grid-cols-3 gap-3">
+              <HeroStat tone="light" label="課程" value={`${courses.length}`} />
+              <HeroStat tone="light" label="章節" value={`${totalChapters}`} />
+              <HeroStat tone="light" label="題目" value={`${questions.length}`} />
+            </div>
           </div>
 
-          <div className="rounded-2xl border border-slate-200 bg-slate-950 p-6 text-white shadow-xl">
-            <p className="text-sm font-semibold text-emerald-300">Live Prep Dashboard</p>
-            <div className="mt-6 grid grid-cols-2 gap-3">
-              <HeroStat label="證照課程" value={`${courses.length}`} />
-              <HeroStat
-                label="講義章節"
-                value={`${courses.reduce((sum, c) => sum + c.chapters.length, 0)}`}
-              />
-              <HeroStat label="練習題庫" value={`${questions.length}`} />
-              <HeroStat label="白話詞條" value={`${glossaryTerms.length}`} />
+          <div className="rounded-xl border border-slate-800 bg-slate-950 p-6 text-white shadow-xl">
+            <div className="flex items-start justify-between gap-4 border-b border-white/10 pb-5">
+              <div>
+                <p className="text-sm font-semibold text-emerald-300">今日備考流程</p>
+                <h2 className="mt-2 text-2xl font-bold">讀重點，做題，回補弱點</h2>
+              </div>
+              <span className="rounded-md bg-emerald-400 px-2 py-1 text-xs font-bold text-slate-950">
+                Live
+              </span>
             </div>
-            <div className="mt-6 rounded-xl border border-white/10 bg-white/5 p-4">
-              <p className="text-sm text-slate-300">今日建議</p>
-              <p className="mt-2 text-xl font-semibold">先補弱點，再做高頻題</p>
-              <p className="mt-2 text-sm leading-6 text-slate-300">
-                進度熱圖、錯題本、公式卡和考前 14 天計畫會一起更新你的備考路線。
-              </p>
+            <div className="mt-5 space-y-3">
+              <HeroStep
+                index="01"
+                title="讀本章講義"
+                description="先看白話註釋與考試陷阱，減少死背。"
+                href="/courses"
+              />
+              <HeroStep
+                index="02"
+                title="做高頻題"
+                description="從考情權重最高的章節抽題，快速驗證。"
+                href="/quiz?mode=focus"
+              />
+              <HeroStep
+                index="03"
+                title="整理錯題"
+                description="把錯因分類，下一輪複習就有方向。"
+                href="/wrong-answers"
+              />
+            </div>
+            <div className="mt-5 grid grid-cols-2 gap-3">
+              <HeroStat label="白話詞條" value={`${glossaryTerms.length}`} />
+              <HeroStat
+                label="高頻考點"
+                value={`${examFocusCourses.reduce(
+                  (sum, focus) => sum + focus.topics.filter((topic) => topic.priority === "high").length,
+                  0
+                )}`}
+              />
             </div>
           </div>
         </div>
@@ -185,11 +211,56 @@ export default function HomePage() {
   );
 }
 
-function HeroStat({ label, value }: { label: string; value: string }) {
+function HeroStep({
+  index,
+  title,
+  description,
+  href,
+}: {
+  index: string;
+  title: string;
+  description: string;
+  href: string;
+}) {
   return (
-    <div className="rounded-xl border border-white/10 bg-white/5 p-4">
-      <p className="text-3xl font-bold">{value}</p>
-      <p className="mt-1 text-sm text-slate-300">{label}</p>
+    <Link
+      href={href}
+      className="group flex items-start gap-4 rounded-lg border border-white/10 bg-white/5 p-4 transition-colors hover:bg-white/10"
+    >
+      <span className="mt-0.5 font-mono text-xs font-semibold text-emerald-300">{index}</span>
+      <span>
+        <span className="block font-semibold text-white">{title}</span>
+        <span className="mt-1 block text-sm leading-6 text-slate-300 group-hover:text-slate-200">
+          {description}
+        </span>
+      </span>
+    </Link>
+  );
+}
+
+function HeroStat({
+  label,
+  value,
+  tone = "dark",
+}: {
+  label: string;
+  value: string;
+  tone?: "dark" | "light";
+}) {
+  return (
+    <div
+      className={
+        tone === "light"
+          ? "rounded-lg border border-slate-200 bg-white p-4 shadow-sm"
+          : "border-t border-white/10 pt-3"
+      }
+    >
+      <p className={tone === "light" ? "text-2xl font-bold text-slate-950" : "text-2xl font-bold text-white"}>
+        {value}
+      </p>
+      <p className={tone === "light" ? "mt-1 text-sm text-slate-500" : "mt-1 text-sm text-slate-300"}>
+        {label}
+      </p>
     </div>
   );
 }
