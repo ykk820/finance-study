@@ -5,6 +5,8 @@ import { glossaryTerms } from "@/data/glossary";
 import { questions } from "@/data/questions";
 import DashboardSummary from "@/components/DashboardSummary";
 
+export const dynamic = "force-dynamic";
+
 const categoryLabels: Record<string, string> = {
   cfa: "CFA",
   "securities-senior": "高業",
