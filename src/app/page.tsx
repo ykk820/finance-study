@@ -21,95 +21,87 @@ const categoryColors: Record<string, string> = {
   frm: "bg-red-100 text-red-800 border-red-200",
 };
 
+const readinessBars = [
+  { label: "Ethics", value: 76, tone: "bg-emerald-400" },
+  { label: "FSA", value: 64, tone: "bg-blue-400" },
+  { label: "Fixed Income", value: 58, tone: "bg-indigo-400" },
+  { label: "法規", value: 71, tone: "bg-amber-300" },
+];
+
+const heatmapCells = [
+  "bg-emerald-400",
+  "bg-amber-300",
+  "bg-rose-400",
+  "bg-slate-600",
+  "bg-emerald-400",
+  "bg-blue-400",
+  "bg-slate-600",
+  "bg-amber-300",
+  "bg-emerald-400",
+  "bg-rose-400",
+  "bg-indigo-400",
+  "bg-slate-600",
+];
+
 export default function HomePage() {
   const totalChapters = courses.reduce((sum, course) => sum + course.chapters.length, 0);
+  const highPriorityTotal = examFocusCourses.reduce(
+    (sum, focus) => sum + focus.topics.filter((topic) => topic.priority === "high").length,
+    0
+  );
 
   return (
     <div className="animate-fade-up">
-      <section className="surface-grid border-b border-slate-200 bg-white">
-        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-4 py-14 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:px-8 lg:py-18">
+      <section className="premium-grid border-b border-slate-200">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-4 py-14 sm:px-6 lg:grid-cols-[0.92fr_1.08fr] lg:px-8 lg:py-18">
           <div>
             <h1 className="max-w-3xl text-4xl font-bold leading-tight text-slate-950 sm:text-5xl">
-              金融證照備考，從今天該做什麼開始
+              金融證照備考工作台
             </h1>
             <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-600">
-              把 CFA、高業、初業、FRM 的講義、題庫、錯題、白話註釋和高頻考點放在同一個工作台。
-              先抓重點，再做題驗證，最後回錯題補洞。
+              CFA、高業、初業、FRM 的講義、題庫、錯題、白話註釋和高頻考點整合在同一個學習指揮中心。
+              每次打開都知道今天要讀哪一章、刷哪一組題、補哪個弱點。
             </p>
+            <div className="mt-6 flex flex-wrap gap-2">
+              {courses.map((course) => (
+                <Link
+                  key={course.id}
+                  href={`/courses/${course.id}`}
+                  className={`rounded-full border px-3 py-1.5 text-sm font-medium ${categoryColors[course.category]}`}
+                >
+                  {categoryLabels[course.category]}
+                </Link>
+              ))}
+            </div>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
                 href="/study-plan"
-                className="rounded-md bg-emerald-600 px-5 py-3 font-medium text-white shadow-sm transition-colors hover:bg-emerald-700"
+                className="rounded-full bg-slate-950 px-5 py-3 font-semibold text-white shadow-lg shadow-slate-950/15 transition-colors hover:bg-slate-800"
               >
                 建立考前計畫
               </Link>
               <Link
                 href="/quiz?mode=focus"
-                className="rounded-md bg-slate-900 px-5 py-3 font-medium text-white shadow-sm transition-colors hover:bg-slate-700"
+                className="rounded-full bg-emerald-500 px-5 py-3 font-semibold text-slate-950 shadow-lg shadow-emerald-500/20 transition-colors hover:bg-emerald-400"
               >
                 高頻考點練習
               </Link>
               <Link
                 href="/exam-focus"
-                className="rounded-md border border-slate-300 bg-white px-5 py-3 font-medium text-slate-800 transition-colors hover:bg-slate-50"
+                className="rounded-full border border-slate-300 bg-white px-5 py-3 font-semibold text-slate-800 transition-colors hover:bg-slate-50"
               >
                 查看考情分析
               </Link>
-              <Link
-                href="/plain-language"
-                className="rounded-md border border-emerald-200 bg-emerald-50 px-5 py-3 font-medium text-emerald-800 transition-colors hover:bg-emerald-100"
-              >
-                白話文詞庫
-              </Link>
             </div>
-            <div className="mt-8 grid max-w-2xl grid-cols-3 gap-3">
+            <div className="mt-8 grid max-w-2xl grid-cols-2 gap-3 sm:grid-cols-4">
               <HeroStat tone="light" label="課程" value={`${courses.length}`} />
               <HeroStat tone="light" label="章節" value={`${totalChapters}`} />
               <HeroStat tone="light" label="題目" value={`${questions.length}`} />
+              <HeroStat tone="light" label="高頻考點" value={`${highPriorityTotal}`} />
             </div>
           </div>
 
-          <div className="rounded-xl border border-slate-800 bg-slate-950 p-6 text-white shadow-xl">
-            <div className="flex items-start justify-between gap-4 border-b border-white/10 pb-5">
-              <div>
-                <p className="text-sm font-semibold text-emerald-300">今日備考流程</p>
-                <h2 className="mt-2 text-2xl font-bold">讀重點，做題，回補弱點</h2>
-              </div>
-              <span className="rounded-md bg-emerald-400 px-2 py-1 text-xs font-bold text-slate-950">
-                Live
-              </span>
-            </div>
-            <div className="mt-5 space-y-3">
-              <HeroStep
-                index="01"
-                title="讀本章講義"
-                description="先看白話註釋與考試陷阱，減少死背。"
-                href="/courses"
-              />
-              <HeroStep
-                index="02"
-                title="做高頻題"
-                description="從考情權重最高的章節抽題，快速驗證。"
-                href="/quiz?mode=focus"
-              />
-              <HeroStep
-                index="03"
-                title="整理錯題"
-                description="把錯因分類，下一輪複習就有方向。"
-                href="/wrong-answers"
-              />
-            </div>
-            <div className="mt-5 grid grid-cols-2 gap-3">
-              <HeroStat label="白話詞條" value={`${glossaryTerms.length}`} />
-              <HeroStat
-                label="高頻考點"
-                value={`${examFocusCourses.reduce(
-                  (sum, focus) => sum + focus.topics.filter((topic) => topic.priority === "high").length,
-                  0
-                )}`}
-              />
-            </div>
-          </div>
+          <StudyCommandCenter glossaryCount={glossaryTerms.length} highPriorityTotal={highPriorityTotal} />
         </div>
       </section>
 
@@ -223,7 +215,91 @@ export default function HomePage() {
   );
 }
 
-function HeroStep({
+function StudyCommandCenter({
+  glossaryCount,
+  highPriorityTotal,
+}: {
+  glossaryCount: number;
+  highPriorityTotal: number;
+}) {
+  return (
+    <div className="command-surface rounded-3xl border border-white/10 p-5 text-white">
+      <div className="flex items-start justify-between gap-4 border-b border-white/10 pb-5">
+        <div>
+          <p className="text-sm font-semibold text-emerald-300">今日備考指揮中心</p>
+          <h2 className="mt-2 text-2xl font-bold">讀重點，做題，回補弱點</h2>
+        </div>
+        <span className="rounded-full border border-emerald-300/30 bg-emerald-300/15 px-3 py-1 text-xs font-bold text-emerald-200">
+          LIVE
+        </span>
+      </div>
+
+      <div className="mt-5 grid gap-4 lg:grid-cols-[1fr_0.82fr]">
+        <div className="space-y-3">
+          <CommandRow
+            index="01"
+            title="讀本章講義"
+            description="先看白話註釋與考試陷阱，減少死背。"
+            href="/courses"
+          />
+          <CommandRow
+            index="02"
+            title="做高頻題"
+            description="從考情權重最高的章節抽題，快速驗證。"
+            href="/quiz?mode=focus"
+          />
+          <CommandRow
+            index="03"
+            title="整理錯題"
+            description="把錯因分類，下一輪複習就有方向。"
+            href="/wrong-answers"
+          />
+        </div>
+
+        <div className="rounded-2xl border border-white/10 bg-white/[0.06] p-4">
+          <div className="flex items-center justify-between gap-3">
+            <p className="text-sm font-semibold text-slate-100">考點雷達</p>
+            <span className="text-xs text-slate-400">{highPriorityTotal} high</span>
+          </div>
+          <div className="mt-4 space-y-3">
+            {readinessBars.map((bar) => (
+              <div key={bar.label}>
+                <div className="mb-1 flex justify-between text-xs text-slate-300">
+                  <span>{bar.label}</span>
+                  <span>{bar.value}%</span>
+                </div>
+                <div className="h-2 overflow-hidden rounded-full bg-white/10">
+                  <div className={`h-full rounded-full ${bar.tone}`} style={{ width: `${bar.value}%` }} />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-4 grid gap-4 md:grid-cols-[0.9fr_1.1fr]">
+        <div className="rounded-2xl border border-white/10 bg-white/[0.06] p-4">
+          <div className="mb-3 flex items-center justify-between gap-3">
+            <p className="text-sm font-semibold text-slate-100">弱點熱圖</p>
+            <span className="text-xs text-slate-400">chapter signal</span>
+          </div>
+          <div className="grid grid-cols-6 gap-2">
+            {heatmapCells.map((cell, index) => (
+              <span key={`${cell}-${index}`} className={`h-8 rounded-lg ${cell} opacity-90`} />
+            ))}
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 gap-3">
+          <HeroStat label="白話詞條" value={`${glossaryCount}`} />
+          <HeroStat label="高頻考點" value={`${highPriorityTotal}`} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function CommandRow({
   index,
   title,
   description,
@@ -237,9 +313,11 @@ function HeroStep({
   return (
     <Link
       href={href}
-      className="group flex items-start gap-4 rounded-lg border border-white/10 bg-white/5 p-4 transition-colors hover:bg-white/10"
+      className="group flex items-start gap-4 rounded-2xl border border-white/10 bg-white/[0.06] p-4 transition-colors hover:bg-white/[0.1]"
     >
-      <span className="mt-0.5 font-mono text-xs font-semibold text-emerald-300">{index}</span>
+      <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-white/10 font-mono text-xs font-semibold text-emerald-300">
+        {index}
+      </span>
       <span>
         <span className="block font-semibold text-white">{title}</span>
         <span className="mt-1 block text-sm leading-6 text-slate-300 group-hover:text-slate-200">

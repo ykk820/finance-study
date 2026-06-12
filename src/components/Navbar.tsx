@@ -32,26 +32,29 @@ export default function Navbar() {
 
   const isActive = (href: string) => pathname === href || (href !== "/" && pathname.startsWith(`${href}/`));
   const navLinkClass = (href: string, tone: "primary" | "secondary" = "primary") =>
-    `rounded-md px-3 py-2 text-sm font-medium transition-colors ${
+    `rounded-full px-3 py-2 text-sm font-medium transition-colors ${
       isActive(href)
-        ? "bg-emerald-500 text-slate-950"
+        ? "bg-white text-slate-950 shadow-sm"
         : tone === "primary"
           ? "text-slate-100 hover:bg-white/10 hover:text-white"
           : "text-slate-300 hover:bg-white/10 hover:text-white"
     }`;
 
   return (
-    <nav className="sticky top-0 z-40 border-b border-white/10 bg-slate-950/95 text-white shadow-sm backdrop-blur">
+    <nav className="sticky top-0 z-40 border-b border-white/10 bg-slate-950/95 text-white shadow-lg shadow-slate-950/10 backdrop-blur">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between gap-4">
           <Link href="/" className="flex items-center gap-2" onClick={() => setMenuOpen(false)}>
-            <span className="grid h-8 w-8 place-items-center rounded-lg bg-emerald-400 text-sm font-black text-slate-950">
-              F
+            <span className="grid h-9 w-9 place-items-center rounded-xl border border-emerald-300/40 bg-emerald-400 text-xs font-black text-slate-950 shadow-sm shadow-emerald-400/20">
+              FS
             </span>
-            <span className="text-lg font-semibold tracking-normal text-white">FinanceStudy</span>
+            <span>
+              <span className="block text-lg font-semibold tracking-normal text-white">FinanceStudy</span>
+              <span className="hidden text-[11px] font-medium text-slate-400 sm:block">exam command center</span>
+            </span>
           </Link>
           <div className="hidden items-center gap-2 lg:flex">
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1 rounded-full border border-white/10 bg-white/[0.04] p-1">
               {primaryNavItems.map((item) => (
                 <Link
                   key={item.href}
@@ -63,7 +66,7 @@ export default function Navbar() {
               ))}
             </div>
             <div className="mx-1 h-6 w-px bg-white/10" />
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1 rounded-full border border-white/10 bg-white/[0.04] p-1">
               {secondaryNavItems.map((item) => (
                 <Link
                   key={item.href}
@@ -77,13 +80,13 @@ export default function Navbar() {
             <div className="mx-1 h-6 w-px bg-white/10" />
             {user ? (
               <div className="flex items-center gap-1">
-                <span className="rounded-md px-3 py-2 text-sm font-medium text-emerald-300">
+                <span className="rounded-full border border-emerald-300/20 bg-emerald-300/10 px-3 py-2 text-sm font-medium text-emerald-200">
                   {user.name}
                 </span>
                 <button
                   type="button"
                   onClick={handleLogout}
-                  className="rounded-md px-3 py-2 text-sm font-medium text-slate-300 transition-colors hover:bg-white/10 hover:text-white"
+                  className="rounded-full px-3 py-2 text-sm font-medium text-slate-300 transition-colors hover:bg-white/10 hover:text-white"
                 >
                   登出
                 </button>
@@ -91,16 +94,22 @@ export default function Navbar() {
             ) : (
               <Link
                 href="/auth"
-                className={navLinkClass("/auth", "secondary")}
+                className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-2 text-sm font-medium text-slate-200 hover:bg-white/10 hover:text-white"
               >
                 學習者
               </Link>
             )}
+            <Link
+              href="/quiz?mode=focus"
+              className="rounded-full bg-emerald-400 px-4 py-2 text-sm font-semibold text-slate-950 shadow-sm shadow-emerald-400/20 hover:bg-emerald-300"
+            >
+              開始練習
+            </Link>
           </div>
           <button
             type="button"
             onClick={() => setMenuOpen((open) => !open)}
-            className="rounded-md border border-white/10 px-3 py-2 text-sm font-medium text-slate-200 hover:bg-white/10 hover:text-white lg:hidden"
+            className="rounded-full border border-white/10 px-3 py-2 text-sm font-medium text-slate-200 hover:bg-white/10 hover:text-white lg:hidden"
             aria-expanded={menuOpen}
           >
             {menuOpen ? "關閉" : "選單"}
