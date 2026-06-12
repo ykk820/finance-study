@@ -50,14 +50,22 @@ export default function FlashcardsPage() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <div className="mb-8">
-        <p className="text-sm font-semibold text-emerald-600 mb-2">Flashcards</p>
-        <h1 className="text-3xl font-bold text-slate-900">公式卡與法規卡</h1>
-        <p className="mt-2 text-slate-600">用短卡片複習高頻公式、法規關鍵字與易錯陷阱。</p>
-      </div>
+    <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
+      <section className="mb-8 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <div className="grid gap-4 lg:grid-cols-[1fr_220px] lg:items-end">
+          <div>
+            <p className="mb-2 text-sm font-semibold text-emerald-600">Flashcards</p>
+            <h1 className="text-3xl font-bold text-slate-950">公式卡與法規卡</h1>
+            <p className="mt-3 leading-7 text-slate-600">用短卡片複習高頻公式、法規關鍵字與易錯陷阱。</p>
+          </div>
+          <div className="rounded-lg border border-slate-200 bg-slate-50 p-4 text-center">
+            <p className="text-2xl font-bold text-slate-950">{cards.length}</p>
+            <p className="mt-1 text-xs text-slate-500">目前卡片</p>
+          </div>
+        </div>
+      </section>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+      <div className="mb-8 grid grid-cols-1 gap-4 rounded-xl border border-slate-200 bg-white p-4 shadow-sm md:grid-cols-2">
         <select
           value={courseId}
           onChange={(event) => resetFilters(event.target.value, type)}
@@ -83,17 +91,17 @@ export default function FlashcardsPage() {
       </div>
 
       {cards.length === 0 || !activeCard ? (
-        <div className="bg-white border rounded-xl p-10 text-center">
+        <div className="rounded-xl border border-slate-200 bg-white p-10 text-center shadow-sm">
           <p className="text-slate-600">目前沒有符合條件的卡片。</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-6">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_300px]">
           <button
             type="button"
             onClick={() => setFlipped((value) => !value)}
-            className="min-h-[320px] rounded-xl border border-slate-200 bg-white p-8 text-left shadow-sm hover:border-emerald-300 transition-colors"
+            className="panel-shadow min-h-[360px] rounded-2xl border border-slate-200 bg-white p-8 text-left transition-colors hover:border-emerald-300"
           >
-            <div className="flex items-center justify-between gap-4 mb-8">
+            <div className="mb-8 flex items-center justify-between gap-4">
               <span className={`rounded-full border px-3 py-1 text-sm font-medium ${typeStyle[activeCard.type]}`}>
                 {typeLabel[activeCard.type]}
               </span>
@@ -101,19 +109,21 @@ export default function FlashcardsPage() {
                 {index + 1} / {cards.length}
               </span>
             </div>
-            <p className="text-sm text-slate-500 mb-3">
+            <p className="mb-3 text-sm text-slate-500">
               {course?.name} / {chapter?.title}
             </p>
-            <h2 className="text-3xl font-bold text-slate-900 mb-6">
+            <h2 className="mb-6 text-3xl font-bold leading-tight text-slate-950">
               {flipped ? activeCard.back : activeCard.front}
             </h2>
             {flipped ? (
-              <div className="rounded-lg bg-rose-50 border border-rose-100 p-4">
-                <p className="text-sm font-semibold text-rose-700 mb-1">易錯陷阱</p>
+              <div className="rounded-lg border border-rose-100 bg-rose-50 p-4">
+                <p className="mb-1 text-sm font-semibold text-rose-700">易錯陷阱</p>
                 <p className="text-sm text-rose-700">{activeCard.trap}</p>
               </div>
             ) : (
-              <p className="text-slate-500">點卡片看答案與陷阱。</p>
+              <p className="rounded-lg border border-slate-100 bg-slate-50 p-4 text-sm text-slate-500">
+                點卡片看答案與陷阱。
+              </p>
             )}
           </button>
 
@@ -121,7 +131,7 @@ export default function FlashcardsPage() {
             <button
               type="button"
               onClick={nextCard}
-              className="w-full rounded-md bg-emerald-600 px-4 py-3 font-medium text-white hover:bg-emerald-700"
+              className="w-full rounded-md bg-emerald-600 px-4 py-3 font-semibold text-white hover:bg-emerald-700"
             >
               下一張
             </button>
@@ -133,10 +143,16 @@ export default function FlashcardsPage() {
                 回講義複習
               </Link>
             )}
-            <div className="rounded-lg bg-white border border-slate-200 p-4">
-              <p className="font-semibold text-slate-900 mb-2">建議用法</p>
+            <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+              <p className="mb-2 font-semibold text-slate-950">建議用法</p>
               <p className="text-sm leading-6 text-slate-600">
                 先看正面，心中回答後再翻面。答不出來就回講義，把陷阱加入畫重點。
+              </p>
+            </div>
+            <div className="rounded-xl border border-slate-200 bg-slate-950 p-4 text-white">
+              <p className="text-sm font-semibold text-emerald-300">目前狀態</p>
+              <p className="mt-2 text-sm text-slate-300">
+                第 {index + 1} 張，{flipped ? "正在看答案與陷阱" : "正在回想正面題目"}。
               </p>
             </div>
           </aside>

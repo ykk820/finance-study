@@ -116,98 +116,108 @@ export default function HomePage() {
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <DashboardSummary />
 
-      <section className="mb-16 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-        <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-          <div>
-            <p className="text-sm font-semibold text-emerald-600 mb-1">Plain language learning</p>
-            <h2 className="text-2xl font-bold text-slate-900">難懂名詞，先用人話搞懂</h2>
-            <p className="mt-2 max-w-2xl text-slate-600">
-              每個名詞都有正式定義、白話翻譯、生活比喻、考試陷阱和小例子。先懂意思，再背公式。
-            </p>
-          </div>
-          <Link
-            href="/plain-language"
-            className="rounded-md bg-slate-900 px-4 py-3 text-center text-sm font-medium text-white hover:bg-slate-700"
-          >
-            打開白話詞庫
-          </Link>
-        </div>
-        <div className="mt-5 grid grid-cols-1 gap-3 md:grid-cols-3">
-          {glossaryTerms.slice(0, 3).map((term) => (
-            <Link
-              key={term.id}
-              href={`/plain-language?term=${term.id}`}
-              className="rounded-xl border border-slate-100 bg-slate-50 p-4 hover:border-emerald-200 hover:bg-emerald-50/50"
-            >
-              <p className="font-semibold text-slate-950">{term.term}</p>
-              <p className="mt-2 line-clamp-2 text-sm leading-6 text-slate-600">{term.plain}</p>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      <section className="mb-16">
-        <div className="flex items-end justify-between gap-4 mb-6">
-          <div>
-            <p className="text-sm font-semibold text-emerald-600 mb-1">Data-driven prep</p>
-            <h2 className="text-2xl font-bold text-slate-900">考情優先順序</h2>
-          </div>
-          <Link href="/exam-focus" className="text-sm font-medium text-emerald-700 hover:text-emerald-800">
-            查看完整分析 →
-          </Link>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          {examFocusCourses.map((focus) => {
-            const course = courses.find((item) => item.id === focus.courseId);
-            const highPriorityCount = focus.topics.filter((topic) => topic.priority === "high").length;
-            if (!course) return null;
-
-            return (
+        <section className="mb-16 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+          <div className="grid gap-0 lg:grid-cols-[0.85fr_1.15fr]">
+            <div className="soft-panel border-b border-slate-200 p-6 lg:border-b-0 lg:border-r">
+              <p className="mb-1 text-sm font-semibold text-emerald-600">Plain language learning</p>
+              <h2 className="text-2xl font-bold text-slate-950">難懂名詞，先用人話搞懂</h2>
+              <p className="mt-3 leading-7 text-slate-600">
+                每個名詞都有正式定義、白話翻譯、生活比喻、考試陷阱和小例子。先懂意思，再背公式。
+              </p>
               <Link
-                key={focus.courseId}
-                href="/exam-focus"
-                className="bg-white border border-slate-200 rounded-lg p-4 hover:border-emerald-300 hover:shadow-sm transition-all"
+                href="/plain-language"
+                className="mt-6 inline-flex rounded-md bg-slate-900 px-4 py-3 text-sm font-semibold text-white hover:bg-slate-700"
               >
-                <p className="font-semibold text-slate-900">{course.name}</p>
-                <p className="mt-2 text-sm text-slate-600 line-clamp-2">
-                  {focus.overallStrategy}
-                </p>
-                <p className="mt-3 text-xs text-rose-600 font-medium">
-                  {highPriorityCount} 個高優先考點
+                打開白話詞庫
+              </Link>
+            </div>
+            <div className="grid grid-cols-1 divide-y divide-slate-100 md:grid-cols-3 md:divide-x md:divide-y-0">
+              {glossaryTerms.slice(0, 3).map((term, index) => (
+                <Link
+                  key={term.id}
+                  href={`/plain-language?term=${term.id}`}
+                  className="group p-5 transition-colors hover:bg-emerald-50/50"
+                >
+                  <span className="font-mono text-xs font-semibold text-slate-400">註{index + 1}</span>
+                  <p className="mt-3 font-semibold text-slate-950">{term.term}</p>
+                  <p className="mt-2 line-clamp-3 text-sm leading-6 text-slate-600">{term.plain}</p>
+                  <p className="mt-4 text-sm font-medium text-emerald-700 group-hover:text-emerald-800">
+                    看完整白話 →
+                  </p>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="mb-16">
+          <div className="mb-6 flex items-end justify-between gap-4">
+            <div>
+              <p className="mb-1 text-sm font-semibold text-emerald-600">Data-driven prep</p>
+              <h2 className="text-2xl font-bold text-slate-950">考情優先順序</h2>
+            </div>
+            <Link href="/exam-focus" className="text-sm font-medium text-emerald-700 hover:text-emerald-800">
+              查看完整分析 →
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
+            {examFocusCourses.map((focus) => {
+              const course = courses.find((item) => item.id === focus.courseId);
+              const highPriorityCount = focus.topics.filter((topic) => topic.priority === "high").length;
+              if (!course) return null;
+
+              return (
+                <Link
+                  key={focus.courseId}
+                  href={`/courses/${focus.courseId}`}
+                  className="card-lift rounded-xl border border-slate-200 bg-white p-5 hover:border-emerald-300"
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <p className="font-semibold text-slate-950">{course.name}</p>
+                    <span className="rounded-full bg-rose-50 px-2 py-1 text-xs font-semibold text-rose-700">
+                      {highPriorityCount} 高
+                    </span>
+                  </div>
+                  <p className="mt-3 line-clamp-3 text-sm leading-6 text-slate-600">
+                    {focus.overallStrategy}
+                  </p>
+                  <p className="mt-4 text-sm font-medium text-emerald-700">進入課程 →</p>
+                </Link>
+              );
+            })}
+          </div>
+        </section>
+
+        <section>
+          <div className="mb-8 flex items-end justify-between gap-4">
+            <h2 className="text-2xl font-bold text-slate-950">課程總覽</h2>
+            <Link href="/courses" className="text-sm font-medium text-emerald-700 hover:text-emerald-800">
+              所有課程 →
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4">
+            {courses.map((course) => (
+              <Link
+                key={course.id}
+                href={`/courses/${course.id}`}
+                className="card-lift flex min-h-52 flex-col justify-between rounded-xl border border-slate-200 bg-white p-6 hover:border-emerald-300"
+              >
+                <div>
+                  <span
+                    className={`inline-block rounded-full border px-3 py-1 text-xs font-medium ${categoryColors[course.category]}`}
+                  >
+                    {categoryLabels[course.category]}
+                  </span>
+                  <h3 className="mt-4 text-lg font-semibold text-slate-950">{course.name}</h3>
+                  <p className="mt-2 line-clamp-3 text-sm leading-6 text-slate-600">{course.description}</p>
+                </div>
+                <p className="mt-5 border-t border-slate-100 pt-4 text-sm text-slate-500">
+                  {course.chapters.length} 個章節
                 </p>
               </Link>
-            );
-          })}
-        </div>
-      </section>
-
-      <section>
-        <h2 className="text-2xl font-bold text-slate-900 mb-8">課程總覽</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {courses.map((course) => (
-            <Link
-              key={course.id}
-              href={`/courses/${course.id}`}
-              className="card-lift block bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:border-emerald-300"
-            >
-              <span
-                className={`inline-block px-3 py-1 rounded-full text-xs font-medium border ${categoryColors[course.category]}`}
-              >
-                {categoryLabels[course.category]}
-              </span>
-              <h3 className="mt-4 text-lg font-semibold text-slate-900">
-                {course.name}
-              </h3>
-              <p className="mt-2 text-sm text-slate-600 line-clamp-2">
-                {course.description}
-              </p>
-              <p className="mt-4 text-xs text-slate-400">
-                {course.chapters.length} 個章節
-              </p>
-            </Link>
-          ))}
-        </div>
-      </section>
+            ))}
+          </div>
+        </section>
       </div>
     </div>
   );
