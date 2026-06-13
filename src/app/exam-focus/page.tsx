@@ -23,20 +23,54 @@ export default function ExamFocusPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-      <section className="mb-10 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-        <div className="grid gap-6 lg:grid-cols-[1fr_360px] lg:items-end">
-          <div>
+      <section className="premium-grid mb-10 overflow-hidden rounded-3xl border border-slate-200">
+        <div className="grid gap-0 lg:grid-cols-[1fr_420px]">
+          <div className="p-6 sm:p-8">
             <p className="mb-2 text-sm font-semibold text-emerald-600">Exam Intelligence</p>
             <h1 className="text-3xl font-bold text-slate-950 sm:text-4xl">考試重點與考情分析</h1>
             <p className="mt-3 max-w-3xl leading-7 text-slate-600">
               依官方考綱、科目權重、公開題目與解答資訊整理。這裡不複製歷屆考題，
               而是把可公開引用的考試結構轉成可執行的讀書優先順序。
             </p>
+            <div className="mt-6 grid max-w-xl grid-cols-3 gap-3">
+              <SummaryPill label="證照" value={`${examFocusCourses.length}`} />
+              <SummaryPill label="考點" value={`${topicTotal}`} />
+              <SummaryPill label="高優先" value={`${highPriorityTotal}`} />
+            </div>
           </div>
-          <div className="grid grid-cols-3 gap-3">
-            <SummaryPill label="證照" value={`${examFocusCourses.length}`} />
-            <SummaryPill label="考點" value={`${topicTotal}`} />
-            <SummaryPill label="高優先" value={`${highPriorityTotal}`} />
+          <div className="command-surface p-6 text-white">
+            <div className="mb-5 flex items-start justify-between gap-4">
+              <div>
+                <p className="text-sm font-semibold text-emerald-300">Priority board</p>
+                <h2 className="mt-1 text-2xl font-bold">先讀高權重</h2>
+              </div>
+              <span className="rounded-full border border-white/10 bg-white/10 px-3 py-1 text-xs text-slate-200">
+                live map
+              </span>
+            </div>
+            <div className="space-y-3">
+              {examFocusCourses.map((focus) => {
+                const course = courses.find((item) => item.id === focus.courseId);
+                const highCount = focus.topics.filter((topic) => topic.priority === "high").length;
+                const width = Math.min(100, 35 + highCount * 18);
+                if (!course) return null;
+                return (
+                  <Link
+                    key={focus.courseId}
+                    href={`/courses/${focus.courseId}`}
+                    className="block rounded-2xl border border-white/10 bg-white/[0.06] p-4 hover:bg-white/[0.1]"
+                  >
+                    <div className="flex items-center justify-between gap-3 text-sm">
+                      <span className="font-semibold text-white">{course.name}</span>
+                      <span className="text-rose-200">{highCount} high</span>
+                    </div>
+                    <div className="mt-3 h-2 overflow-hidden rounded-full bg-white/10">
+                      <div className="h-full rounded-full bg-rose-400" style={{ width: `${width}%` }} />
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
           </div>
         </div>
       </section>
@@ -50,7 +84,7 @@ export default function ExamFocusPage() {
           return (
             <article
               key={focus.courseId}
-              className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm"
+              className="premium-card overflow-hidden rounded-2xl border border-slate-200 bg-white"
             >
               <div className="soft-panel border-b border-slate-200 p-6">
                 <div className="mb-4 flex items-start justify-between gap-4">

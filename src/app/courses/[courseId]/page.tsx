@@ -40,9 +40,9 @@ export default async function CourseDetailPage({
         <span className="text-slate-900">{course.name}</span>
       </nav>
 
-      <section className="mb-10 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-        <div className="grid gap-8 lg:grid-cols-[1fr_320px] lg:items-end">
-          <div>
+      <section className="premium-grid mb-10 overflow-hidden rounded-3xl border border-slate-200">
+        <div className="grid gap-0 lg:grid-cols-[1fr_360px]">
+          <div className="p-6 sm:p-8">
             <span className="inline-flex rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-sm font-semibold text-emerald-700">
               {categoryLabels[course.category]}
             </span>
@@ -52,35 +52,54 @@ export default async function CourseDetailPage({
               {firstChapter && (
                 <Link
                   href={`/courses/${courseId}/${firstChapter.id}`}
-                  className="rounded-md bg-emerald-600 px-5 py-3 text-sm font-semibold text-white shadow-sm hover:bg-emerald-700"
+                  className="rounded-full bg-slate-950 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-slate-950/15 hover:bg-slate-800"
                 >
                   開始讀第一章
                 </Link>
               )}
               <Link
                 href={`/quiz?course=${courseId}`}
-                className="rounded-md bg-slate-900 px-5 py-3 text-sm font-semibold text-white shadow-sm hover:bg-slate-700"
+                className="rounded-full bg-emerald-500 px-5 py-3 text-sm font-semibold text-slate-950 shadow-lg shadow-emerald-500/20 hover:bg-emerald-400"
               >
                 進入本課題庫
               </Link>
               <Link
                 href="/exam-focus"
-                className="rounded-md border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50"
+                className="rounded-full border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50"
               >
                 查看考點
               </Link>
             </div>
           </div>
-          <div className="grid grid-cols-3 gap-3 lg:grid-cols-1">
-            <CourseMetric label="章節" value={`${course.chapters.length}`} />
-            <CourseMetric label="練習題" value={`${courseQuestions.length}`} />
-            <CourseMetric label="高優先考點" value={`${highPriorityCount}`} />
+          <div className="command-surface p-6 text-white">
+            <p className="text-sm font-semibold text-emerald-300">Course command</p>
+            <h2 className="mt-1 text-2xl font-bold">本課備考訊號</h2>
+            <div className="mt-5 grid grid-cols-3 gap-3 lg:grid-cols-1">
+              <CourseMetric label="章節" value={`${course.chapters.length}`} />
+              <CourseMetric label="練習題" value={`${courseQuestions.length}`} />
+              <CourseMetric label="高優先考點" value={`${highPriorityCount}`} />
+            </div>
+            <div className="mt-5 rounded-2xl border border-white/10 bg-white/[0.06] p-4">
+              <p className="text-sm font-semibold text-slate-100">學習順序</p>
+              <div className="mt-3 space-y-2">
+                {course.chapters.slice(0, 4).map((chapter, index) => (
+                  <Link
+                    key={chapter.id}
+                    href={`/courses/${courseId}/${chapter.id}`}
+                    className="flex items-center gap-3 rounded-xl bg-white/[0.06] px-3 py-2 text-sm text-slate-200 hover:bg-white/[0.1]"
+                  >
+                    <span className="font-mono text-xs text-emerald-300">{String(index + 1).padStart(2, "0")}</span>
+                    <span className="truncate">{chapter.title}</span>
+                  </Link>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
       {examFocus && (
-        <section className="mb-10 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+        <section className="mb-10 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
           <div className="mb-5 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div>
               <p className="mb-1 text-sm font-semibold text-emerald-600">考試重點</p>
@@ -96,7 +115,7 @@ export default async function CourseDetailPage({
           <p className="mb-5 text-sm leading-6 text-slate-600">{examFocus.overallStrategy}</p>
           <div className="grid gap-3 md:grid-cols-3">
             {examFocus.topics.slice(0, 3).map((topic) => (
-              <div key={topic.title} className="rounded-lg border border-slate-100 bg-slate-50 p-4">
+              <div key={topic.title} className="rounded-2xl border border-slate-100 bg-slate-50 p-4">
                 <p className="font-medium text-slate-950">{topic.title}</p>
                 <p className="mt-2 text-xs font-semibold text-rose-600">{topic.weight}</p>
                 <p className="mt-2 text-sm leading-6 text-slate-600">{topic.action}</p>
@@ -113,9 +132,9 @@ export default async function CourseDetailPage({
 
 function CourseMetric({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-lg border border-slate-200 bg-slate-50 p-4">
-      <p className="text-2xl font-bold text-slate-950">{value}</p>
-      <p className="mt-1 text-xs text-slate-500">{label}</p>
+    <div className="rounded-2xl border border-white/10 bg-white/[0.08] p-4">
+      <p className="text-2xl font-bold text-white">{value}</p>
+      <p className="mt-1 text-xs text-slate-300">{label}</p>
     </div>
   );
 }
